@@ -1,0 +1,543 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Shaxsiy sahifam</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
+<style>
+/* Layout: bitta ustun, chapga tekislangan. Samarqand kashinasidan olingan firuza va oltin rang, zigzag naqsh chizigʻi. */
+:root {
+  --bg: #110E22;
+  --surface: rgba(236, 233, 250, .07);
+  --fg: #ECE9FA;
+  --muted: #A9A3CC;
+  --line: rgba(236, 233, 250, .16);
+  --accent: #A78BFA;
+  --accent-soft: rgba(167, 139, 250, .2);
+  --accent2: #6EA8FF;
+  --on-accent: #140C2E;
+  color-scheme: dark;
+  --f-display: "Unbounded", "Trebuchet MS", system-ui, sans-serif;
+  --f-body: "Onest", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "DM Mono", ui-monospace, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-body);
+  font-size: 16px;
+  line-height: 1.6;
+  padding-block: 16px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
+a, button { font-family: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+#snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+.wrap { position: relative; z-index: 1; }
+
+.hero { display: flex; flex-direction: column; gap: 20px; }
+.kicker { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
+h1 {
+  font-family: var(--f-display); font-weight: 700; margin: 0;
+  font-size: clamp(34px, 9vw, 64px); line-height: 1.05; letter-spacing: -.02em; text-wrap: balance;
+  overflow-wrap: anywhere;
+}
+h1 span { color: var(--accent); }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  h1 span {
+    background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent));
+    background-size: 200% 100%;
+    animation: flow 7s ease-in-out infinite alternate;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+}
+.lead { font-size: clamp(18px, 3.4vw, 22px); line-height: 1.5; max-width: 34em; margin: 0; text-wrap: pretty; }
+.facts {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0;
+  margin: 8px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.fact-cell { padding: 14px 12px 14px 0; min-width: 0; }
+.fact-cell dt { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.fact-cell dd { margin: 4px 0 0; font-weight: 600; overflow-wrap: anywhere; }
+
+.band {
+  height: 4px; border-radius: 4px;
+  background:
+    linear-gradient(90deg, transparent, var(--accent), var(--accent2), transparent) 0 0 / 35% 100% no-repeat,
+    var(--line);
+}
+
+.sec { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5vw, 26px); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
+.sec p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
+.chip {
+  min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--fg); font-size: 15px; display: inline-flex; align-items: center;
+}
+
+.contacts { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
+.contact { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.contact:first-child { border-top: 1px solid var(--line); }
+.contact-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); width: 84px; flex: none; }
+.contact-value { flex: 1 1 140px; min-width: 0; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
+.copy-btn { min-height: 40px; padding: 0 14px; border-radius: 999px; background: transparent; color: var(--accent); border: 1px solid var(--accent); font-size: 14px; font-weight: 600; cursor: pointer; }
+.copy-btn:hover { background: var(--accent-soft); }
+.actions { display: flex; gap: 8px; flex: none; }
+.open-link { display: inline-flex; align-items: center; text-decoration: none; background: var(--accent); color: var(--on-accent); }
+.open-link:hover { background: var(--accent); filter: brightness(1.12); }
+
+/* rasm lentasi */
+.gallery { gap: 10px; }
+.gal-hint { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.strip {
+  display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-block: 8px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+}
+.strip::-webkit-scrollbar { display: none; }
+.shot {
+  flex: none; width: 128px; height: 172px; padding: 0; overflow: hidden; cursor: zoom-in;
+  border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+  transition: transform .25s cubic-bezier(.2, .7, .2, 1), border-color .2s ease;
+}
+.shot img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.shot:hover { transform: translateY(-4px); border-color: var(--accent); }
+.shot:active { transform: scale(.97); }
+
+/* kattalashtirilgan rasm */
+.lb {
+  position: fixed; inset: 0; z-index: 50; display: flex; align-items: center; justify-content: center;
+  padding-top: calc(64px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: rgba(10, 8, 24, .5);
+  -webkit-backdrop-filter: blur(18px); backdrop-filter: blur(18px);
+  touch-action: none; opacity: 0; transition: opacity .25s ease;
+}
+.lb.open { opacity: 1; }
+.lb-fig {
+  margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px;
+  max-width: 100%; transform: scale(.94); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.lb.open .lb-fig { transform: none; }
+.lb-fig img {
+  display: block; max-width: 100%; max-height: 72vh; object-fit: contain;
+  border-radius: 16px; box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+}
+.lb-fig img.swap { animation: imgin .35s cubic-bezier(.2, .7, .2, 1); }
+@keyframes imgin { from { opacity: 0; transform: scale(.96); } }
+.lb-fig figcaption { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; color: var(--fg); text-align: center; }
+.lb-btn {
+  position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
+  background: rgba(236, 233, 250, .12); color: var(--fg); font-size: 20px; line-height: 1; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.lb-btn:hover { background: rgba(236, 233, 250, .22); }
+.lb-close { top: calc(12px + env(safe-area-inset-top, 0px)); right: max(12px, env(safe-area-inset-right, 0px)); }
+.lb-nav { bottom: calc(10px + env(safe-area-inset-bottom, 0px)); font-size: 28px; }
+.lb-prev { left: calc(50% - 56px); }
+.lb-next { left: calc(50% + 12px); }
+
+.foot { font-family: var(--f-mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; margin: 0; }
+.toast {
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+  background: var(--fg); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 500;
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
+}
+.toast.show { opacity: 1; }
+
+/* Animatsiyalar: faqat transform va fon siljishi, matn har doim koʻrinib turadi */
+/* Orqa fon rangi sekin almashadi: binafsha, qizil, koʻk, pushti */
+@keyframes tint {
+  0%, 100% { background-color: #190F3C; }
+  25% { background-color: #3A0F22; }
+  50% { background-color: #0E1D45; }
+  75% { background-color: #3B1034; }
+}
+body { animation: tint 36s ease-in-out infinite; }
+@keyframes rise { from { transform: translateY(18px); } }
+@keyframes flow { to { background-position: 100% 0; } }
+@keyframes slide { to { background-position: 100% 0; } }
+@keyframes pop { from { transform: translateY(10px) scale(.9); } }
+
+.hero > * { animation: rise .8s cubic-bezier(.2, .7, .2, 1) backwards; }
+.hero > :nth-child(2) { animation-delay: .08s; }
+.hero > :nth-child(3) { animation-delay: .16s; }
+.hero > :nth-child(4) { animation-delay: .24s; }
+.band { animation: slide 3.2s ease-in-out infinite alternate; }
+
+.reveal-ready .sec, .reveal-ready .foot { transform: translateY(28px); transition: transform .7s cubic-bezier(.2, .7, .2, 1); }
+.reveal-ready .sec.in, .reveal-ready .foot.in { transform: none; }
+
+.sec.in .chip { animation: pop .5s cubic-bezier(.2, .7, .2, 1) backwards; }
+.sec.in .chip:nth-child(2) { animation-delay: .08s; }
+.sec.in .chip:nth-child(3) { animation-delay: .16s; }
+.chip { transition: transform .2s ease, border-color .2s ease; }
+.chip:hover { transform: translateY(-3px); border-color: var(--accent); }
+.chip-link { padding: 0; border-color: var(--accent); }
+.chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
+.contact-value { transition: color .2s ease; }
+.contact:hover .contact-value { color: var(--accent); }
+.copy-btn { transition: transform .15s ease, background .2s ease; }
+.copy-btn:active { transform: scale(.94); }
+
+@media (prefers-reduced-motion: reduce) {
+  body, .hero > *, h1 span, .band, .sec.in .chip { animation: none !important; }
+  .reveal-ready .sec, .reveal-ready .foot { transform: none !important; transition: none !important; }
+  .chip, .copy-btn, .contact-value, .toast, .shot, .lb, .lb-fig { transition: none; }
+  .lb-fig img.swap { animation: none; }
+  .chip:hover { transform: none; }
+}
+</style>
+
+<canvas id="snow" aria-hidden="true"></canvas>
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">Azizov Shoxjahon Azizovich</p>
+    <h1>Shoxjahon <span>Azizov</span></h1>
+    <dl class="facts">
+      <div class="fact-cell"><dt>Shahar</dt><dd>Samarqand</dd></div>
+      <div class="fact-cell"><dt>Yosh</dt><dd>18 yosh</dd></div>
+      <div class="fact-cell"><dt>Faoliyat</dt><dd>Talaba</dd></div>
+      <div class="fact-cell"><dt>Tillar</dt><dd>Oʻzbek, ingliz, rus, arab</dd></div>
+    </dl>
+  </header>
+
+  <div class="band" aria-hidden="true"></div>
+
+  <section class="sec gallery" aria-label="Rasmlarim">
+    <p class="gal-hint">Rasmlarim · surib koʻring, bosib kattalashtiring</p>
+    <div class="strip" id="strip"></div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-about">
+    <h2 id="h-about">Men haqimda</h2>
+    <p>Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda CS2 oʻynayman va sayohat qilaman.</p>
+  </section>
+
+  <section class="sec" aria-labelledby="h-int">
+    <h2 id="h-int">Qiziqishlarim</h2>
+    <ul class="chips">
+      <li class="chip">Sayohat qilish</li>
+      <li class="chip chip-link"><a href="https://steamcommunity.com/id/shoxzy7/" target="_blank" rel="noopener noreferrer">CS2 <span aria-hidden="true">↗</span></a></li>
+      <li class="chip">Dasturlash</li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="h-contact">
+    <h2 id="h-contact">Aloqa</h2>
+    <ul class="contacts" id="contacts"></ul>
+  </section>
+
+  <p class="foot">Oxirgi yangilanish: 25-oktabr, 2026</p>
+</div>
+<div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Rasmni kattalashtirib koʻrish" hidden>
+  <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Yopish">✕</button>
+  <button class="lb-btn lb-nav lb-prev" id="lbPrev" type="button" aria-label="Oldingi rasm">‹</button>
+  <figure class="lb-fig">
+    <img id="lbImg" alt="">
+    <figcaption id="lbCap"></figcaption>
+  </figure>
+  <button class="lb-btn lb-nav lb-next" id="lbNext" type="button" aria-label="Keyingi rasm">›</button>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+
+  /* Orqa fonda mayda qor yogʻishi */
+  var cv = document.getElementById("snow");
+  var ctx = cv.getContext ? cv.getContext("2d") : null;
+  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (ctx && !still) {
+    var W = 0, H = 0, flakes = [], raf = 0, t = 0;
+    var spawn = function (anywhere) {
+      var r = Math.random();
+      return {
+        x: Math.random() * W,
+        y: anywhere ? Math.random() * H : -6,
+        r: 0.7 + Math.random() * 1.9,
+        v: 0.35 + Math.random() * 0.9,
+        ph: Math.random() * 6.28,
+        sw: 0.3 + Math.random() * 0.8,
+        a: 0.35 + Math.random() * 0.55,
+        c: r < 0.15 ? "#B9A4FF" : r < 0.3 ? "#9CC2FF" : "#EDEAFB"
+      };
+    };
+    var size = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = window.innerWidth;
+      H = window.innerHeight;
+      cv.width = Math.round(W * dpr);
+      cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      var n = Math.max(40, Math.min(130, Math.round(W * H / 9000)));
+      while (flakes.length < n) flakes.push(spawn(true));
+      flakes.length = n;
+    };
+    var frame = function () {
+      t += 0.012;
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < flakes.length; i++) {
+        var f = flakes[i];
+        f.y += f.v * (0.6 + f.r * 0.3);
+        f.x += Math.sin(t * f.sw + f.ph) * 0.35;
+        if (f.y > H + 6) { flakes[i] = spawn(false); continue; }
+        if (f.x > W + 6) f.x = -6; else if (f.x < -6) f.x = W + 6;
+        ctx.globalAlpha = f.a;
+        ctx.fillStyle = f.c;
+        ctx.beginPath();
+        ctx.arc(f.x, f.y, f.r, 0, 6.2832);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      raf = requestAnimationFrame(frame);
+    };
+    size();
+    window.addEventListener("resize", size);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) cancelAnimationFrame(raf);
+      else raf = requestAnimationFrame(frame);
+    });
+    raf = requestAnimationFrame(frame);
+  }
+
+  /* Sahifa aylantirilganda boʻlimlar yumshoq chiqadi */
+  var revealEls = [].slice.call(document.querySelectorAll(".sec, .foot"));
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if ("IntersectionObserver" in window && !calm) {
+    root.classList.add("reveal-ready");
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add("in");
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add("in"); });
+  }
+
+  /* Rasmlar: yonga suriladigan lenta va bosganda kattalashtirish */
+  var photos = [
+    { a: "Favvora oldida", p: "50% 40%" },
+    { a: "Yoʻlda selfi", p: "50% 45%" },
+    { a: "Portret", p: "50% 25%" },
+    { a: "Kostyumda", p: "50% 30%" },
+    { a: "Registonda", p: "50% 50%" },
+    { a: "Kechqurun", p: "50% 30%" },
+    { a: "Selfi", p: "50% 45%" },
+    { a: "Favvora yonida", p: "50% 50%" },
+    { a: "Naushnikda", p: "50% 45%" },
+    { a: "Kafeda", p: "60% 40%" }
+  ];
+  photos.forEach(function (p, i) {
+    p.t = "img/t" + (i + 1) + ".jpg";
+    p.f = "img/f" + (i + 1) + ".jpg";
+  });
+
+  var strip = document.getElementById("strip");
+  var COPIES = 5, MID = 2;
+  for (var cp = 0; cp < COPIES; cp++) {
+    photos.forEach(function (p, i) {
+      var b = document.createElement("button");
+      b.type = "button";
+      b.className = "shot";
+      b.setAttribute("data-i", i);
+      if (cp === MID) {
+        b.setAttribute("aria-label", "Rasm " + (i + 1) + ": " + p.a + ". Kattalashtirish");
+      } else {
+        b.setAttribute("aria-hidden", "true");
+        b.tabIndex = -1;
+      }
+      var im = document.createElement("img");
+      im.src = p.t;
+      im.alt = "";
+      im.draggable = false;
+      im.style.objectPosition = p.p;
+      b.appendChild(im);
+      strip.appendChild(b);
+    });
+  }
+  var setW = strip.children[photos.length].offsetLeft - strip.children[0].offsetLeft;
+  strip.scrollLeft = MID * setW;
+
+  var lb = document.getElementById("lb");
+  var lbImg = document.getElementById("lbImg");
+  var lbCap = document.getElementById("lbCap");
+  var wrapEl = document.querySelector(".wrap");
+  var lbOpen = false, idx = 0, lastFocus = null;
+
+  var showPhoto = function (i) {
+    idx = (i + photos.length) % photos.length;
+    var p = photos[idx], mine = idx;
+    lbImg.classList.remove("swap");
+    void lbImg.offsetWidth;
+    lbImg.classList.add("swap");
+    lbImg.src = p.t;
+    lbImg.alt = p.a;
+    lbCap.textContent = (idx + 1) + " / " + photos.length + " · " + p.a;
+    var full = new Image();
+    full.onload = function () { if (idx === mine) lbImg.src = p.f; };
+    full.src = p.f;
+  };
+  var openLb = function (i) {
+    lastFocus = document.activeElement;
+    lbOpen = true;
+    lb.hidden = false;
+    wrapEl.inert = true;
+    root.style.overflow = "hidden";
+    showPhoto(i);
+    requestAnimationFrame(function () {
+      lb.classList.add("open");
+      document.getElementById("lbClose").focus();
+    });
+  };
+  var closeLb = function () {
+    lb.classList.remove("open");
+    lbOpen = false;
+    wrapEl.inert = false;
+    root.style.overflow = "";
+    setTimeout(function () { if (!lbOpen) lb.hidden = true; }, 280);
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  };
+  strip.addEventListener("click", function (e) {
+    var b = e.target.closest ? e.target.closest(".shot") : null;
+    if (b) openLb(parseInt(b.getAttribute("data-i"), 10));
+  });
+  document.getElementById("lbClose").addEventListener("click", closeLb);
+  document.getElementById("lbPrev").addEventListener("click", function () { showPhoto(idx - 1); });
+  document.getElementById("lbNext").addEventListener("click", function () { showPhoto(idx + 1); });
+  lb.addEventListener("click", function (e) { if (e.target === lb) closeLb(); });
+  document.addEventListener("keydown", function (e) {
+    if (!lbOpen) return;
+    if (e.key === "Escape") closeLb();
+    else if (e.key === "ArrowLeft") showPhoto(idx - 1);
+    else if (e.key === "ArrowRight") showPhoto(idx + 1);
+  });
+  var sx = 0, sy = 0;
+  lb.addEventListener("touchstart", function (e) {
+    sx = e.touches[0].clientX;
+    sy = e.touches[0].clientY;
+  }, { passive: true });
+  lb.addEventListener("touchend", function (e) {
+    var dx = e.changedTouches[0].clientX - sx;
+    var dy = e.changedTouches[0].clientY - sy;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showPhoto(idx + (dx < 0 ? 1 : -1));
+    else if (dy > 90 && Math.abs(dy) > Math.abs(dx)) closeLb();
+  }, { passive: true });
+
+  /* Lenta oʻzi yumshoq suriladi, tegilganda toʻxtaydi */
+  var pos = strip.scrollLeft, lastSet = pos, paused = false, touching = false;
+  var holdTimer = 0, lastTs = 0, SPEED = 24;
+  var hold = function () { paused = true; clearTimeout(holdTimer); };
+  var release = function () {
+    clearTimeout(holdTimer);
+    holdTimer = setTimeout(function () { paused = false; }, 1800);
+  };
+  strip.addEventListener("touchstart", function () { touching = true; hold(); }, { passive: true });
+  strip.addEventListener("touchend", function () { touching = false; release(); }, { passive: true });
+  strip.addEventListener("touchcancel", function () { touching = false; release(); }, { passive: true });
+  strip.addEventListener("mouseenter", hold);
+  strip.addEventListener("mouseleave", release);
+  strip.addEventListener("focusin", hold);
+  strip.addEventListener("focusout", release);
+  strip.addEventListener("wheel", function () { hold(); release(); }, { passive: true });
+
+  var drift = function (ts) {
+    var dt = lastTs ? Math.min(ts - lastTs, 64) : 16;
+    lastTs = ts;
+    if (!calm && !paused && !lbOpen) {
+      if (Math.abs(strip.scrollLeft - lastSet) > 1.5) pos = strip.scrollLeft;
+      pos += SPEED * dt / 1000;
+      strip.scrollLeft = pos;
+      lastSet = strip.scrollLeft;
+    }
+    if (!touching) {
+      var sl = strip.scrollLeft;
+      if (sl >= 3.5 * setW) { strip.scrollLeft = sl - 2 * setW; pos = strip.scrollLeft; lastSet = pos; }
+      else if (sl < 1.5 * setW) { strip.scrollLeft = sl + 2 * setW; pos = strip.scrollLeft; lastSet = pos; }
+    }
+    requestAnimationFrame(drift);
+  };
+  requestAnimationFrame(drift);
+
+  var toast = document.getElementById("toast");
+  var toastTimer;
+  function say(msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 1600);
+  }
+  function selectText(el) {
+    var r = document.createRange();
+    r.selectNodeContents(el);
+    var s = window.getSelection();
+    s.removeAllRanges();
+    s.addRange(r);
+  }
+  var contacts = [
+    ["Telegram", "@alcuzb", "https://t.me/alcuzb"],
+    ["Instagram", "@alcuzb", "https://www.instagram.com/alcuzb/"],
+    ["Pochta", "azizovshohjaxon20@gmail.com"],
+    ["Telefon", "+998 94 977 60 08"]
+  ];
+  var cl = document.getElementById("contacts");
+  contacts.forEach(function (c) {
+    var li = document.createElement("li");
+    li.className = "contact";
+    var l = document.createElement("span");
+    l.className = "contact-label";
+    l.textContent = c[0];
+    var v = document.createElement("span");
+    v.className = "contact-value";
+    v.textContent = c[1];
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "copy-btn";
+    b.textContent = "Nusxalash";
+    b.addEventListener("click", function () {
+      var done = function () { say("Nusxalandi"); };
+      var fail = function () { selectText(v); say("Matn belgilandi, nusxalang"); };
+      try {
+        navigator.clipboard.writeText(c[1]).then(done, fail);
+      } catch (e) { fail(); }
+    });
+    var acts = document.createElement("span");
+    acts.className = "actions";
+    if (c[2]) {
+      var a = document.createElement("a");
+      a.className = "copy-btn open-link";
+      a.href = c[2];
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = "Ochish";
+      acts.appendChild(a);
+    }
+    if (!c[2]) acts.appendChild(b);
+    li.appendChild(l);
+    li.appendChild(v);
+    li.appendChild(acts);
+    cl.appendChild(li);
+  });
+})();
+</script>
+
+</body></html>
