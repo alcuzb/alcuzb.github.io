@@ -1,6 +1,7 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>azizov</title>
 <meta name="claude:viewport-fit-sides" content="cover">
+<meta name="theme-color" content="#110E22">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
@@ -12,9 +13,9 @@
   --fg: #ECE9FA;
   --muted: #A9A3CC;
   --line: rgba(236, 233, 250, .16);
-  --accent: #A78BFA;
-  --accent-soft: rgba(167, 139, 250, .2);
-  --accent2: #6EA8FF;
+  --accent: #B47CFF;
+  --accent-soft: color-mix(in srgb, var(--accent) 20%, transparent);
+  --accent2: #7C5CFF;
   --on-accent: #140C2E;
   color-scheme: dark;
   --f-display: "Unbounded", "Trebuchet MS", system-ui, sans-serif;
@@ -156,7 +157,8 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 .strip::-webkit-scrollbar { display: none; }
 .shot {
   position: relative; flex: none; width: 128px; height: 172px; padding: 0; overflow: hidden; cursor: zoom-in;
-  border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, .24); border-radius: 14px; background: var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .35), 0 8px 22px rgba(0, 0, 0, .35);
   transform: translateY(var(--ty, 0px)) scale(var(--sc, 1));
   transition: transform .35s cubic-bezier(.2, .7, .2, 1), border-color .2s ease;
 }
@@ -186,13 +188,25 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 }
 .lb.open { opacity: 1; }
 .lb-fig {
-  margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px;
-  max-width: 100%; transform: scale(.94); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+  position: relative; overflow: hidden; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px;
+  max-width: 100%; padding: 10px 10px 14px; border-radius: 28px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .22), rgba(255, 255, 255, .06));
+  border: 1px solid rgba(255, 255, 255, .3);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .6), inset 0 1px 0 rgba(255, 255, 255, .45);
+  -webkit-backdrop-filter: blur(22px); backdrop-filter: blur(22px);
+  transform: scale(.94); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
 }
+.lb-fig::after {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: linear-gradient(115deg, transparent 35%, rgba(255, 255, 255, .3) 50%, transparent 65%);
+  transform: translateX(-120%);
+}
+.lb.open .lb-fig::after { animation: lbglare 1.3s ease .35s forwards; }
+@keyframes lbglare { to { transform: translateX(120%); } }
 .lb.open .lb-fig { transform: none; }
 .lb-fig img {
-  display: block; max-width: 100%; max-height: 72vh; object-fit: contain;
-  border-radius: 16px; box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+  display: block; max-width: 100%; max-height: 66vh; object-fit: contain;
+  border-radius: 20px; box-shadow: 0 10px 30px rgba(0, 0, 0, .35);
   transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition: transform .4s cubic-bezier(.2, .7, .2, 1); will-change: transform;
 }
@@ -341,13 +355,23 @@ body { animation: tint 36s ease-in-out infinite; }
 .chip-link { padding: 0; border-color: var(--accent); }
 .chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
 
+/* playlist: alohida panel */
+.plp { position: fixed; inset: 0; z-index: 70; background: #0E0B1F; overflow-y: auto; transform: translateY(100%); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
+.plp.open { transform: none; }
+.plp-in { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px;
+  padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
+.plp p { margin: 0; }
+.plp h2 { margin: 0; font-family: var(--f-display); font-size: 26px; }
+#plClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .2s, opacity .3s .2s; }
+.plp.open #plClose { transform: none; opacity: 1; }
+
 /* tepa panel va menyu animatsiyalari */
 .bar { overflow: hidden; animation: barIn .7s cubic-bezier(.2, .7, .2, 1) both; }
-.bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(167, 139, 250, .16) 50%, transparent 60%); transform: translateX(-120%); animation: sweep 4.5s ease-in-out 1.2s infinite; pointer-events: none; }
+.bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, color-mix(in srgb, var(--accent) 16%, transparent) 50%, transparent 60%); transform: translateX(-120%); animation: sweep 4.5s ease-in-out 1.2s infinite; pointer-events: none; }
 @keyframes barIn { from { transform: translateY(-30px); opacity: 0; } to { transform: none; opacity: 1; } }
 @keyframes sweep { 0% { transform: translateX(-120%); } 40%, 100% { transform: translateX(120%); } }
 @keyframes spin { to { transform: rotate(360deg); } }
-@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0); } 50% { box-shadow: 0 0 0 6px rgba(167, 139, 250, .14); } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent); } 50% { box-shadow: 0 0 0 6px color-mix(in srgb, var(--accent) 14%, transparent); } }
 @keyframes shim { 0% { background-position: 100% 0; } 45%, 100% { background-position: 0 0; } }
 @keyframes li { to { opacity: 1; transform: none; } }
 @supports ((-webkit-background-clip: text) or (background-clip: text)) {
@@ -363,7 +387,7 @@ body { animation: tint 36s ease-in-out infinite; }
 #menuBtn.on span:nth-child(2) { opacity: 0; }
 #menuBtn.on span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 .menu-panel { position: relative; transition-duration: .45s; transition-timing-function: cubic-bezier(.2, .8, .2, 1); }
-.menu-panel::before { content: ""; position: absolute; width: 260px; height: 260px; right: -100px; top: -80px; border-radius: 50%; background: radial-gradient(circle, rgba(167, 139, 250, .26), transparent 70%); pointer-events: none; animation: floaty 6s ease-in-out infinite alternate; }
+.menu-panel::before { content: ""; position: absolute; width: 260px; height: 260px; right: -100px; top: -80px; border-radius: 50%; background: radial-gradient(circle, color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%); pointer-events: none; animation: floaty 6s ease-in-out infinite alternate; }
 @keyframes floaty { to { transform: translate(-30px, 60px); } }
 #menuClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .25s, opacity .3s .25s, border-color .2s ease; }
 .menu.open #menuClose { transform: none; opacity: 1; }
@@ -374,13 +398,67 @@ body { animation: tint 36s ease-in-out infinite; }
 .menu.open .menu-link:nth-of-type(3) { animation-delay: .4s; }
 .menu.open .menu-link:nth-of-type(4) { animation-delay: .5s; }
 .menu-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .16) 50%, transparent 60%); transform: translateX(-120%); pointer-events: none; }
-.menu-link:active { border-color: var(--accent); background: rgba(167, 139, 250, .18); }
+.menu-link:active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
 .menu-link:active::after { transform: translateX(120%); transition: transform .6s; }
 
+/* kirish animatsiyasi */
+.intro { position: fixed; inset: 0; z-index: 200; display: flex; align-items: center; justify-content: center; animation: gone 0s linear 2.7s forwards; }
+.intro::before { content: ""; position: absolute; inset: 0; background: #0E0B1F; -webkit-mask: radial-gradient(circle at 50% 50%, transparent var(--r), #000 var(--r)); mask: radial-gradient(circle at 50% 50%, transparent var(--r), #000 var(--r)); animation: reveal 1.1s cubic-bezier(.6, 0, .2, 1) 1.5s forwards; }
+.intro-in { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 20px; animation: zo 1s cubic-bezier(.6, 0, .2, 1) 1.5s forwards; }
+.intro-av { position: relative; width: 84px; height: 84px; border-radius: 50%; padding: 3px; animation: popAv .6s cubic-bezier(.2, .9, .3, 1.3) both; }
+.intro-av::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--accent), var(--accent2), #F472B6, var(--accent)); }
+.intro-av img { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 3px solid #0E0B1F; }
+.intro b { display: flex; font-family: var(--f-display); font-size: 32px; letter-spacing: -.01em; }
+.intro b i { font-style: normal; opacity: 0; transform: translateY(14px); animation: letter .5s cubic-bezier(.2, .8, .2, 1) forwards; animation-delay: calc(.5s + var(--d) * .08s); }
+@property --r { syntax: "<percentage>"; inherits: false; initial-value: 0%; }
+@keyframes reveal { to { --r: 80%; } }
+@keyframes zo { to { transform: scale(5); opacity: 0; } }
+@keyframes popAv { from { transform: scale(0); } }
+@keyframes letter { to { opacity: 1; transform: none; } }
+@keyframes gone { to { visibility: hidden; } }
+
+/* barmoq izi effekti */
+
+/* menyu: sozlamalar */
+
+
+/* til tugmasi (tepa panelda) */
+.bar-r { display: flex; align-items: center; gap: 8px; }
+.lang { position: relative; display: flex; height: 34px; padding: 2px; border: 1px solid var(--line); border-radius: 12px; background: rgba(236, 233, 250, .06); }
+.lang button { position: relative; z-index: 1; width: 28px; padding: 0; border: 0; background: none; color: var(--muted); font-family: var(--f-mono); font-weight: 500; font-size: 11px; cursor: pointer; transition: color .25s ease; }
+.lang button::after { content: ""; position: absolute; inset: -5px -1px; }
+.lang button[aria-pressed="true"] { color: var(--on-accent); font-weight: 700; animation: pop .45s cubic-bezier(.2, .8, .2, 1); }
+.lang-ind { position: absolute; left: 2px; top: 2px; bottom: 2px; width: 28px; border-radius: 9px; background: linear-gradient(135deg, var(--accent), var(--accent2)); transform: translateX(calc(var(--i) * 28px)); transition: transform .45s cubic-bezier(.3, 1.5, .5, 1); box-shadow: 0 0 14px color-mix(in srgb, var(--accent) 45%, transparent); }
+
+/* ranglar sekin almashadi */
+@property --accent { syntax: "<color>"; inherits: true; initial-value: #B47CFF; }
+@property --accent2 { syntax: "<color>"; inherits: true; initial-value: #7C5CFF; }
+:root { transition: --accent 5s ease-in-out, --accent2 5s ease-in-out; }
+
+/* mini-pleyer */
+.mini { position: fixed; left: 50%; bottom: calc(14px + env(safe-area-inset-bottom, 0px)); z-index: 40; width: min(calc(100vw - 32px), 420px); transform: translateX(-50%); display: flex; align-items: center; gap: 8px; padding: 8px 10px 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(17, 14, 34, .96); animation: miniIn .45s cubic-bezier(.2, .8, .2, 1); }
+@keyframes miniIn { from { transform: translate(-50%, 40px); opacity: 0; } }
+.mini-open { display: flex; align-items: center; gap: 10px; min-width: 0; flex: 1; padding: 0; border: 0; background: none; color: var(--fg); text-align: left; cursor: pointer; }
+.mini-disc { position: relative; width: 34px; height: 34px; flex: none; border-radius: 50%; background: conic-gradient(from 0deg, var(--accent), var(--accent2), #ff5fa2, var(--accent)); animation: spin 6s linear infinite; animation-play-state: paused; }
+.mini-disc::after { content: ""; position: absolute; inset: 12px; border-radius: 50%; background: #17122e; }
+.mini.playing .mini-disc { animation-play-state: running; }
+.mini-t { min-width: 0; display: flex; flex-direction: column; line-height: 1.25; }
+.mini-t b { font-size: 14px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini-t span { font-size: 12px; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mini .mb { width: 40px; height: 40px; flex: none; border-radius: 50%; border: 1px solid var(--line); background: rgba(236, 233, 250, .08); color: var(--fg); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; }
+.mini svg { width: 18px; height: 18px; fill: currentColor; }
+.mini-on .wrap { padding-bottom: 72px; }
+.mini-on .toast { bottom: calc(80px + env(safe-area-inset-bottom, 0px)); }
+
+
 @media (prefers-reduced-motion: reduce) {
+  .intro { display: none; }
+  .mini, .mini-disc, .lang-ind { animation: none !important; transition: none !important; }
   .bar, .bar::after, .av::before, .who b, #menuBtn, .menu-panel::before, .menu.open .menu-link { animation: none !important; }
   .menu-link { opacity: 1; transform: none; }
-  #menuClose { opacity: 1; transform: none; transition: none; }
+  #menuClose, #plClose { opacity: 1; transform: none; transition: none; }
+  .plp { transition: none; }
+  .lb-fig::after, .intro::before, .intro-in { animation: none !important; }
   body, .hero > *, h1 span, .band, .sec.in .chip, .caret, .disc, .eq i, .lb-fig img.swap { animation: none !important; }
   .reveal-ready .sec, .reveal-ready .foot { transform: none !important; transition: none !important; }
   .chip, .toast, .shot, .lb, .lb-fig, .lb-fig img, .menu, .menu-panel, .dot { transition: none; }
@@ -388,6 +466,8 @@ body { animation: tint 36s ease-in-out infinite; }
 }
 </style>
 
+<div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
+<script>try{if(sessionStorage.getItem("azi")){document.getElementById("intro").remove()}else{sessionStorage.setItem("azi","1")}}catch(e){}</script>
 <canvas id="snow" aria-hidden="true"></canvas>
 <div class="wrap">
   <header class="bar">
@@ -395,108 +475,86 @@ body { animation: tint 36s ease-in-out infinite; }
       <span class="av"><img src="t4.jpg" alt=""></span>
       <b>azizov</b>
     </div>
-    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menyuni ochish" aria-haspopup="dialog"><span></span><span></span><span></span></button>
+    <div class="bar-r">
+      <div class="lang" id="langSeg" style="--i:0" role="group" aria-label="Til / Language">
+        <span class="lang-ind" aria-hidden="true"></span>
+        <button type="button" data-lang="uz" aria-pressed="true">UZ</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      </div>
+      <button class="menu-btn" id="menuBtn" type="button" aria-label="Menyuni ochish" aria-haspopup="dialog"><span></span><span></span><span></span></button>
+    </div>
   </header>
 
   <header class="hero">
     <h1>Shoxjahon <span>Azizov</span></h1>
-    <p class="typed-line" aria-label="Azizov Shoxjahon Azizovich. Talabaman. Dasturlashga qiziqaman. Kitob oʻqiyman. Sayohat qilishni yaxshi koʻraman."><span id="typed" aria-hidden="true">Azizov Shoxjahon Azizovich</span><span class="caret" aria-hidden="true"></span></p>
+    <p class="typed-line" aria-label="Azizov Shoxjahon Azizovich"><span id="typed" aria-hidden="true">Azizov Shoxjahon Azizovich</span><span class="caret" aria-hidden="true"></span></p>
     <dl class="facts">
-      <div class="fact-cell"><dt>Shahar</dt><dd>Samarqand</dd></div>
-      <div class="fact-cell"><dt>Yosh</dt><dd>18 yosh</dd></div>
-      <div class="fact-cell"><dt>Faoliyat</dt><dd>Talaba</dd></div>
-      <div class="fact-cell"><dt>Tillar</dt><dd>Oʻzbek, ingliz, rus, arab</dd></div>
+      <div class="fact-cell"><dt data-t="k_city">Shahar</dt><dd data-t="v_city">Samarqand</dd></div>
+      <div class="fact-cell"><dt data-t="k_age">Yosh</dt><dd data-t="v_age">18 yosh</dd></div>
+      <div class="fact-cell"><dt data-t="k_act">Faoliyat</dt><dd data-t="v_act">Talaba</dd></div>
+      <div class="fact-cell"><dt data-t="k_lang">Tillar</dt><dd data-t="v_lang">Oʻzbek, ingliz, rus, arab</dd></div>
     </dl>
   </header>
 
   <div class="band" aria-hidden="true"></div>
 
   <section class="sec gallery" id="photos" aria-label="Rasmlarim">
-    <p class="gal-hint">Rasmlarim · surib koʻring, bosib kattalashtiring</p>
+    <p class="gal-hint" data-t="gal_hint">Rasmlarim · surib koʻring, bosib kattalashtiring</p>
     <div class="strip" id="strip"></div>
   </section>
 
   <section class="sec" id="about" aria-labelledby="h-about">
-    <h2 id="h-about">Men haqimda</h2>
-    <p>Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.</p>
+    <h2 id="h-about" data-t="m_about">Men haqimda</h2>
+    <p data-t="about_p">Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.</p>
     <dl class="info">
-      <div><dt>Tugʻilgan sana</dt><dd>20.10.2008</dd></div>
-      <div><dt>Manzil</dt><dd>Samarqand viloyati, Toyloq tumani</dd></div>
+      <div><dt data-t="k_birth">Tugʻilgan sana</dt><dd>20.10.2008</dd></div>
+      <div><dt data-t="k_addr">Manzil</dt><dd data-t="v_addr">Samarqand viloyati, Toyloq tumani</dd></div>
     </dl>
   </section>
 
   <section class="sec" aria-labelledby="h-int">
-    <h2 id="h-int">Qiziqishlarim</h2>
+    <h2 id="h-int" data-t="h_int">Qiziqishlarim</h2>
     <ul class="chips">
-      <li class="chip">Sayohat qilish 🗺️</li>
+      <li class="chip" data-t="c_travel">Sayohat qilish 🗺️</li>
       <li class="chip">Chess ♟️</li>
       <li class="chip chip-link"><a href="https://steamcommunity.com/id/shoxzy7/" target="_blank" rel="noopener noreferrer">Esports | CS2 🔫 <span aria-hidden="true">↗</span></a></li>
-      <li class="chip">Dasturlash 👾</li>
+      <li class="chip" data-t="c_prog">Dasturlash 👾</li>
     </ul>
-  </section>
-
-  <section class="sec" id="playlist" aria-labelledby="h-pl">
-    <h2 id="h-pl">Playlist</h2>
-    <div class="player" id="player">
-      <div class="np">
-        <div class="disc" aria-hidden="true"></div>
-        <div class="np-text">
-          <p class="np-title" id="npTitle"></p>
-          <p class="np-artist" id="npArtist"></p>
-        </div>
-      </div>
-      <div class="prog">
-        <span id="tCur">0:00</span>
-        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Qoʻshiq vaqti">
-        <span id="tDur">0:00</span>
-      </div>
-      <div class="ctrl">
-        <button type="button" id="prevBtn" aria-label="Oldingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
-        <button type="button" class="play" id="playBtn" aria-label="Ijro etish">
-          <svg viewBox="0 0 24 24" id="icoPlay" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-          <svg viewBox="0 0 24 24" id="icoPause" aria-hidden="true" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
-        </button>
-        <button type="button" id="nextBtn" aria-label="Keyingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
-      </div>
-      <ol class="tracks" id="tracks"></ol>
-    </div>
-    <audio id="audio" preload="metadata"></audio>
   </section>
 
   <section class="sec" id="contact" aria-labelledby="h-contact">
     <div class="c-head">
-      <h2 id="h-contact">Aloqa</h2>
+      <h2 id="h-contact" data-t="m_contact">Aloqa</h2>
       <span class="pager" id="pager">1 / 4</span>
     </div>
-    <p class="swipe-hint">↔ Gorizontal suring</p>
+    <p class="swipe-hint" data-t="swipe">↔ Gorizontal suring</p>
     <div class="cards" id="cards">
       <article class="card card-tg">
-        <div class="card-top"><span class="card-label">Telegram profili</span></div>
+        <div class="card-top"><span class="card-label" data-t="lbl_tg">Telegram profili</span></div>
         <img class="avatar" src="av2.jpg" alt="">
         <h3>Shoxjahon Azizov</h3>
         <p class="handle">@alcuzb</p>
-        <a class="cta cta-tg" href="https://t.me/alcuzb" target="_blank" rel="noopener noreferrer">Telegramda ochish</a>
+        <a class="cta cta-tg" href="https://t.me/alcuzb" target="_blank" rel="noopener noreferrer" data-t="cta_tg">Telegramda ochish</a>
       </article>
       <article class="card card-ig">
-        <div class="card-top"><span class="card-label">Instagram profili</span></div>
+        <div class="card-top"><span class="card-label" data-t="lbl_ig">Instagram profili</span></div>
         <img class="avatar" src="av2.jpg" alt="">
         <h3>Shoxjahon Azizov</h3>
         <p class="handle">@alcuzb</p>
-        <a class="cta cta-ig" href="https://www.instagram.com/alcuzb/" target="_blank" rel="noopener noreferrer">Instagramda ochish</a>
+        <a class="cta cta-ig" href="https://www.instagram.com/alcuzb/" target="_blank" rel="noopener noreferrer" data-t="cta_ig">Instagramda ochish</a>
       </article>
       <article class="card card-sm">
-        <div class="card-top"><span class="card-label">Telefon</span></div>
-        <h3>Qoʻngʻiroq</h3>
+        <div class="card-top"><span class="card-label" data-t="lbl_phone">Telefon</span></div>
+        <h3 data-t="h_call">Qoʻngʻiroq</h3>
         <p class="handle">+998 94 977 60 08</p>
-        <a class="cta cta-sm" href="tel:+998949776008">Qoʻngʻiroq qilish</a>
-        <button class="cta cta-sm cta-ghost" type="button" data-copy="+998949776008">Nusxalash</button>
+        <a class="cta cta-sm" href="tel:+998949776008" data-t="cta_call">Qoʻngʻiroq qilish</a>
+        <button class="cta cta-sm cta-ghost" type="button" data-copy="+998949776008" data-t="copy">Nusxalash</button>
       </article>
       <article class="card card-sm">
-        <div class="card-top"><span class="card-label">Pochta</span></div>
-        <h3>Elektron pochta</h3>
+        <div class="card-top"><span class="card-label" data-t="lbl_mail">Pochta</span></div>
+        <h3 data-t="h_mail">Elektron pochta</h3>
         <p class="handle">azizovshohjaxon20@gmail.com</p>
-        <a class="cta cta-sm" href="mailto:azizovshohjaxon20@gmail.com">Xat yozish</a>
-        <button class="cta cta-sm cta-ghost" type="button" data-copy="azizovshohjaxon20@gmail.com">Nusxalash</button>
+        <a class="cta cta-sm" href="mailto:azizovshohjaxon20@gmail.com" data-t="cta_mail">Xat yozish</a>
+        <button class="cta cta-sm cta-ghost" type="button" data-copy="azizovshohjaxon20@gmail.com" data-t="copy">Nusxalash</button>
       </article>
     </div>
     <div class="dots-row">
@@ -506,20 +564,59 @@ body { animation: tint 36s ease-in-out infinite; }
     </div>
   </section>
 
-  <p class="foot">Oxirgi yangilanish: 25-oktabr, 2026</p>
+  <p class="foot" data-t="foot">Oxirgi yangilanish: 25-oktabr, 2026</p>
 </div>
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menyu" hidden>
   <nav class="menu-panel">
     <div class="menu-head">
-      <h2>Menyu</h2>
+      <h2 data-t="menu_t">Menyu</h2>
       <button class="menu-btn" id="menuClose" type="button" aria-label="Yopish"><b aria-hidden="true">✕</b></button>
     </div>
-    <a class="menu-link" href="#about">Men haqimda</a>
-    <a class="menu-link" href="#photos">Rasmlarim</a>
-    <a class="menu-link" href="#playlist">Playlist</a>
-    <a class="menu-link" href="#contact">Aloqa</a>
+    <a class="menu-link" href="#about" data-t="m_about">Men haqimda</a>
+    <a class="menu-link" href="#photos" data-t="m_photos">Rasmlarim</a>
+    <a class="menu-link" href="#playlist" data-t="m_pl">Playlist</a>
+    <a class="menu-link" href="#contact" data-t="m_contact">Aloqa</a>
   </nav>
+</div>
+
+<div class="plp" id="plp" role="dialog" aria-modal="true" aria-label="Playlist" hidden>
+  <div class="plp-in">
+    <div class="menu-head">
+      <h2 id="h-pl" data-t="m_pl">Playlist</h2>
+      <button class="menu-btn" id="plClose" type="button" aria-label="Yopish"><b aria-hidden="true">✕</b></button>
+    </div>
+    <div class="player" id="player">
+    <div class="np">
+      <div class="disc" aria-hidden="true"></div>
+      <div class="np-text">
+        <p class="np-title" id="npTitle"></p>
+        <p class="np-artist" id="npArtist"></p>
+      </div>
+    </div>
+    <div class="prog">
+      <span id="tCur">0:00</span>
+      <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Qoʻshiq vaqti">
+      <span id="tDur">0:00</span>
+    </div>
+    <div class="ctrl">
+      <button type="button" id="prevBtn" aria-label="Oldingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+      <button type="button" class="play" id="playBtn" aria-label="Ijro etish">
+        <svg viewBox="0 0 24 24" id="icoPlay" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+        <svg viewBox="0 0 24 24" id="icoPause" aria-hidden="true" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+      </button>
+      <button type="button" id="nextBtn" aria-label="Keyingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+    </div>
+    <ol class="tracks" id="tracks"></ol>
+  </div>
+  <audio id="audio" preload="metadata"></audio>
+  </div>
+</div>
+
+<div class="mini" id="mini" hidden>
+  <button class="mini-open" id="miniOpen" type="button" aria-label="Playlist"><span class="mini-disc" aria-hidden="true"></span><span class="mini-t"><b id="miniT"></b><span id="miniA"></span></span></button>
+  <button class="mb" id="miniPlay" type="button" aria-label="Play / pause"><svg viewBox="0 0 24 24" id="miniIcoPlay" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg><svg viewBox="0 0 24 24" id="miniIcoPause" aria-hidden="true" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg></button>
+  <button class="mb" id="miniNext" type="button" aria-label="Next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
 </div>
 
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Rasmni kattalashtirib koʻrish" hidden>
@@ -617,11 +714,11 @@ body { animation: tint 36s ease-in-out infinite; }
   /* Xabar (toast) */
   var toast = document.getElementById("toast");
   var toastTimer;
-  var say = function (msg) {
+  var say = function (msg, ms) {
     toast.textContent = msg;
     toast.classList.add("show");
     clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 1800);
+    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, ms || 1800);
   };
 
   /* 3D egilish */
@@ -644,6 +741,82 @@ body { animation: tint 36s ease-in-out infinite; }
   };
 
   /* Rasmlar: yonga suriladigan lenta va bosganda kattalashtirish */
+
+  /* Til, rang va matnlar */
+  var SITE = "https://alcuzb.github.io/";
+  var LANG = "uz";
+  var DICT = {
+    uz: {
+      menu_t: "Menyu", m_about: "Men haqimda", m_photos: "Rasmlarim", m_pl: "Playlist", m_contact: "Aloqa",
+      m_share: "Ulashish", m_install: "Ilova qilib oʻrnatish", m_lang: "Til", m_color: "Rang",
+      k_city: "Shahar", v_city: "Samarqand", k_age: "Yosh", v_age: "18 yosh", k_act: "Faoliyat", v_act: "Talaba",
+      k_lang: "Tillar", v_lang: "Oʻzbek, ingliz, rus, arab",
+      gal_hint: "Rasmlarim · surib koʻring, bosib kattalashtiring",
+      about_p: "Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.",
+      k_birth: "Tugʻilgan sana", k_addr: "Manzil", v_addr: "Samarqand viloyati, Toyloq tumani",
+      h_int: "Qiziqishlarim", c_travel: "Sayohat qilish 🗺️", c_prog: "Dasturlash 👾",
+      swipe: "↔ Gorizontal suring",
+      lbl_tg: "Telegram profili", lbl_ig: "Instagram profili", lbl_steam: "Steam profili", lbl_phone: "Telefon", lbl_mail: "Pochta",
+      cta_tg: "Telegramda ochish", cta_ig: "Instagramda ochish", cta_steam: "Steamda ochish",
+      h_call: "Qoʻngʻiroq", cta_call: "Qoʻngʻiroq qilish", copy: "Nusxalash", h_mail: "Elektron pochta", cta_mail: "Xat yozish",
+      foot: "Oxirgi yangilanish: 25-oktabr, 2026",
+      sh_title: "Ulashish", sh_note: "Kamerani yoʻnaltiring, sayt ochiladi", sh_copy: "Havolani nusxalash",
+      copied: "Nusxalandi", selected: "Matn belgilandi, nusxalang", noplay: "Ijro etilmadi, yana bosing", noload: "Qoʻshiq yuklanmadi",
+      linkcopied: "Havola nusxalandi", install_hint: "Brauzer menyusidan «Bosh ekranga qoʻshish» ni tanlang"
+    },
+    en: {
+      menu_t: "Menu", m_about: "About me", m_photos: "Photos", m_pl: "Playlist", m_contact: "Contact",
+      m_share: "Share", m_install: "Install as app", m_lang: "Language", m_color: "Color",
+      k_city: "City", v_city: "Samarkand", k_age: "Age", v_age: "18 years old", k_act: "Occupation", v_act: "Student",
+      k_lang: "Languages", v_lang: "Uzbek, English, Russian, Arabic",
+      gal_hint: "My photos · swipe, tap to enlarge",
+      about_p: "I live in Samarkand and I'm a student. I'm into programming, and in my free time I read books and travel.",
+      k_birth: "Date of birth", k_addr: "Address", v_addr: "Samarkand region, Toyloq district",
+      h_int: "My interests", c_travel: "Traveling 🗺️", c_prog: "Programming 👾",
+      swipe: "↔ Swipe sideways",
+      lbl_tg: "Telegram profile", lbl_ig: "Instagram profile", lbl_steam: "Steam profile", lbl_phone: "Phone", lbl_mail: "Email",
+      cta_tg: "Open in Telegram", cta_ig: "Open in Instagram", cta_steam: "Open on Steam",
+      h_call: "Call", cta_call: "Call me", copy: "Copy", h_mail: "Email", cta_mail: "Write an email",
+      foot: "Last updated: October 25, 2026",
+      sh_title: "Share", sh_note: "Point your camera to open the site", sh_copy: "Copy link",
+      copied: "Copied", selected: "Text selected, copy it", noplay: "Couldn't play, tap again", noload: "Couldn't load the song",
+      linkcopied: "Link copied", install_hint: "Use your browser menu and choose “Add to Home screen”"
+    },
+    ru: {
+      menu_t: "Меню", m_about: "Обо мне", m_photos: "Фото", m_pl: "Плейлист", m_contact: "Контакты",
+      m_share: "Поделиться", m_install: "Установить как приложение", m_lang: "Язык", m_color: "Цвет",
+      k_city: "Город", v_city: "Самарканд", k_age: "Возраст", v_age: "18 лет", k_act: "Занятие", v_act: "Студент",
+      k_lang: "Языки", v_lang: "Узбекский, английский, русский, арабский",
+      gal_hint: "Мои фото · листайте, нажмите, чтобы увеличить",
+      about_p: "Я живу в Самарканде и учусь в университете. Увлекаюсь программированием, в свободное время читаю книги и путешествую.",
+      k_birth: "Дата рождения", k_addr: "Адрес", v_addr: "Самаркандская область, Тайлакский район",
+      h_int: "Мои интересы", c_travel: "Путешествия 🗺️", c_prog: "Программирование 👾",
+      swipe: "↔ Листайте в сторону",
+      lbl_tg: "Профиль Telegram", lbl_ig: "Профиль Instagram", lbl_steam: "Профиль Steam", lbl_phone: "Телефон", lbl_mail: "Почта",
+      cta_tg: "Открыть в Telegram", cta_ig: "Открыть в Instagram", cta_steam: "Открыть в Steam",
+      h_call: "Звонок", cta_call: "Позвонить", copy: "Копировать", h_mail: "Эл. почта", cta_mail: "Написать письмо",
+      foot: "Обновлено: 25 октября 2026",
+      sh_title: "Поделиться", sh_note: "Наведите камеру, чтобы открыть сайт", sh_copy: "Копировать ссылку",
+      copied: "Скопировано", selected: "Текст выделен, скопируйте", noplay: "Не удалось включить, нажмите ещё раз", noload: "Песня не загрузилась",
+      linkcopied: "Ссылка скопирована", install_hint: "В меню браузера выберите «Добавить на главный экран»"
+    }
+  };
+  var PH = {
+    uz: ["Azizov Shoxjahon Azizovich"],
+    en: ["Azizov Shoxjahon Azizovich"],
+    ru: ["Азизов Шохжахон Азизович"]
+  };
+
+  var CAPS = {
+    en: ["By the fountain", "Selfie on the road", "Portrait", "In a suit", "At Registan", "In the evening", "Selfie", "Next to the fountain", "With headphones", "At the café", "At sunset", "In a hat", "In an armchair", "Together", "Together at Registan", "Lying selfie", "By the road", "Selfie 2"],
+    ru: ["У фонтана", "Селфи на дороге", "Портрет", "В костюме", "На Регистане", "Вечером", "Селфи", "Рядом с фонтаном", "В наушниках", "В кафе", "На закате", "В шапке", "В кресле", "Вместе", "Вместе на Регистане", "Селфи лёжа", "У дороги", "Селфи 2"]
+  };
+  var THEMES = { purple: ["#B47CFF", "#7C5CFF"], pink: ["#F472B6", "#E879F9"], lilac: ["#CDB8FF", "#A78BFA"], wine: ["#D6456B", "#A6336F"] };
+  var T = function (k) { return (DICT[LANG] && DICT[LANG][k]) || DICT.uz[k] || k; };
+  var capOf = function (i) { var a = CAPS[LANG]; return a ? a[i] : photos[i].a; };
+  var setHid = function (el, v) { if (v) el.setAttribute("hidden", ""); else el.removeAttribute("hidden"); };
+  var keep = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; };
+
   var photos = [
     { a: "Favvora oldida", p: "50% 40%" },
     { a: "Yoʻlda selfi", p: "50% 45%" },
@@ -678,7 +851,7 @@ body { animation: tint 36s ease-in-out infinite; }
       b.className = "shot";
       b.setAttribute("data-i", i);
       if (cp === MID) {
-        b.setAttribute("aria-label", "Rasm " + (i + 1) + ": " + p.a + ". Kattalashtirish");
+        b.setAttribute("aria-label", "Rasm " + (i + 1) + ": " + capOf(i) + ". Kattalashtirish");
       } else {
         b.setAttribute("aria-hidden", "true");
         b.tabIndex = -1;
@@ -734,8 +907,8 @@ body { animation: tint 36s ease-in-out infinite; }
     void lbImg.offsetWidth;
     lbImg.classList.add("swap");
     lbImg.src = p.t;
-    lbImg.alt = p.a;
-    lbCap.textContent = (idx + 1) + " / " + photos.length + " · " + p.a;
+    lbImg.alt = capOf(idx);
+    lbCap.textContent = (idx + 1) + " / " + photos.length + " · " + capOf(idx);
     var full = new Image();
     full.onload = function () { if (idx === mine) lbImg.src = p.f; };
     full.src = p.f;
@@ -884,28 +1057,55 @@ body { animation: tint 36s ease-in-out infinite; }
   document.getElementById("menuClose").addEventListener("click", closeMenu);
   menu.addEventListener("click", function (e) { if (e.target === menu) closeMenu(); });
   document.addEventListener("keydown", function (e) { if (menuOpen && e.key === "Escape") closeMenu(); });
-  [].slice.call(menu.querySelectorAll(".menu-link")).forEach(function (a) {
+  [].slice.call(menu.querySelectorAll("a.menu-link")).forEach(function (a) {
     a.addEventListener("click", function (e) {
       e.preventDefault();
-      var target = document.getElementById(a.getAttribute("href").slice(1));
+      var id = a.getAttribute("href").slice(1);
       closeMenu(true);
+      if (id === "playlist") { openPl(); return; }
+      var target = document.getElementById(id);
       if (target) jumpTo(target);
     });
   });
 
+  /* Playlist paneli */
+  var plp = document.getElementById("plp");
+  var plOpen = false;
+  var openPl = function () {
+    plOpen = true;
+    busyN++;
+    plp.hidden = false;
+    syncMini();
+    wrapEl.inert = true;
+    root.style.overflow = "hidden";
+    requestAnimationFrame(function () {
+      plp.classList.add("open");
+      document.getElementById("plClose").focus({ preventScroll: true });
+    });
+  };
+  var closePl = function () {
+    plp.classList.remove("open");
+    plOpen = false;
+    syncMini();
+    busyN = Math.max(0, busyN - 1);
+    wrapEl.inert = false;
+    root.style.overflow = "";
+    setTimeout(function () { if (!plOpen) plp.hidden = true; }, 450);
+    var mb = document.getElementById("menuBtn");
+    if (mb && mb.focus) mb.focus({ preventScroll: true });
+  };
+  document.getElementById("plClose").addEventListener("click", closePl);
+  document.addEventListener("keydown", function (e) { if (plOpen && e.key === "Escape") closePl(); });
+
   /* Yozilib chiqadigan matn */
   var typedEl = document.getElementById("typed");
-  var phrases = [
-    "Azizov Shoxjahon Azizovich",
-    "Talabaman.",
-    "Dasturlashga qiziqaman.",
-    "Kitob oʻqiyman.",
-    "Sayohat qilishni yaxshi koʻraman."
-  ];
+  var phrases = ["Azizov Shoxjahon Azizovich"];
   if (!calm) {
-    var pi = 0, ci = phrases[0].length, mode = "hold";
+    var pi = 0, ci = 0, mode = "write";
+    typedEl.textContent = "";
     var step = function () {
       if (mode === "hold") {
+        if (phrases.length < 2) return;
         mode = "erase";
         setTimeout(step, 1700);
       } else if (mode === "erase") {
@@ -929,7 +1129,7 @@ body { animation: tint 36s ease-in-out infinite; }
         }
       }
     };
-    setTimeout(step, 2200);
+    setTimeout(step, 3100);
   }
 
   /* Playlist */
@@ -1009,13 +1209,13 @@ body { animation: tint 36s ease-in-out infinite; }
     }
     if (autoplay) {
       var pr = audio.play();
-      if (pr && pr.catch) pr.catch(function () { say("Ijro etilmadi, yana bosing"); });
+      if (pr && pr.catch) pr.catch(function () { say(T("noplay")); });
     }
   };
   var togglePlay = function () {
     if (audio.paused) {
       var pr = audio.play();
-      if (pr && pr.catch) pr.catch(function () { say("Ijro etilmadi, yana bosing"); });
+      if (pr && pr.catch) pr.catch(function () { say(T("noplay")); });
     } else {
       audio.pause();
     }
@@ -1030,12 +1230,12 @@ body { animation: tint 36s ease-in-out infinite; }
   document.getElementById("nextBtn").addEventListener("click", function () { setTrack(cur + 1, !audio.paused); });
   audio.addEventListener("play", function () {
     playerEl.classList.add("playing");
-    icoPlay.hidden = true; icoPause.hidden = false;
+    setHid(icoPlay, true); setHid(icoPause, false);
     playBtn.setAttribute("aria-label", "Toʻxtatish");
   });
   audio.addEventListener("pause", function () {
     playerEl.classList.remove("playing");
-    icoPlay.hidden = false; icoPause.hidden = true;
+    setHid(icoPlay, false); setHid(icoPause, true);
     playBtn.setAttribute("aria-label", "Ijro etish");
   });
   audio.addEventListener("loadedmetadata", function () { tDur.textContent = fmt(audio.duration); });
@@ -1044,7 +1244,7 @@ body { animation: tint 36s ease-in-out infinite; }
     tCur.textContent = fmt(audio.currentTime);
   });
   audio.addEventListener("ended", function () { setTrack(cur + 1, true); });
-  audio.addEventListener("error", function () { if (audio.getAttribute("src")) say("Qoʻshiq yuklanmadi"); });
+  audio.addEventListener("error", function () { if (audio.getAttribute("src")) say(T("noload")); });
   var seekDrag = false;
   seek.addEventListener("input", function () {
     seekDrag = true;
@@ -1117,13 +1317,88 @@ body { animation: tint 36s ease-in-out infinite; }
       var fail = function () {
         var h = b.parentNode.querySelector(".handle");
         if (h) selectText(h);
-        say("Matn belgilandi, nusxalang");
+        say(T("selected"));
       };
       try {
-        navigator.clipboard.writeText(text).then(function () { say("Nusxalandi"); }, fail);
+        navigator.clipboard.writeText(text).then(function () { say(T("copied")); }, fail);
       } catch (e) { fail(); }
     });
   });
+  /* Mini-pleyer */
+  var mini = document.getElementById("mini");
+  var miniStarted = false;
+  function syncMini() {
+    var show = miniStarted && !plOpen;
+    mini.hidden = !show;
+    root.classList.toggle("mini-on", show);
+  }
+  var miniText = function () {
+    document.getElementById("miniT").textContent = tracks[cur].t;
+    document.getElementById("miniA").textContent = tracks[cur].a || "";
+  };
+  var setTrack0 = setTrack;
+  setTrack = function (i, a) { setTrack0(i, a); miniText(); };
+  miniText();
+  audio.addEventListener("play", function () {
+    miniStarted = true;
+    mini.classList.add("playing");
+    setHid(document.getElementById("miniIcoPlay"), true);
+    setHid(document.getElementById("miniIcoPause"), false);
+    syncMini();
+  });
+  audio.addEventListener("pause", function () {
+    mini.classList.remove("playing");
+    setHid(document.getElementById("miniIcoPlay"), false);
+    setHid(document.getElementById("miniIcoPause"), true);
+  });
+  document.getElementById("miniPlay").addEventListener("click", togglePlay);
+  document.getElementById("miniNext").addEventListener("click", function () { setTrack(cur + 1, true); });
+  document.getElementById("miniOpen").addEventListener("click", openPl);
+
+  /* Til */
+  var langBtns = [].slice.call(document.querySelectorAll("#langSeg button"));
+  var typedLine = document.querySelector(".typed-line");
+  var setLang = function (l) {
+    if (!DICT[l]) l = "uz";
+    LANG = l;
+    root.lang = l;
+    [].slice.call(document.querySelectorAll("[data-t]")).forEach(function (el) {
+      var v = DICT[l][el.getAttribute("data-t")];
+      if (v !== undefined) el.textContent = v;
+    });
+    phrases.splice.apply(phrases, [0, phrases.length].concat(PH[l]));
+    typedLine.setAttribute("aria-label", PH[l].join(" "));
+    if (phrases.length < 2 && (calm || ci >= phrases[0].length)) typedEl.textContent = phrases[0];
+    langBtns.forEach(function (b, k) {
+      var on = b.getAttribute("data-lang") === l;
+      b.setAttribute("aria-pressed", on ? "true" : "false");
+      if (on) document.getElementById("langSeg").style.setProperty("--i", k);
+    });
+    if (lbOpen) showPhoto(idx);
+    keep("azLang", l);
+  };
+  langBtns.forEach(function (b) { b.addEventListener("click", function () { setLang(b.getAttribute("data-lang")); }); });
+
+  /* Ranglar sekin almashib turadi */
+  var themeKeys = Object.keys(THEMES), ti = 0;
+  var setTheme = function (n) {
+    root.style.setProperty("--accent", THEMES[n][0]);
+    root.style.setProperty("--accent2", THEMES[n][1]);
+  };
+  if (!calm) {
+    setInterval(function () {
+      if (document.hidden || busyN > 0) return;
+      ti = (ti + 1) % themeKeys.length;
+      setTheme(themeKeys[ti]);
+    }, 9000);
+  }
+
+  var savedLang = keep("azLang");
+  var navLang = ((navigator.language || "uz") + "").slice(0, 2);
+  setLang(savedLang || (navLang === "ru" ? "ru" : "uz"));
+
+  /* Kirish animatsiyasini olib tashlash */
+  setTimeout(function () { var it = document.getElementById("intro"); if (it) it.remove(); }, 2900);
 })();
 </script>
 
