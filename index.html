@@ -1,11 +1,11 @@
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Shaxsiy sahifam</title>
+<title>azizov</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Onest:wght@400;500;600&family=Unbounded:wght@500;700&display=swap">
 <style>
-/* Layout: bitta ustun, chapga tekislangan. Samarqand kashinasidan olingan firuza va oltin rang, zigzag naqsh chizigʻi. */
+/* Layout: bitta ustun, chapga tekislangan. Tepada qalqib turuvchi panel, orqa fonda qor va sekin almashinadigan toʻq ranglar. */
 :root {
   --bg: #110E22;
   --surface: rgba(236, 233, 250, .07);
@@ -29,18 +29,65 @@ body {
   font-family: var(--f-body);
   font-size: 16px;
   line-height: 1.6;
-  padding-block: 16px 56px;
+  padding-block: 12px 56px;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before {
+  content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px);
+  z-index: 10; background: rgba(17, 14, 34, .9);
 }
 .wrap { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 48px; }
 a, button { font-family: inherit; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.hero, .sec { scroll-margin-top: 84px; }
 
 #snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .wrap { position: relative; z-index: 1; }
 
-.hero { display: flex; flex-direction: column; gap: 20px; }
+/* tepa panel */
+.bar {
+  position: sticky; top: calc(env(safe-area-inset-top, 0px) + 6px); z-index: 20; margin-bottom: -20px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 8px 8px 10px; border: 1px solid var(--line); border-radius: 18px;
+  background: rgba(17, 14, 34, .92);
+}
+.who { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.who img { width: 38px; height: 38px; flex: none; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 1px solid var(--line); }
+.who b { font-family: var(--f-display); font-weight: 700; font-size: 19px; letter-spacing: -.01em; text-transform: lowercase; }
+.menu-btn {
+  width: 44px; height: 44px; flex: none; border-radius: 14px; border: 1px solid var(--line);
+  background: rgba(236, 233, 250, .08); color: var(--fg); cursor: pointer;
+  display: inline-flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center;
+}
+.menu-btn span { display: block; width: 20px; height: 2px; border-radius: 2px; background: currentColor; }
+.menu-btn:hover { border-color: var(--accent); }
+
+/* menyu */
+.menu {
+  position: fixed; inset: 0; z-index: 60; display: flex; justify-content: flex-end;
+  background: rgba(10, 8, 24, .74);
+  opacity: 0; transition: opacity .25s ease;
+}
+.menu.open { opacity: 1; }
+.menu-panel {
+  width: min(86vw, 340px); height: 100%; overflow-y: auto; display: flex; flex-direction: column; gap: 14px;
+  padding-top: calc(16px + env(safe-area-inset-top, 0px));
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  padding-left: 18px; padding-right: max(16px, env(safe-area-inset-right, 0px));
+  background: rgba(17, 14, 34, .94); border-left: 1px solid var(--line);
+  transform: translateX(100%); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
+}
+.menu.open .menu-panel { transform: none; }
+.menu-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
+.menu-link {
+  display: block; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px;
+  background: rgba(236, 233, 250, .06); color: var(--fg); text-decoration: none; font-weight: 600; font-size: 17px;
+}
+.menu-link:hover { border-color: var(--accent); }
+
+/* tepa qism */
+.hero { display: flex; flex-direction: column; gap: 18px; }
 .kicker { font-family: var(--f-mono); font-size: 13px; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 0; overflow-wrap: anywhere; }
 h1 {
   font-family: var(--f-display); font-weight: 700; margin: 0;
@@ -60,7 +107,8 @@ h1 span { color: var(--accent); }
     box-decoration-break: clone;
   }
 }
-.lead { font-size: clamp(18px, 3.4vw, 22px); line-height: 1.5; max-width: 34em; margin: 0; text-wrap: pretty; }
+.typed-line { margin: 0; min-height: 1.7em; font-family: var(--f-mono); font-size: clamp(16px, 3.8vw, 20px); color: var(--fg); overflow-wrap: anywhere; }
+.caret { display: inline-block; width: 2px; height: 1.1em; margin-left: 3px; vertical-align: -.15em; background: var(--accent); animation: blink 1s steps(1) infinite; }
 .facts {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0;
   margin: 8px 0 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
@@ -76,26 +124,21 @@ h1 span { color: var(--accent); }
     var(--line);
 }
 
+/* boʻlimlar */
 .sec { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
 h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5vw, 26px); letter-spacing: -.01em; margin: 0; text-wrap: balance; }
 .sec p { margin: 0; max-width: 62ch; text-wrap: pretty; }
+
+.info { margin: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.info div { display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.info dt { width: 120px; flex: none; padding-top: 3px; font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.info dd { margin: 0; flex: 1 1 160px; min-width: 0; font-weight: 600; overflow-wrap: anywhere; }
 
 .chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .chip {
   min-height: 40px; padding: 0 16px; border-radius: 999px; border: 1px solid var(--line);
   background: var(--surface); color: var(--fg); font-size: 15px; display: inline-flex; align-items: center;
 }
-
-.contacts { display: flex; flex-direction: column; margin: 0; padding: 0; list-style: none; }
-.contact { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
-.contact:first-child { border-top: 1px solid var(--line); }
-.contact-label { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); width: 84px; flex: none; }
-.contact-value { flex: 1 1 140px; min-width: 0; font-weight: 500; overflow-wrap: anywhere; user-select: all; }
-.copy-btn { min-height: 40px; padding: 0 14px; border-radius: 999px; background: transparent; color: var(--accent); border: 1px solid var(--accent); font-size: 14px; font-weight: 600; cursor: pointer; }
-.copy-btn:hover { background: var(--accent-soft); }
-.actions { display: flex; gap: 8px; flex: none; }
-.open-link { display: inline-flex; align-items: center; text-decoration: none; background: var(--accent); color: var(--on-accent); }
-.open-link:hover { background: var(--accent); filter: brightness(1.12); }
 
 /* rasm lentasi */
 .gallery { gap: 10px; }
@@ -108,13 +151,23 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 }
 .strip::-webkit-scrollbar { display: none; }
 .shot {
-  flex: none; width: 128px; height: 172px; padding: 0; overflow: hidden; cursor: zoom-in;
+  position: relative; flex: none; width: 128px; height: 172px; padding: 0; overflow: hidden; cursor: zoom-in;
   border: 1px solid var(--line); border-radius: 14px; background: var(--surface);
-  transition: transform .25s cubic-bezier(.2, .7, .2, 1), border-color .2s ease;
+  transform: translateY(var(--ty, 0px)) scale(var(--sc, 1));
+  transition: transform .35s cubic-bezier(.2, .7, .2, 1), border-color .2s ease;
+}
+.shot.tilting {
+  transform: perspective(600px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--ty, 0px)) scale(var(--sc, 1));
+  transition: transform .08s linear, border-color .2s ease; will-change: transform;
+}
+.shot::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 30%), rgba(255, 255, 255, .3), transparent 55%);
+  opacity: var(--gl, 0); transition: opacity .3s ease;
 }
 .shot img { display: block; width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
-.shot:hover { transform: translateY(-4px); border-color: var(--accent); }
-.shot:active { transform: scale(.97); }
+.shot:hover { --ty: -4px; border-color: var(--accent); }
+.shot:active { --sc: .97; }
 
 /* kattalashtirilgan rasm */
 .lb {
@@ -136,9 +189,11 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 .lb-fig img {
   display: block; max-width: 100%; max-height: 72vh; object-fit: contain;
   border-radius: 16px; box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .4s cubic-bezier(.2, .7, .2, 1); will-change: transform;
 }
+.lb-fig img.tilting { transition: transform .06s linear; }
 .lb-fig img.swap { animation: imgin .35s cubic-bezier(.2, .7, .2, 1); }
-@keyframes imgin { from { opacity: 0; transform: scale(.96); } }
 .lb-fig figcaption { font-family: var(--f-mono); font-size: 13px; letter-spacing: .06em; color: var(--fg); text-align: center; }
 .lb-btn {
   position: absolute; width: 44px; height: 44px; border-radius: 50%; border: 1px solid var(--line);
@@ -151,16 +206,103 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 .lb-prev { left: calc(50% - 56px); }
 .lb-next { left: calc(50% + 12px); }
 
+/* playlist */
+.player { display: flex; flex-direction: column; gap: 16px; min-width: 0; padding: 18px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); }
+.np { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.disc {
+  position: relative; flex: none; width: 76px; height: 76px; border-radius: 50%;
+  background: conic-gradient(from 0deg, var(--accent), var(--accent2), #ff5fa2, var(--accent));
+  animation: spin 6s linear infinite; animation-play-state: paused;
+}
+.disc::after { content: ""; position: absolute; inset: 28px; border-radius: 50%; background: #17122e; }
+.player.playing .disc { animation-play-state: running; }
+.np-text { min-width: 0; }
+.np-title { margin: 0; font-family: var(--f-display); font-weight: 500; font-size: 17px; line-height: 1.25; overflow-wrap: anywhere; }
+.np-artist { margin: 2px 0 0; font-size: 14px; color: var(--muted); }
+.prog { display: flex; align-items: center; gap: 10px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.prog input[type="range"] { flex: 1; min-width: 0; height: 28px; margin: 0; accent-color: var(--accent); }
+.ctrl { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.ctrl button {
+  width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); cursor: pointer;
+  background: rgba(236, 233, 250, .08); color: var(--fg); display: inline-flex; align-items: center; justify-content: center;
+}
+.ctrl .play { width: 60px; height: 60px; background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
+.ctrl svg { width: 22px; height: 22px; fill: currentColor; }
+.tracks { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; border-top: 1px solid var(--line); }
+.track {
+  display: flex; align-items: center; gap: 12px; width: 100%; min-height: 52px; padding: 10px 4px;
+  background: none; border: 0; border-bottom: 1px solid var(--line); color: var(--fg); font-size: 15px; text-align: left; cursor: pointer;
+}
+.track .no { width: 22px; flex: none; text-align: center; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.track .tt { flex: 1; min-width: 0; overflow-wrap: anywhere; font-weight: 500; }
+.track .ta { display: block; font-size: 13px; font-weight: 400; color: var(--muted); }
+.track .td { flex: none; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.track:hover .tt, .track.on .tt { color: var(--accent); }
+.eq { display: none; width: 22px; height: 14px; flex: none; align-items: flex-end; justify-content: center; gap: 2px; }
+.eq i { width: 3px; height: 6px; border-radius: 1px; background: var(--accent); animation: eq .9s ease-in-out infinite; animation-play-state: paused; }
+.eq i:nth-child(2) { animation-delay: .2s; }
+.eq i:nth-child(3) { animation-delay: .4s; }
+.track.on .no { display: none; }
+.track.on .eq { display: inline-flex; }
+.player.playing .track.on .eq i { animation-play-state: running; }
+
+/* aloqa kartochkalari */
+.c-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pager { padding: 4px 12px; border: 1px solid var(--line); border-radius: 999px; font-family: var(--f-mono); font-size: 13px; color: var(--muted); }
+.swipe-hint { font-size: 14px; color: var(--muted); }
+.cards {
+  position: relative; display: flex; gap: 14px; overflow-x: auto; padding-block: 6px;
+  scroll-snap-type: x mandatory; scrollbar-width: none; overscroll-behavior-x: contain;
+}
+.cards::-webkit-scrollbar { display: none; }
+.card {
+  flex: none; width: min(82vw, 320px); min-width: 0; scroll-snap-align: start; overflow: hidden;
+  display: flex; flex-direction: column; align-items: center; text-align: center; padding-bottom: 20px;
+  border: 1px solid var(--line); border-radius: 26px; background: var(--surface);
+}
+.card-sm { width: min(70vw, 250px); }
+.card-top { position: relative; align-self: stretch; height: 96px; overflow: hidden; padding: 14px; display: flex; align-items: flex-start; }
+.card-top::after { content: ""; position: absolute; right: -30px; top: -20px; width: 130px; height: 130px; border-radius: 50%; background: rgba(255, 255, 255, .14); }
+.card-tg .card-top { background: linear-gradient(135deg, #0d4f7a, #229ED9); }
+.card-ig .card-top { background: linear-gradient(135deg, #6a3de0, #d6249f 58%, #f58529); }
+.card-sm .card-top { height: 64px; background: linear-gradient(135deg, var(--accent), var(--accent2)); }
+.card-label {
+  position: relative; z-index: 1; padding: 6px 12px; border-radius: 999px; border: 1px solid rgba(255, 255, 255, .28);
+  background: rgba(0, 0, 0, .28); font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: #fff;
+}
+.avatar {
+  position: relative; z-index: 2; width: 92px; height: 92px; margin-top: -46px; border-radius: 50%;
+  object-fit: cover; object-position: 50% 25%; border: 4px solid #17122e; background: #17122e;
+}
+.card h3 { margin: 12px 0 0; padding-inline: 14px; font-family: var(--f-display); font-weight: 500; font-size: 19px; }
+.card-sm h3 { margin-top: 16px; font-size: 17px; }
+.handle { margin: 6px 0 0; padding-inline: 14px; font-family: var(--f-mono); font-size: 15px; color: var(--muted); overflow-wrap: anywhere; }
+.card-sm .handle { font-family: var(--f-body); font-weight: 600; font-size: 15px; color: var(--fg); }
+.cta {
+  align-self: stretch; margin: 18px 18px 0; min-height: 50px; display: inline-flex; align-items: center; justify-content: center;
+  border: 0; border-radius: 999px; font-size: 16px; font-weight: 600; text-decoration: none; color: #fff; cursor: pointer;
+}
+.cta-tg { background: #229ED9; }
+.cta-ig { background: linear-gradient(90deg, #7b3fe4, #d6249f); }
+.cta-sm { min-height: 44px; margin-top: 14px; font-size: 15px; background: var(--accent); color: var(--on-accent); }
+.cta-ghost { margin-top: 8px; background: transparent; color: var(--accent); border: 1px solid var(--accent); }
+.dots-row { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.arrow { width: 44px; height: 44px; border: 1px solid var(--line); border-radius: 50%; background: rgba(236, 233, 250, .06); color: var(--fg); font-size: 22px; line-height: 1; cursor: pointer; }
+.arrow:hover { border-color: var(--accent); }
+.dots { display: flex; align-items: center; gap: 8px; }
+.dot { position: relative; width: 8px; height: 8px; padding: 0; border: 0; border-radius: 99px; background: var(--line); cursor: pointer; transition: width .25s ease, background .25s ease; }
+.dot::after { content: ""; position: absolute; inset: -9px -4px; }
+.dot[aria-current="true"] { width: 26px; background: var(--fg); }
+
 .foot { font-family: var(--f-mono); font-size: 12px; color: var(--muted); letter-spacing: .04em; margin: 0; }
 .toast {
-  position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px));
-  background: var(--fg); color: var(--bg); padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 500;
+  position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 80;
+  background: var(--fg); color: #17122e; padding: 10px 18px; border-radius: 999px; font-size: 14px; font-weight: 500;
   opacity: 0; pointer-events: none; transition: opacity .2s ease;
 }
 .toast.show { opacity: 1; }
 
 /* Animatsiyalar: faqat transform va fon siljishi, matn har doim koʻrinib turadi */
-/* Orqa fon rangi sekin almashadi: binafsha, qizil, koʻk, pushti */
 @keyframes tint {
   0%, 100% { background-color: #190F3C; }
   25% { background-color: #3A0F22; }
@@ -172,6 +314,10 @@ body { animation: tint 36s ease-in-out infinite; }
 @keyframes flow { to { background-position: 100% 0; } }
 @keyframes slide { to { background-position: 100% 0; } }
 @keyframes pop { from { transform: translateY(10px) scale(.9); } }
+@keyframes imgin { from { opacity: 0; transform: scale(.96); } }
+@keyframes blink { 50% { opacity: 0; } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes eq { 50% { height: 14px; } }
 
 .hero > * { animation: rise .8s cubic-bezier(.2, .7, .2, 1) backwards; }
 .hero > :nth-child(2) { animation-delay: .08s; }
@@ -189,25 +335,28 @@ body { animation: tint 36s ease-in-out infinite; }
 .chip:hover { transform: translateY(-3px); border-color: var(--accent); }
 .chip-link { padding: 0; border-color: var(--accent); }
 .chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
-.contact-value { transition: color .2s ease; }
-.contact:hover .contact-value { color: var(--accent); }
-.copy-btn { transition: transform .15s ease, background .2s ease; }
-.copy-btn:active { transform: scale(.94); }
 
 @media (prefers-reduced-motion: reduce) {
-  body, .hero > *, h1 span, .band, .sec.in .chip { animation: none !important; }
+  body, .hero > *, h1 span, .band, .sec.in .chip, .caret, .disc, .eq i, .lb-fig img.swap { animation: none !important; }
   .reveal-ready .sec, .reveal-ready .foot { transform: none !important; transition: none !important; }
-  .chip, .copy-btn, .contact-value, .toast, .shot, .lb, .lb-fig { transition: none; }
-  .lb-fig img.swap { animation: none; }
+  .chip, .toast, .shot, .lb, .lb-fig, .lb-fig img, .menu, .menu-panel, .dot { transition: none; }
   .chip:hover { transform: none; }
 }
 </style>
 
 <canvas id="snow" aria-hidden="true"></canvas>
 <div class="wrap">
+  <header class="bar">
+    <div class="who">
+      <img src="t4.jpg" alt="">
+      <b>azizov</b>
+    </div>
+    <button class="menu-btn" id="menuBtn" type="button" aria-label="Menyuni ochish" aria-haspopup="dialog"><span></span><span></span><span></span></button>
+  </header>
+
   <header class="hero">
-    <p class="kicker">Azizov Shoxjahon Azizovich</p>
     <h1>Shoxjahon <span>Azizov</span></h1>
+    <p class="typed-line" aria-label="Azizov Shoxjahon Azizovich. Talabaman. Dasturlashga qiziqaman. Kitob oʻqiyman. Sayohat qilishni yaxshi koʻraman."><span id="typed" aria-hidden="true">Azizov Shoxjahon Azizovich</span><span class="caret" aria-hidden="true"></span></p>
     <dl class="facts">
       <div class="fact-cell"><dt>Shahar</dt><dd>Samarqand</dd></div>
       <div class="fact-cell"><dt>Yosh</dt><dd>18 yosh</dd></div>
@@ -218,14 +367,18 @@ body { animation: tint 36s ease-in-out infinite; }
 
   <div class="band" aria-hidden="true"></div>
 
-  <section class="sec gallery" aria-label="Rasmlarim">
+  <section class="sec gallery" id="photos" aria-label="Rasmlarim">
     <p class="gal-hint">Rasmlarim · surib koʻring, bosib kattalashtiring</p>
     <div class="strip" id="strip"></div>
   </section>
 
-  <section class="sec" aria-labelledby="h-about">
+  <section class="sec" id="about" aria-labelledby="h-about">
     <h2 id="h-about">Men haqimda</h2>
-    <p>Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda CS2 oʻynayman va sayohat qilaman.</p>
+    <p>Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.</p>
+    <dl class="info">
+      <div><dt>Tugʻilgan sana</dt><dd>20.10.2008</dd></div>
+      <div><dt>Manzil</dt><dd>Samarqand viloyati, Toyloq tumani</dd></div>
+    </dl>
   </section>
 
   <section class="sec" aria-labelledby="h-int">
@@ -237,13 +390,93 @@ body { animation: tint 36s ease-in-out infinite; }
     </ul>
   </section>
 
-  <section class="sec" aria-labelledby="h-contact">
-    <h2 id="h-contact">Aloqa</h2>
-    <ul class="contacts" id="contacts"></ul>
+  <section class="sec" id="playlist" aria-labelledby="h-pl">
+    <h2 id="h-pl">Playlist</h2>
+    <div class="player" id="player">
+      <div class="np">
+        <div class="disc" aria-hidden="true"></div>
+        <div class="np-text">
+          <p class="np-title" id="npTitle"></p>
+          <p class="np-artist" id="npArtist"></p>
+        </div>
+      </div>
+      <div class="prog">
+        <span id="tCur">0:00</span>
+        <input type="range" id="seek" min="0" max="1000" value="0" aria-label="Qoʻshiq vaqti">
+        <span id="tDur">0:00</span>
+      </div>
+      <div class="ctrl">
+        <button type="button" id="prevBtn" aria-label="Oldingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+        <button type="button" class="play" id="playBtn" aria-label="Ijro etish">
+          <svg viewBox="0 0 24 24" id="icoPlay" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" id="icoPause" aria-hidden="true" hidden><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+        </button>
+        <button type="button" id="nextBtn" aria-label="Keyingi qoʻshiq"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+      </div>
+      <ol class="tracks" id="tracks"></ol>
+    </div>
+    <audio id="audio" preload="metadata"></audio>
+  </section>
+
+  <section class="sec" id="contact" aria-labelledby="h-contact">
+    <div class="c-head">
+      <h2 id="h-contact">Aloqa</h2>
+      <span class="pager" id="pager">1 / 4</span>
+    </div>
+    <p class="swipe-hint">↔ Gorizontal suring</p>
+    <div class="cards" id="cards">
+      <article class="card card-tg">
+        <div class="card-top"><span class="card-label">Telegram profili</span></div>
+        <img class="avatar" src="t4.jpg" alt="">
+        <h3>Shoxjahon Azizov</h3>
+        <p class="handle">@alcuzb</p>
+        <a class="cta cta-tg" href="https://t.me/alcuzb" target="_blank" rel="noopener noreferrer">Telegramda ochish</a>
+      </article>
+      <article class="card card-ig">
+        <div class="card-top"><span class="card-label">Instagram profili</span></div>
+        <img class="avatar" src="t4.jpg" alt="">
+        <h3>Shoxjahon Azizov</h3>
+        <p class="handle">@alcuzb</p>
+        <a class="cta cta-ig" href="https://www.instagram.com/alcuzb/" target="_blank" rel="noopener noreferrer">Instagramda ochish</a>
+      </article>
+      <article class="card card-sm">
+        <div class="card-top"><span class="card-label">Telefon</span></div>
+        <h3>Qoʻngʻiroq</h3>
+        <p class="handle">+998 94 977 60 08</p>
+        <a class="cta cta-sm" href="tel:+998949776008">Qoʻngʻiroq qilish</a>
+        <button class="cta cta-sm cta-ghost" type="button" data-copy="+998949776008">Nusxalash</button>
+      </article>
+      <article class="card card-sm">
+        <div class="card-top"><span class="card-label">Pochta</span></div>
+        <h3>Elektron pochta</h3>
+        <p class="handle">azizovshohjaxon20@gmail.com</p>
+        <a class="cta cta-sm" href="mailto:azizovshohjaxon20@gmail.com">Xat yozish</a>
+        <button class="cta cta-sm cta-ghost" type="button" data-copy="azizovshohjaxon20@gmail.com">Nusxalash</button>
+      </article>
+    </div>
+    <div class="dots-row">
+      <button class="arrow" id="cPrev" type="button" aria-label="Oldingi kartochka">‹</button>
+      <div class="dots" id="dots"></div>
+      <button class="arrow" id="cNext" type="button" aria-label="Keyingi kartochka">›</button>
+    </div>
   </section>
 
   <p class="foot">Oxirgi yangilanish: 25-oktabr, 2026</p>
 </div>
+
+<div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menyu" hidden>
+  <nav class="menu-panel">
+    <div class="menu-head">
+      <h2>Menyu</h2>
+      <button class="menu-btn" id="menuClose" type="button" aria-label="Yopish"><b aria-hidden="true">✕</b></button>
+    </div>
+    <a class="menu-link" href="#about">Men haqimda</a>
+    <a class="menu-link" href="#photos">Rasmlarim</a>
+    <a class="menu-link" href="#playlist">Playlist</a>
+    <a class="menu-link" href="#contact">Aloqa</a>
+  </nav>
+</div>
+
 <div class="lb" id="lb" role="dialog" aria-modal="true" aria-label="Rasmni kattalashtirib koʻrish" hidden>
   <button class="lb-btn lb-close" id="lbClose" type="button" aria-label="Yopish">✕</button>
   <button class="lb-btn lb-nav lb-prev" id="lbPrev" type="button" aria-label="Oldingi rasm">‹</button>
@@ -258,12 +491,14 @@ body { animation: tint 36s ease-in-out infinite; }
 <script>
 (function () {
   var root = document.documentElement;
+  var wrapEl = document.querySelector(".wrap");
+  var calm = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+  var busyN = 0; /* menyu, rasm yoki sakrash ochiq boʻlganda qor va lenta toʻxtaydi */
 
   /* Orqa fonda mayda qor yogʻishi */
   var cv = document.getElementById("snow");
   var ctx = cv.getContext ? cv.getContext("2d") : null;
-  var still = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  if (ctx && !still) {
+  if (ctx && !calm) {
     var W = 0, H = 0, flakes = [], raf = 0, t = 0;
     var spawn = function (anywhere) {
       var r = Math.random();
@@ -290,6 +525,7 @@ body { animation: tint 36s ease-in-out infinite; }
       flakes.length = n;
     };
     var frame = function () {
+      if (busyN) { raf = requestAnimationFrame(frame); return; }
       t += 0.012;
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < flakes.length; i++) {
@@ -318,7 +554,6 @@ body { animation: tint 36s ease-in-out infinite; }
 
   /* Sahifa aylantirilganda boʻlimlar yumshoq chiqadi */
   var revealEls = [].slice.call(document.querySelectorAll(".sec, .foot"));
-  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if ("IntersectionObserver" in window && !calm) {
     root.classList.add("reveal-ready");
     var io = new IntersectionObserver(function (entries) {
@@ -328,11 +563,40 @@ body { animation: tint 36s ease-in-out infinite; }
           io.unobserve(en.target);
         }
       });
-    }, { threshold: 0.15 });
+    }, { threshold: 0.1 });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("in"); });
   }
+
+  /* Xabar (toast) */
+  var toast = document.getElementById("toast");
+  var toastTimer;
+  var say = function (msg) {
+    toast.textContent = msg;
+    toast.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 1800);
+  };
+
+  /* 3D egilish */
+  var tiltEl = function (el, x, y, max) {
+    var r = el.getBoundingClientRect();
+    var px = Math.min(1, Math.max(0, (x - r.left) / r.width));
+    var py = Math.min(1, Math.max(0, (y - r.top) / r.height));
+    el.style.setProperty("--ry", ((px - 0.5) * 2 * max).toFixed(1) + "deg");
+    el.style.setProperty("--rx", ((0.5 - py) * 2 * max).toFixed(1) + "deg");
+    el.style.setProperty("--mx", (px * 100).toFixed(0) + "%");
+    el.style.setProperty("--my", (py * 100).toFixed(0) + "%");
+    el.style.setProperty("--gl", "1");
+    el.classList.add("tilting");
+  };
+  var flatEl = function (el) {
+    el.classList.remove("tilting");
+    el.style.removeProperty("--rx");
+    el.style.removeProperty("--ry");
+    el.style.removeProperty("--gl");
+  };
 
   /* Rasmlar: yonga suriladigan lenta va bosganda kattalashtirish */
   var photos = [
@@ -345,7 +609,11 @@ body { animation: tint 36s ease-in-out infinite; }
     { a: "Selfi", p: "50% 45%" },
     { a: "Favvora yonida", p: "50% 50%" },
     { a: "Naushnikda", p: "50% 45%" },
-    { a: "Kafeda", p: "60% 40%" }
+    { a: "Kafeda", p: "60% 40%" },
+    { a: "Quyosh botganda", p: "54% 38%" },
+    { a: "Telpakda", p: "48% 33%" },
+    { a: "Kresloda", p: "55% 18%" },
+    { a: "Birga", p: "50% 50%" }
   ];
   photos.forEach(function (p, i) {
     p.t = "t" + (i + 1) + ".jpg";
@@ -378,15 +646,41 @@ body { animation: tint 36s ease-in-out infinite; }
   var setW = strip.children[photos.length].offsetLeft - strip.children[0].offsetLeft;
   strip.scrollLeft = MID * setW;
 
+  var hovered = null, touched = null;
+  strip.addEventListener("pointermove", function (e) {
+    if (calm || e.pointerType !== "mouse") return;
+    var b = e.target.closest ? e.target.closest(".shot") : null;
+    if (!b) { if (hovered) { flatEl(hovered); hovered = null; } return; }
+    if (hovered && hovered !== b) flatEl(hovered);
+    hovered = b;
+    tiltEl(b, e.clientX, e.clientY, 14);
+  });
+  strip.addEventListener("pointerleave", function () {
+    if (hovered) { flatEl(hovered); hovered = null; }
+  });
+  strip.addEventListener("touchstart", function (e) {
+    if (calm) return;
+    var b = e.target.closest ? e.target.closest(".shot") : null;
+    if (!b) return;
+    touched = b;
+    tiltEl(b, e.touches[0].clientX, e.touches[0].clientY, 14);
+  }, { passive: true });
+  strip.addEventListener("touchmove", function (e) {
+    if (touched) tiltEl(touched, e.touches[0].clientX, e.touches[0].clientY, 14);
+  }, { passive: true });
+  var untouch = function () { if (touched) { flatEl(touched); touched = null; } };
+  strip.addEventListener("touchend", untouch);
+  strip.addEventListener("touchcancel", untouch);
+
   var lb = document.getElementById("lb");
   var lbImg = document.getElementById("lbImg");
   var lbCap = document.getElementById("lbCap");
-  var wrapEl = document.querySelector(".wrap");
   var lbOpen = false, idx = 0, lastFocus = null;
 
   var showPhoto = function (i) {
     idx = (i + photos.length) % photos.length;
     var p = photos[idx], mine = idx;
+    flatEl(lbImg);
     lbImg.classList.remove("swap");
     void lbImg.offsetWidth;
     lbImg.classList.add("swap");
@@ -400,6 +694,7 @@ body { animation: tint 36s ease-in-out infinite; }
   var openLb = function (i) {
     lastFocus = document.activeElement;
     lbOpen = true;
+    busyN++;
     lb.hidden = false;
     wrapEl.inert = true;
     root.style.overflow = "hidden";
@@ -412,10 +707,11 @@ body { animation: tint 36s ease-in-out infinite; }
   var closeLb = function () {
     lb.classList.remove("open");
     lbOpen = false;
+    busyN = Math.max(0, busyN - 1);
     wrapEl.inert = false;
     root.style.overflow = "";
     setTimeout(function () { if (!lbOpen) lb.hidden = true; }, 280);
-    if (lastFocus && lastFocus.focus) lastFocus.focus();
+    if (lastFocus && lastFocus.focus) lastFocus.focus({ preventScroll: true });
   };
   strip.addEventListener("click", function (e) {
     var b = e.target.closest ? e.target.closest(".shot") : null;
@@ -431,12 +727,22 @@ body { animation: tint 36s ease-in-out infinite; }
     else if (e.key === "ArrowLeft") showPhoto(idx - 1);
     else if (e.key === "ArrowRight") showPhoto(idx + 1);
   });
+  lb.addEventListener("pointermove", function (e) {
+    if (calm || e.pointerType !== "mouse") return;
+    tiltEl(lbImg, e.clientX, e.clientY, 12);
+  });
+  lb.addEventListener("pointerleave", function () { flatEl(lbImg); });
   var sx = 0, sy = 0;
   lb.addEventListener("touchstart", function (e) {
     sx = e.touches[0].clientX;
     sy = e.touches[0].clientY;
+    if (!calm) tiltEl(lbImg, sx, sy, 12);
+  }, { passive: true });
+  lb.addEventListener("touchmove", function (e) {
+    if (!calm) tiltEl(lbImg, e.touches[0].clientX, e.touches[0].clientY, 12);
   }, { passive: true });
   lb.addEventListener("touchend", function (e) {
+    flatEl(lbImg);
     var dx = e.changedTouches[0].clientX - sx;
     var dy = e.changedTouches[0].clientY - sy;
     if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) showPhoto(idx + (dx < 0 ? 1 : -1));
@@ -463,7 +769,7 @@ body { animation: tint 36s ease-in-out infinite; }
   var drift = function (ts) {
     var dt = lastTs ? Math.min(ts - lastTs, 64) : 16;
     lastTs = ts;
-    if (!calm && !paused && !lbOpen) {
+    if (!calm && !paused && !lbOpen && !busyN) {
       if (Math.abs(strip.scrollLeft - lastSet) > 1.5) pos = strip.scrollLeft;
       pos += SPEED * dt / 1000;
       strip.scrollLeft = pos;
@@ -478,64 +784,290 @@ body { animation: tint 36s ease-in-out infinite; }
   };
   requestAnimationFrame(drift);
 
-  var toast = document.getElementById("toast");
-  var toastTimer;
-  function say(msg) {
-    toast.textContent = msg;
-    toast.classList.add("show");
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(function () { toast.classList.remove("show"); }, 1600);
+  /* Boʻlimga tez va yengil sakrash */
+  var jumpTo = function (el) {
+    var from = window.pageYOffset;
+    var base = wrapEl.getBoundingClientRect().top + from;
+    var to = Math.max(0, Math.round(base + el.offsetTop - 84));
+    var dist = Math.abs(to - from);
+    if (calm || dist < 4) { window.scrollTo(0, to); return; }
+    var dur = Math.min(650, 260 + dist * 0.1);
+    var start = null;
+    busyN++;
+    var tick = function (ts) {
+      if (start === null) start = ts;
+      var k = Math.min(1, (ts - start) / dur);
+      var ease = 1 - Math.pow(1 - k, 3);
+      window.scrollTo(0, from + (to - from) * ease);
+      if (k < 1) requestAnimationFrame(tick);
+      else busyN = Math.max(0, busyN - 1);
+    };
+    requestAnimationFrame(tick);
+  };
+
+  /* Menyu */
+  var menu = document.getElementById("menu");
+  var menuOpen = false, menuFocus = null;
+  var openMenu = function () {
+    menuFocus = document.activeElement;
+    menuOpen = true;
+    busyN++;
+    menu.hidden = false;
+    wrapEl.inert = true;
+    root.style.overflow = "hidden";
+    requestAnimationFrame(function () {
+      menu.classList.add("open");
+      document.getElementById("menuClose").focus();
+    });
+  };
+  var closeMenu = function (skipFocus) {
+    menu.classList.remove("open");
+    menuOpen = false;
+    busyN = Math.max(0, busyN - 1);
+    wrapEl.inert = false;
+    root.style.overflow = "";
+    setTimeout(function () { if (!menuOpen) menu.hidden = true; }, 300);
+    if (skipFocus !== true && menuFocus && menuFocus.focus) menuFocus.focus({ preventScroll: true });
+  };
+  document.getElementById("menuBtn").addEventListener("click", openMenu);
+  document.getElementById("menuClose").addEventListener("click", closeMenu);
+  menu.addEventListener("click", function (e) { if (e.target === menu) closeMenu(); });
+  document.addEventListener("keydown", function (e) { if (menuOpen && e.key === "Escape") closeMenu(); });
+  [].slice.call(menu.querySelectorAll(".menu-link")).forEach(function (a) {
+    a.addEventListener("click", function (e) {
+      e.preventDefault();
+      var target = document.getElementById(a.getAttribute("href").slice(1));
+      closeMenu(true);
+      if (target) jumpTo(target);
+    });
+  });
+
+  /* Yozilib chiqadigan matn */
+  var typedEl = document.getElementById("typed");
+  var phrases = [
+    "Azizov Shoxjahon Azizovich",
+    "Talabaman.",
+    "Dasturlashga qiziqaman.",
+    "Kitob oʻqiyman.",
+    "Sayohat qilishni yaxshi koʻraman."
+  ];
+  if (!calm) {
+    var pi = 0, ci = phrases[0].length, mode = "hold";
+    var step = function () {
+      if (mode === "hold") {
+        mode = "erase";
+        setTimeout(step, 1700);
+      } else if (mode === "erase") {
+        ci--;
+        typedEl.textContent = phrases[pi].slice(0, Math.max(ci, 0));
+        if (ci <= 0) {
+          pi = (pi + 1) % phrases.length;
+          mode = "write";
+          setTimeout(step, 350);
+        } else {
+          setTimeout(step, 32);
+        }
+      } else {
+        ci++;
+        typedEl.textContent = phrases[pi].slice(0, ci);
+        if (ci >= phrases[pi].length) {
+          mode = "hold";
+          setTimeout(step, 1700);
+        } else {
+          setTimeout(step, 70);
+        }
+      }
+    };
+    setTimeout(step, 2200);
   }
-  function selectText(el) {
+
+  /* Playlist */
+  var tracks = [
+    { t: "Me & U", a: "Tems", f: "s1.mp3", d: "3:14" },
+    { t: "Nijat Masimov", a: "", f: "s2.mp3", d: "3:09" },
+    { t: "Desert Rose", a: "Sting", f: "s3.mp3", d: "4:44" },
+    { t: "Batmana Ansak", a: "Shadow Beats", f: "s4.mp3", d: "4:37" },
+    { t: "Raindance", a: "Dave & Tems", f: "s5.mp3", d: "3:40" },
+    { t: "Deep End", a: "Foushee", f: "s6.mp3", d: "2:21" }
+  ];
+  var audio = document.getElementById("audio");
+  var playerEl = document.getElementById("player");
+  var npTitle = document.getElementById("npTitle");
+  var npArtist = document.getElementById("npArtist");
+  var seek = document.getElementById("seek");
+  var tCur = document.getElementById("tCur");
+  var tDur = document.getElementById("tDur");
+  var playBtn = document.getElementById("playBtn");
+  var icoPlay = document.getElementById("icoPlay");
+  var icoPause = document.getElementById("icoPause");
+  var rows = [];
+  var cur = 0;
+
+  var fmt = function (s) {
+    if (!isFinite(s) || s < 0) return "0:00";
+    var m = Math.floor(s / 60), r = Math.floor(s % 60);
+    return m + ":" + (r < 10 ? "0" : "") + r;
+  };
+  var mk = function (tag, cls, text) {
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text) el.textContent = text;
+    return el;
+  };
+  var tl = document.getElementById("tracks");
+  tracks.forEach(function (tr, i) {
+    var li = document.createElement("li");
+    var b = mk("button", "track");
+    b.type = "button";
+    b.appendChild(mk("span", "no", String(i + 1)));
+    var eqs = mk("span", "eq");
+    eqs.setAttribute("aria-hidden", "true");
+    eqs.appendChild(document.createElement("i"));
+    eqs.appendChild(document.createElement("i"));
+    eqs.appendChild(document.createElement("i"));
+    b.appendChild(eqs);
+    var tt = mk("span", "tt", tr.t);
+    if (tr.a) tt.appendChild(mk("span", "ta", tr.a));
+    b.appendChild(tt);
+    b.appendChild(mk("span", "td", tr.d));
+    b.addEventListener("click", function () {
+      if (i === cur && audio.src) { togglePlay(); } else { setTrack(i, true); }
+    });
+    li.appendChild(b);
+    tl.appendChild(li);
+    rows.push(b);
+  });
+
+  var setTrack = function (i, autoplay) {
+    cur = (i + tracks.length) % tracks.length;
+    var tr = tracks[cur];
+    audio.src = tr.f;
+    npTitle.textContent = tr.t;
+    npArtist.textContent = tr.a;
+    npArtist.hidden = !tr.a;
+    seek.value = 0;
+    tCur.textContent = "0:00";
+    tDur.textContent = tr.d;
+    rows.forEach(function (r, k) { r.classList.toggle("on", k === cur); });
+    if ("mediaSession" in navigator && window.MediaMetadata) {
+      try { navigator.mediaSession.metadata = new MediaMetadata({ title: tr.t, artist: tr.a || "" }); } catch (e) {}
+    }
+    if (autoplay) {
+      var pr = audio.play();
+      if (pr && pr.catch) pr.catch(function () { say("Ijro etilmadi, yana bosing"); });
+    }
+  };
+  var togglePlay = function () {
+    if (audio.paused) {
+      var pr = audio.play();
+      if (pr && pr.catch) pr.catch(function () { say("Ijro etilmadi, yana bosing"); });
+    } else {
+      audio.pause();
+    }
+  };
+  var prevTrack = function () {
+    if (audio.currentTime > 3) audio.currentTime = 0; else setTrack(cur - 1, !audio.paused);
+  };
+  var nextTrack = function () { setTrack(cur + 1, !audio.paused || audio.ended); };
+
+  playBtn.addEventListener("click", togglePlay);
+  document.getElementById("prevBtn").addEventListener("click", prevTrack);
+  document.getElementById("nextBtn").addEventListener("click", function () { setTrack(cur + 1, !audio.paused); });
+  audio.addEventListener("play", function () {
+    playerEl.classList.add("playing");
+    icoPlay.hidden = true; icoPause.hidden = false;
+    playBtn.setAttribute("aria-label", "Toʻxtatish");
+  });
+  audio.addEventListener("pause", function () {
+    playerEl.classList.remove("playing");
+    icoPlay.hidden = false; icoPause.hidden = true;
+    playBtn.setAttribute("aria-label", "Ijro etish");
+  });
+  audio.addEventListener("loadedmetadata", function () { tDur.textContent = fmt(audio.duration); });
+  audio.addEventListener("timeupdate", function () {
+    if (audio.duration && !seekDrag) seek.value = Math.round(audio.currentTime / audio.duration * 1000);
+    tCur.textContent = fmt(audio.currentTime);
+  });
+  audio.addEventListener("ended", function () { setTrack(cur + 1, true); });
+  audio.addEventListener("error", function () { if (audio.getAttribute("src")) say("Qoʻshiq yuklanmadi"); });
+  var seekDrag = false;
+  seek.addEventListener("input", function () {
+    seekDrag = true;
+    if (audio.duration) tCur.textContent = fmt(seek.value / 1000 * audio.duration);
+  });
+  seek.addEventListener("change", function () {
+    if (audio.duration) audio.currentTime = seek.value / 1000 * audio.duration;
+    seekDrag = false;
+  });
+  if ("mediaSession" in navigator) {
+    try {
+      navigator.mediaSession.setActionHandler("play", function () { audio.play(); });
+      navigator.mediaSession.setActionHandler("pause", function () { audio.pause(); });
+      navigator.mediaSession.setActionHandler("previoustrack", prevTrack);
+      navigator.mediaSession.setActionHandler("nexttrack", function () { setTrack(cur + 1, true); });
+    } catch (e) {}
+  }
+  setTrack(0, false);
+
+  /* Aloqa kartochkalari */
+  var cards = document.getElementById("cards");
+  var kids = [].slice.call(cards.children);
+  var pager = document.getElementById("pager");
+  var dotsBox = document.getElementById("dots");
+  var dotEls = [];
+  var curCard = 0, cardTick = false;
+  var goCard = function (i) {
+    i = Math.max(0, Math.min(kids.length - 1, i));
+    cards.scrollTo({ left: kids[i].offsetLeft, behavior: calm ? "auto" : "smooth" });
+  };
+  kids.forEach(function (k, i) {
+    var d = document.createElement("button");
+    d.type = "button";
+    d.className = "dot";
+    d.setAttribute("aria-label", "Kartochka " + (i + 1));
+    d.addEventListener("click", function () { goCard(i); });
+    dotsBox.appendChild(d);
+    dotEls.push(d);
+  });
+  var updateCards = function () {
+    var sl = cards.scrollLeft, best = 0, bd = 1e9;
+    kids.forEach(function (k, i) {
+      var d = Math.abs(k.offsetLeft - sl);
+      if (d < bd) { bd = d; best = i; }
+    });
+    if (sl + cards.clientWidth >= cards.scrollWidth - 2) best = kids.length - 1;
+    curCard = best;
+    pager.textContent = (best + 1) + " / " + kids.length;
+    dotEls.forEach(function (d, i) { d.setAttribute("aria-current", i === best ? "true" : "false"); });
+  };
+  cards.addEventListener("scroll", function () {
+    if (cardTick) return;
+    cardTick = true;
+    requestAnimationFrame(function () { cardTick = false; updateCards(); });
+  }, { passive: true });
+  document.getElementById("cPrev").addEventListener("click", function () { goCard(curCard - 1); });
+  document.getElementById("cNext").addEventListener("click", function () { goCard(curCard + 1); });
+  updateCards();
+
+  var selectText = function (el) {
     var r = document.createRange();
     r.selectNodeContents(el);
     var s = window.getSelection();
     s.removeAllRanges();
     s.addRange(r);
-  }
-  var contacts = [
-    ["Telegram", "@alcuzb", "https://t.me/alcuzb"],
-    ["Instagram", "@alcuzb", "https://www.instagram.com/alcuzb/"],
-    ["Pochta", "azizovshohjaxon20@gmail.com"],
-    ["Telefon", "+998 94 977 60 08"]
-  ];
-  var cl = document.getElementById("contacts");
-  contacts.forEach(function (c) {
-    var li = document.createElement("li");
-    li.className = "contact";
-    var l = document.createElement("span");
-    l.className = "contact-label";
-    l.textContent = c[0];
-    var v = document.createElement("span");
-    v.className = "contact-value";
-    v.textContent = c[1];
-    var b = document.createElement("button");
-    b.type = "button";
-    b.className = "copy-btn";
-    b.textContent = "Nusxalash";
+  };
+  [].slice.call(document.querySelectorAll("[data-copy]")).forEach(function (b) {
     b.addEventListener("click", function () {
-      var done = function () { say("Nusxalandi"); };
-      var fail = function () { selectText(v); say("Matn belgilandi, nusxalang"); };
+      var text = b.getAttribute("data-copy");
+      var fail = function () {
+        var h = b.parentNode.querySelector(".handle");
+        if (h) selectText(h);
+        say("Matn belgilandi, nusxalang");
+      };
       try {
-        navigator.clipboard.writeText(c[1]).then(done, fail);
+        navigator.clipboard.writeText(text).then(function () { say("Nusxalandi"); }, fail);
       } catch (e) { fail(); }
     });
-    var acts = document.createElement("span");
-    acts.className = "actions";
-    if (c[2]) {
-      var a = document.createElement("a");
-      a.className = "copy-btn open-link";
-      a.href = c[2];
-      a.target = "_blank";
-      a.rel = "noopener noreferrer";
-      a.textContent = "Ochish";
-      acts.appendChild(a);
-    }
-    if (!c[2]) acts.appendChild(b);
-    li.appendChild(l);
-    li.appendChild(v);
-    li.appendChild(acts);
-    cl.appendChild(li);
   });
 })();
 </script>
