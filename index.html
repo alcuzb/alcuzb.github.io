@@ -23,6 +23,7 @@
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 body {
   background: var(--bg);
   color: var(--fg);
@@ -53,14 +54,17 @@ a, button { font-family: inherit; }
   background: rgba(17, 14, 34, .92);
 }
 .who { display: flex; align-items: center; gap: 10px; min-width: 0; }
-.who img { width: 38px; height: 38px; flex: none; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 1px solid var(--line); }
+.av { position: relative; width: 42px; height: 42px; flex: none; border-radius: 50%; padding: 2px; }
+.av::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: conic-gradient(var(--accent), var(--accent2), #F472B6, var(--accent)); animation: spin 4s linear infinite; }
+.who img { position: relative; display: block; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 30%; border: 2px solid #110E22; }
 .who b { font-family: var(--f-display); font-weight: 700; font-size: 19px; letter-spacing: -.01em; text-transform: lowercase; }
 .menu-btn {
   width: 44px; height: 44px; flex: none; border-radius: 14px; border: 1px solid var(--line);
   background: rgba(236, 233, 250, .08); color: var(--fg); cursor: pointer;
   display: inline-flex; flex-direction: column; gap: 5px; align-items: center; justify-content: center;
 }
-.menu-btn span { display: block; width: 20px; height: 2px; border-radius: 2px; background: currentColor; }
+.menu-btn span { display: block; width: 20px; height: 2px; border-radius: 2px; background: currentColor; transition: transform .35s cubic-bezier(.2, .7, .2, 1), opacity .2s; }
+.menu-btn span:nth-child(2) { width: 14px; align-self: flex-end; margin-right: 12px; }
 .menu-btn:hover { border-color: var(--accent); }
 
 /* menyu */
@@ -331,12 +335,52 @@ body { animation: tint 36s ease-in-out infinite; }
 .sec.in .chip { animation: pop .5s cubic-bezier(.2, .7, .2, 1) backwards; }
 .sec.in .chip:nth-child(2) { animation-delay: .08s; }
 .sec.in .chip:nth-child(3) { animation-delay: .16s; }
+.sec.in .chip:nth-child(4) { animation-delay: .24s; }
 .chip { transition: transform .2s ease, border-color .2s ease; }
 .chip:hover { transform: translateY(-3px); border-color: var(--accent); }
 .chip-link { padding: 0; border-color: var(--accent); }
 .chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
 
+/* tepa panel va menyu animatsiyalari */
+.bar { overflow: hidden; animation: barIn .7s cubic-bezier(.2, .7, .2, 1) both; }
+.bar::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(167, 139, 250, .16) 50%, transparent 60%); transform: translateX(-120%); animation: sweep 4.5s ease-in-out 1.2s infinite; pointer-events: none; }
+@keyframes barIn { from { transform: translateY(-30px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes sweep { 0% { transform: translateX(-120%); } 40%, 100% { transform: translateX(120%); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(167, 139, 250, 0); } 50% { box-shadow: 0 0 0 6px rgba(167, 139, 250, .14); } }
+@keyframes shim { 0% { background-position: 100% 0; } 45%, 100% { background-position: 0 0; } }
+@keyframes li { to { opacity: 1; transform: none; } }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .who b {
+    background: linear-gradient(90deg, var(--fg) 0%, var(--fg) 40%, var(--accent) 50%, var(--fg) 60%, var(--fg) 100%);
+    background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: shim 4.5s ease-in-out 1.2s infinite;
+  }
+}
+#menuBtn { animation: pulse 3s ease-in-out infinite; }
+#menuBtn.on { animation: none; }
+#menuBtn.on span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+#menuBtn.on span:nth-child(2) { opacity: 0; }
+#menuBtn.on span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.menu-panel { position: relative; transition-duration: .45s; transition-timing-function: cubic-bezier(.2, .8, .2, 1); }
+.menu-panel::before { content: ""; position: absolute; width: 260px; height: 260px; right: -100px; top: -80px; border-radius: 50%; background: radial-gradient(circle, rgba(167, 139, 250, .26), transparent 70%); pointer-events: none; animation: floaty 6s ease-in-out infinite alternate; }
+@keyframes floaty { to { transform: translate(-30px, 60px); } }
+#menuClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .25s, opacity .3s .25s, border-color .2s ease; }
+.menu.open #menuClose { transform: none; opacity: 1; }
+.menu-link { position: relative; overflow: hidden; opacity: 0; transform: translateX(50px); transition: border-color .25s ease, background .25s ease; }
+.menu.open .menu-link { animation: li .55s cubic-bezier(.2, .8, .2, 1) forwards; }
+.menu.open .menu-link:nth-of-type(1) { animation-delay: .2s; }
+.menu.open .menu-link:nth-of-type(2) { animation-delay: .3s; }
+.menu.open .menu-link:nth-of-type(3) { animation-delay: .4s; }
+.menu.open .menu-link:nth-of-type(4) { animation-delay: .5s; }
+.menu-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .16) 50%, transparent 60%); transform: translateX(-120%); pointer-events: none; }
+.menu-link:active { border-color: var(--accent); background: rgba(167, 139, 250, .18); }
+.menu-link:active::after { transform: translateX(120%); transition: transform .6s; }
+
 @media (prefers-reduced-motion: reduce) {
+  .bar, .bar::after, .av::before, .who b, #menuBtn, .menu-panel::before, .menu.open .menu-link { animation: none !important; }
+  .menu-link { opacity: 1; transform: none; }
+  #menuClose { opacity: 1; transform: none; transition: none; }
   body, .hero > *, h1 span, .band, .sec.in .chip, .caret, .disc, .eq i, .lb-fig img.swap { animation: none !important; }
   .reveal-ready .sec, .reveal-ready .foot { transform: none !important; transition: none !important; }
   .chip, .toast, .shot, .lb, .lb-fig, .lb-fig img, .menu, .menu-panel, .dot { transition: none; }
@@ -348,7 +392,7 @@ body { animation: tint 36s ease-in-out infinite; }
 <div class="wrap">
   <header class="bar">
     <div class="who">
-      <img src="t4.jpg" alt="">
+      <span class="av"><img src="t4.jpg" alt=""></span>
       <b>azizov</b>
     </div>
     <button class="menu-btn" id="menuBtn" type="button" aria-label="Menyuni ochish" aria-haspopup="dialog"><span></span><span></span><span></span></button>
@@ -384,9 +428,10 @@ body { animation: tint 36s ease-in-out infinite; }
   <section class="sec" aria-labelledby="h-int">
     <h2 id="h-int">Qiziqishlarim</h2>
     <ul class="chips">
-      <li class="chip">Sayohat qilish</li>
-      <li class="chip chip-link"><a href="https://steamcommunity.com/id/shoxzy7/" target="_blank" rel="noopener noreferrer">CS2 <span aria-hidden="true">↗</span></a></li>
-      <li class="chip">Dasturlash</li>
+      <li class="chip">Sayohat qilish 🗺️</li>
+      <li class="chip">Chess ♟️</li>
+      <li class="chip chip-link"><a href="https://steamcommunity.com/id/shoxzy7/" target="_blank" rel="noopener noreferrer">Esports | CS2 🔫 <span aria-hidden="true">↗</span></a></li>
+      <li class="chip">Dasturlash 👾</li>
     </ul>
   </section>
 
@@ -427,14 +472,14 @@ body { animation: tint 36s ease-in-out infinite; }
     <div class="cards" id="cards">
       <article class="card card-tg">
         <div class="card-top"><span class="card-label">Telegram profili</span></div>
-        <img class="avatar" src="t4.jpg" alt="">
+        <img class="avatar" src="av2.jpg" alt="">
         <h3>Shoxjahon Azizov</h3>
         <p class="handle">@alcuzb</p>
         <a class="cta cta-tg" href="https://t.me/alcuzb" target="_blank" rel="noopener noreferrer">Telegramda ochish</a>
       </article>
       <article class="card card-ig">
         <div class="card-top"><span class="card-label">Instagram profili</span></div>
-        <img class="avatar" src="t4.jpg" alt="">
+        <img class="avatar" src="av2.jpg" alt="">
         <h3>Shoxjahon Azizov</h3>
         <p class="handle">@alcuzb</p>
         <a class="cta cta-ig" href="https://www.instagram.com/alcuzb/" target="_blank" rel="noopener noreferrer">Instagramda ochish</a>
@@ -613,7 +658,11 @@ body { animation: tint 36s ease-in-out infinite; }
     { a: "Quyosh botganda", p: "54% 38%" },
     { a: "Telpakda", p: "48% 33%" },
     { a: "Kresloda", p: "55% 18%" },
-    { a: "Birga", p: "50% 50%" }
+    { a: "Birga", p: "50% 50%" },
+    { a: "Registonda birga", p: "50% 40%" },
+    { a: "Yotib selfi", p: "50% 50%" },
+    { a: "Yoʻl boʻyida", p: "62% 30%" },
+    { a: "Selfi 2", p: "50% 50%" }
   ];
   photos.forEach(function (p, i) {
     p.t = "t" + (i + 1) + ".jpg";
@@ -813,6 +862,7 @@ body { animation: tint 36s ease-in-out infinite; }
     menuOpen = true;
     busyN++;
     menu.hidden = false;
+    document.getElementById("menuBtn").classList.add("on");
     wrapEl.inert = true;
     root.style.overflow = "hidden";
     requestAnimationFrame(function () {
@@ -822,6 +872,7 @@ body { animation: tint 36s ease-in-out infinite; }
   };
   var closeMenu = function (skipFocus) {
     menu.classList.remove("open");
+    document.getElementById("menuBtn").classList.remove("on");
     menuOpen = false;
     busyN = Math.max(0, busyN - 1);
     wrapEl.inert = false;
@@ -888,7 +939,11 @@ body { animation: tint 36s ease-in-out infinite; }
     { t: "Desert Rose", a: "Sting", f: "s3.mp3", d: "4:44" },
     { t: "Batmana Ansak", a: "Shadow Beats", f: "s4.mp3", d: "4:37" },
     { t: "Raindance", a: "Dave & Tems", f: "s5.mp3", d: "3:40" },
-    { t: "Deep End", a: "Foushee", f: "s6.mp3", d: "2:21" }
+    { t: "Deep End", a: "Foushee", f: "s6.mp3", d: "2:21" },
+    { t: "Alone", a: "Lowx", f: "s7.mp3", d: "3:23" },
+    { t: "Life Letters", a: "", f: "s8.mp3", d: "4:21" },
+    { t: "I Know", a: "", f: "s9.mp3", d: "2:52" },
+    { t: "Noch", a: "Islam", f: "s10.mp3", d: "3:21" }
   ];
   var audio = document.getElementById("audio");
   var playerEl = document.getElementById("player");
