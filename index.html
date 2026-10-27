@@ -112,7 +112,7 @@ h1 span { color: var(--accent); }
     box-decoration-break: clone;
   }
 }
-.typed-line { margin: 0; min-height: 1.7em; font-family: var(--f-mono); font-size: clamp(16px, 3.8vw, 20px); color: var(--fg); overflow-wrap: anywhere; }
+.typed-line { margin: 0; min-height: 1.7em; font-family: var(--f-display); font-weight: 500; letter-spacing: .02em; font-size: clamp(13px, 3.5vw, 17px); color: var(--fg); overflow-wrap: anywhere; }
 .caret { display: inline-block; width: 2px; height: 1.1em; margin-left: 3px; vertical-align: -.15em; background: var(--accent); animation: blink 1s steps(1) infinite; }
 .facts {
   display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0;
@@ -187,6 +187,10 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
   touch-action: none; opacity: 0; transition: opacity .25s ease;
 }
 .lb.open { opacity: 1; }
+.lb-fig img.kb { animation: kb 9s ease-in-out infinite alternate; }
+.lb-fig img.kb2 { animation-name: kb2; }
+@keyframes kb { from { scale: 1; translate: 0 0; } to { scale: 1.055; translate: -1.6% -1.2%; } }
+@keyframes kb2 { from { scale: 1.055; translate: 1.4% 1%; } to { scale: 1; translate: 0 0; } }
 .lb-fig {
   position: relative; overflow: hidden; margin: 0; display: flex; flex-direction: column; align-items: center; gap: 12px;
   max-width: 100%; padding: 10px 10px 14px; border-radius: 28px;
@@ -352,6 +356,25 @@ body { animation: tint 36s ease-in-out infinite; }
 .sec.in .chip:nth-child(4) { animation-delay: .24s; }
 .chip { transition: transform .2s ease, border-color .2s ease; }
 .chip:hover { transform: translateY(-3px); border-color: var(--accent); }
+.chip-btn { cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.mxo { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; pointer-events: none; background: #040806; opacity: 0; transition: opacity .35s ease; }
+.mxo.on { opacity: .94; }
+.codefx { position: fixed; inset: 0; z-index: 90; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(6, 4, 14, .9); opacity: 0; transition: opacity .35s ease; pointer-events: none; }
+.codefx.on { opacity: 1; }
+.cw-mx { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .32; pointer-events: none; }
+.cw { position: relative; z-index: 1; width: min(100%, 420px); border-radius: 16px; overflow: hidden; background: #14102a; border: 1px solid var(--line); box-shadow: 0 24px 70px rgba(0, 0, 0, .6), 0 0 40px color-mix(in srgb, var(--accent) 30%, transparent); transform: translateY(24px) scale(.94); transition: transform .45s cubic-bezier(.2, .9, .3, 1.2); }
+.codefx.on .cw { transform: none; }
+.cw-bar { display: flex; align-items: center; gap: 7px; padding: 11px 14px; background: #1d1840; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.cw-bar i { width: 11px; height: 11px; border-radius: 50%; background: #ff5f57; }
+.cw-bar i:nth-child(2) { background: #febc2e; }
+.cw-bar i:nth-child(3) { background: #28c840; }
+.cw-bar span { margin-left: 8px; }
+.cw-pre { margin: 0; padding: 16px 16px 18px; min-height: 176px; font-family: var(--f-mono); font-size: 14px; line-height: 1.7; color: #ece9fa; white-space: pre-wrap; }
+.t-k { color: #ff7ab8; } .t-v { color: #8fd3ff; } .t-s { color: #a6e3a1; } .t-f { color: #ffd166; } .t-c { color: #7d78a8; } .t-p { color: #ece9fa; }
+.cw-caret { display: inline-block; width: 8px; height: 1.1em; vertical-align: -.2em; background: var(--accent); animation: blink .8s steps(1) infinite; }
+.cw-out { padding: 6px 16px 18px; font-family: var(--f-mono); font-size: 15px; color: #a6e3a1; opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .3s ease; }
+.cw-out.show { opacity: 1; transform: none; }
+.fxc { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; pointer-events: none; }
 .chip-link { padding: 0; border-color: var(--accent); }
 .chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
 
@@ -461,7 +484,7 @@ body { animation: tint 36s ease-in-out infinite; }
   .menu-link { opacity: 1; transform: none; }
   #menuClose, #plClose { opacity: 1; transform: none; transition: none; }
   .plp { transition: none; }
-  .lb-fig::after, .intro::before, .intro-in { animation: none !important; }
+  .lb-fig::after, .intro::before, .intro-in, .lb-fig img.kb { animation: none !important; }
   body, .hero > *, h1 span, .band, .sec.in .chip, .caret, .disc, .eq i, .lb-fig img.swap { animation: none !important; }
   .reveal-ready .sec, .reveal-ready .foot { transform: none !important; transition: none !important; }
   .chip, .toast, .shot, .lb, .lb-fig, .lb-fig img, .menu, .menu-panel, .dot { transition: none; }
@@ -507,7 +530,7 @@ body { animation: tint 36s ease-in-out infinite; }
 
   <section class="sec" id="about" aria-labelledby="h-about">
     <h2 id="h-about" data-t="m_about">Men haqimda</h2>
-    <p data-t="about_p">Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.</p>
+    <p data-t="about_p">Samarqand viloyati, Toyloq tumanida yashayman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.</p>
     <dl class="info">
       <div><dt data-t="k_birth">Tugʻilgan sana</dt><dd>20.10.2008</dd></div>
       <div><dt data-t="k_addr">Manzil</dt><dd data-t="v_addr">Samarqand viloyati, Toyloq tumani</dd></div>
@@ -517,10 +540,10 @@ body { animation: tint 36s ease-in-out infinite; }
   <section class="sec" aria-labelledby="h-int">
     <h2 id="h-int" data-t="h_int">Qiziqishlarim</h2>
     <ul class="chips">
-      <li class="chip" data-t="c_travel">Sayohat qilish 🗺️</li>
-      <li class="chip">Chess ♟️</li>
+      <li class="chip chip-btn" id="travelChip" role="button" tabindex="0" data-t="c_travel">Sayohat qilish 🗺️</li>
+      <li class="chip chip-btn" id="chessChip" role="button" tabindex="0">Chess ♟️</li>
       <li class="chip chip-link"><a href="https://steamcommunity.com/id/shoxzy7/" target="_blank" rel="noopener noreferrer">Esports | CS2 🔫 <span aria-hidden="true">↗</span></a></li>
-      <li class="chip" data-t="c_prog">Dasturlash 👾</li>
+      <li class="chip chip-btn" id="progChip" role="button" tabindex="0" data-t="c_prog">Dasturlash 👾</li>
     </ul>
   </section>
 
@@ -755,7 +778,7 @@ body { animation: tint 36s ease-in-out infinite; }
       k_city: "Shahar", v_city: "Samarqand", k_age: "Yosh", v_age: "18 yosh", k_act: "Faoliyat", v_act: "Talaba",
       k_lang: "Tillar", v_lang: "Oʻzbek, ingliz, rus, arab",
       gal_hint: "Rasmlarim · surib koʻring, bosib kattalashtiring",
-      about_p: "Samarqandda yashayman va talabaman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.",
+      about_p: "Samarqand viloyati, Toyloq tumanida yashayman. Dasturlashga qiziqaman, boʻsh vaqtimda kitob oʻqiyman va sayohat qilaman.",
       k_birth: "Tugʻilgan sana", k_addr: "Manzil", v_addr: "Samarqand viloyati, Toyloq tumani",
       h_int: "Qiziqishlarim", c_travel: "Sayohat qilish 🗺️", c_prog: "Dasturlash 👾",
       swipe: "↔ Gorizontal suring",
@@ -773,7 +796,7 @@ body { animation: tint 36s ease-in-out infinite; }
       k_city: "City", v_city: "Samarkand", k_age: "Age", v_age: "18 years old", k_act: "Occupation", v_act: "Student",
       k_lang: "Languages", v_lang: "Uzbek, English, Russian, Arabic",
       gal_hint: "My photos · swipe, tap to enlarge",
-      about_p: "I live in Samarkand and I'm a student. I'm into programming, and in my free time I read books and travel.",
+      about_p: "I live in the Samarkand region, Toyloq district. I'm into programming, and in my free time I read books and travel.",
       k_birth: "Date of birth", k_addr: "Address", v_addr: "Samarkand region, Toyloq district",
       h_int: "My interests", c_travel: "Traveling 🗺️", c_prog: "Programming 👾",
       swipe: "↔ Swipe sideways",
@@ -791,7 +814,7 @@ body { animation: tint 36s ease-in-out infinite; }
       k_city: "Город", v_city: "Самарканд", k_age: "Возраст", v_age: "18 лет", k_act: "Занятие", v_act: "Студент",
       k_lang: "Языки", v_lang: "Узбекский, английский, русский, арабский",
       gal_hint: "Мои фото · листайте, нажмите, чтобы увеличить",
-      about_p: "Я живу в Самарканде и учусь в университете. Увлекаюсь программированием, в свободное время читаю книги и путешествую.",
+      about_p: "Я живу в Самаркандской области, Тайлакский район. Увлекаюсь программированием, в свободное время читаю книги и путешествую.",
       k_birth: "Дата рождения", k_addr: "Адрес", v_addr: "Самаркандская область, Тайлакский район",
       h_int: "Мои интересы", c_travel: "Путешествия 🗺️", c_prog: "Программирование 👾",
       swipe: "↔ Листайте в сторону",
@@ -912,6 +935,7 @@ body { animation: tint 36s ease-in-out infinite; }
     lbImg.src = p.t;
     lbImg.alt = capOf(idx);
     lbCap.textContent = (idx + 1) + " / " + photos.length + " · " + capOf(idx);
+    lbImg.classList.remove("kb", "kb2"); if (!calm) { void lbImg.offsetWidth; lbImg.classList.add(idx % 2 ? "kb" : "kb2"); }
     var full = new Image();
     full.onload = function () { if (idx === mine) lbImg.src = p.f; };
     full.src = p.f;
@@ -1399,6 +1423,363 @@ body { animation: tint 36s ease-in-out infinite; }
   var savedLang = keep("azLang");
   var navLang = ((navigator.language || "uz") + "").slice(0, 2);
   setLang(savedLang || (navLang === "ru" ? "ru" : "uz"));
+
+  var V = { chess: [], travel: [], prog: [] };
+  /* Dasturlash chipi: 3 soniya matrix (yengil: 15 fps, kichik canvas) */
+  (function () {
+    var chip = document.getElementById("progChip"), running = false;
+    if (!chip) return;
+    var run = function () {
+      if (running) return; running = true; busyN++;
+      var cv = document.createElement("canvas"); cv.className = "mxo"; cv.setAttribute("aria-hidden", "true");
+      var W = window.innerWidth, H = window.innerHeight, cs = 18, sc = 1;
+      cv.width = W; cv.height = H; document.body.appendChild(cv);
+      var g = cv.getContext("2d"), cols = Math.ceil(W / cs), drops = [], i;
+      for (i = 0; i < cols; i++) drops.push(Math.random() * -20);
+      var chars = "01{}<>/;=$#azAZ", last = 0, t0 = performance.now();
+      g.font = "16px monospace";
+      var frame = function (now) {
+        if (now - t0 > 5000) { stop(); return; }
+        if (now - last > 66) {
+          last = now;
+          g.fillStyle = "rgba(4,8,6,.2)"; g.fillRect(0, 0, W, H);
+          g.fillStyle = "#3df08a";
+          for (var k = 0; k < cols; k++) {
+            g.fillText(chars.charAt((Math.random() * chars.length) | 0), k * cs, drops[k] * cs);
+            if (drops[k] * cs > H && Math.random() > .96) drops[k] = 0;
+            drops[k] += 1;
+          }
+        }
+        raf2 = requestAnimationFrame(frame);
+      };
+      var raf2 = 0;
+      var stop = function () {
+        cancelAnimationFrame(raf2); cv.classList.remove("on");
+        setTimeout(function () { cv.remove(); busyN = Math.max(0, busyN - 1); running = false; }, 380);
+      };
+      requestAnimationFrame(function () { cv.classList.add("on"); });
+      raf2 = requestAnimationFrame(frame);
+      cv.addEventListener("click", stop);
+    };
+    V.prog.push(run);
+  })();
+
+  /* Chess va Sayohat chiplari: bitta yengil canvas, ~3.5 soniya */
+  (function () {
+    var fxBusy = false;
+    var ease = function (x) { x = Math.max(0, Math.min(1, x)); return x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2; };
+    var clamp01 = function (x) { return Math.max(0, Math.min(1, x)); };
+    var back = function (x) { x = clamp01(x); var c = 1.70158; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+    var play = function (ms, draw) {
+      if (fxBusy || calm) return; fxBusy = true; busyN++;
+      var dpr = Math.min(window.devicePixelRatio || 1, 1.5), W = window.innerWidth, H = window.innerHeight;
+      var cv = document.createElement("canvas"); cv.className = "fxc"; cv.setAttribute("aria-hidden", "true");
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); document.body.appendChild(cv);
+      var g = cv.getContext("2d"); g.scale(dpr, dpr);
+      var t0 = 0, raf = 0, state = {};
+      var end = function () { cancelAnimationFrame(raf); cv.remove(); busyN = Math.max(0, busyN - 1); fxBusy = false; };
+      var frame = function (now) {
+        if (!t0) t0 = now;
+        var t = now - t0;
+        if (t >= ms) { end(); return; }
+        g.clearRect(0, 0, W, H);
+        var fade = Math.min(clamp01(t / 350), clamp01((ms - t) / 450));
+        draw(g, W, H, t / 1000, fade, state);
+        raf = requestAnimationFrame(frame);
+      };
+      raf = requestAnimationFrame(frame);
+    };
+    var bind = function (id, fn) {
+      var el = document.getElementById(id); if (!el) return;
+      el.addEventListener("click", fn);
+      el.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); fn(); } });
+    };
+    var accent = function () { return (getComputedStyle(root).getPropertyValue("--accent") || "#8b6cff").trim() || "#8b6cff"; };
+
+    /* ---------- SHAXMAT: taxta ochiladi, toshlar chiqadi, farzin mat qoʻyadi ---------- */
+    var GL = { K: "♚", Q: "♛", R: "♜", B: "♝", N: "♞", P: "♟" };
+    var SETUP = [
+      ["w", "K", 4, 7], ["w", "Q", 7, 3], ["w", "B", 2, 4], ["w", "P", 4, 4], ["w", "P", 0, 6], ["w", "P", 1, 6], ["w", "P", 2, 6], ["w", "P", 3, 6], ["w", "P", 5, 6], ["w", "P", 6, 6], ["w", "P", 7, 6], ["w", "N", 1, 7], ["w", "N", 6, 7],
+      ["b", "K", 4, 0], ["b", "Q", 3, 0], ["b", "R", 0, 0], ["b", "R", 7, 0], ["b", "B", 2, 0], ["b", "B", 5, 0], ["b", "N", 6, 0], ["b", "N", 5, 2], ["b", "N", 2, 2],
+      ["b", "P", 0, 1], ["b", "P", 1, 1], ["b", "P", 2, 1], ["b", "P", 3, 1], ["b", "P", 4, 3], ["b", "P", 5, 1], ["b", "P", 6, 1], ["b", "P", 7, 1]
+    ];
+    V.chess.push(function () {
+      var ac = accent();
+      play(3900, function (g, W, H, t, fade) {
+        var S = Math.min(W * .9, 380), cs = S / 8, x0 = (W - S) / 2, y0 = (H - S) / 2 - 10, r, c, k;
+        g.fillStyle = "rgba(6,4,14," + (.88 * fade) + ")"; g.fillRect(0, 0, W, H);
+        g.save(); g.globalAlpha = fade;
+        /* taxta: diagonal toʻlqin bilan ochiladi */
+        for (r = 0; r < 8; r++) for (c = 0; c < 8; c++) {
+          var a = ease((t - .08 - (r + c) * .045) / .35); if (a <= 0) continue;
+          var sz = cs * (.55 + .45 * a);
+          g.globalAlpha = fade * a;
+          g.fillStyle = (r + c) % 2 ? "rgba(139,108,255,.55)" : "rgba(236,233,250,.16)";
+          g.fillRect(x0 + c * cs + (cs - sz) / 2, y0 + r * cs + (cs - sz) / 2, sz, sz);
+        }
+        g.globalAlpha = fade * clamp01((t - .3) / .5); g.strokeStyle = ac; g.lineWidth = 2; g.strokeRect(x0 - 2, y0 - 2, S + 4, S + 4);
+        /* toshlar */
+        g.textAlign = "center"; g.textBaseline = "middle";
+        var slide = ease((t - 1.9) / .55), cap = t > 2.45, flash = clamp01((t - 2.45) / .25) * (1 - clamp01((t - 3.3) / .5));
+        if (t > 2.45) {
+          var kx = x0 + 4.5 * cs, ky = y0 + .5 * cs, pr = clamp01((t - 2.45) / .9);
+          g.globalAlpha = fade * (1 - pr) * .9; g.strokeStyle = "#ff4d6d"; g.lineWidth = 3;
+          g.beginPath(); g.arc(x0 + 5.5 * cs, y0 + 1.5 * cs, cs * (.3 + pr * 3.4), 0, 6.283); g.stroke();
+          g.globalAlpha = fade * flash * (.55 + .25 * Math.sin(t * 16)); g.fillStyle = "#ff4d6d"; g.fillRect(x0 + 4 * cs, y0, cs, cs);
+        }
+        for (k = 0; k < SETUP.length; k++) {
+          var p = SETUP[k], col = p[2], row = p[3], px, py, sc;
+          if (p[0] === "w" && p[1] === "Q") { col = 7 + (5 - 7) * slide; row = 3 + (1 - 3) * slide; }
+          if (p[0] === "b" && p[2] === 5 && p[3] === 1 && p[1] === "P" && cap) continue;
+          sc = back((t - .85 - k * .028) / .4); if (sc <= 0) continue;
+          px = x0 + (col + .5) * cs; py = y0 + (row + .5) * cs;
+          var lift = (p[1] === "Q" && p[0] === "w") ? Math.sin(slide * Math.PI) * 10 : 0;
+          g.globalAlpha = fade * clamp01(sc);
+          g.font = Math.round(cs * .82 * sc) + "px 'Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',serif";
+          g.lineWidth = 2.4; g.lineJoin = "round";
+          if (p[0] === "w") { g.strokeStyle = "rgba(20,12,40,.85)"; g.strokeText(GL[p[1]], px, py - lift); g.fillStyle = "#f4f1ff"; }
+          else { g.strokeStyle = "rgba(236,233,250,.55)"; g.strokeText(GL[p[1]], px, py - lift); g.fillStyle = "#14102a"; }
+          g.fillText(GL[p[1]], px, py - lift);
+        }
+        /* yozuv */
+        var ta = ease((t - 2.5) / .35) * fade;
+        if (ta > 0) {
+          g.globalAlpha = ta; g.fillStyle = "#fff"; g.font = "700 " + Math.round(cs * .62) + "px 'Unbounded', system-ui, sans-serif";
+          g.shadowColor = ac; g.shadowBlur = 18; g.fillText("Shoh va mot!", W / 2, y0 + S + cs * .95);
+        }
+        g.restore();
+      });
+    });
+
+    /* ---------- SAYOHAT: samolyot yoʻnalish chizigʻi boʻylab uchadi ---------- */
+    var bez = function (p0, p1, p2, t) { var u = 1 - t; return [u * u * p0[0] + 2 * u * t * p1[0] + t * t * p2[0], u * u * p0[1] + 2 * u * t * p1[1] + t * t * p2[1]]; };
+    var stars = [], si;
+    for (si = 0; si < 46; si++) stars.push([Math.random(), Math.random() * .8, Math.random() * 6.28, .5 + Math.random() * 1.3]);
+    var plane = function (g, s) {
+      var pts = [[18, 0], [6, -3], [-4, -4], [-10, -16], [-14, -16], [-11, -4], [-15, -3], [-17, -7], [-19, -7], [-18, 0]], i;
+      g.beginPath(); g.moveTo(pts[0][0] * s, pts[0][1] * s);
+      for (i = 1; i < pts.length; i++) g.lineTo(pts[i][0] * s, pts[i][1] * s);
+      for (i = pts.length - 2; i >= 0; i--) g.lineTo(pts[i][0] * s, -pts[i][1] * s);
+      g.closePath(); g.fill();
+    };
+    V.travel.push(function () {
+      var ac = accent(), parts = [];
+      play(3700, function (g, W, H, t, fade) {
+        var S = [W * .13, H * .72], C = [W * .42, H * .12], E = [W * .86, H * .3], i;
+        var bg = g.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0, "rgba(8,6,28," + (.93 * fade) + ")"); bg.addColorStop(1, "rgba(52,24,70," + (.9 * fade) + ")");
+        g.fillStyle = bg; g.fillRect(0, 0, W, H);
+        g.save();
+        for (i = 0; i < stars.length; i++) {
+          var st = stars[i]; g.globalAlpha = fade * (.35 + .35 * Math.sin(t * 2 + st[2]));
+          g.fillStyle = "#fff"; g.beginPath(); g.arc(st[0] * W, st[1] * H, st[3], 0, 6.283); g.fill();
+        }
+        /* bulutlar (parallaks) */
+        for (i = 0; i < 6; i++) {
+          var cx = ((i * .23 + .1 - t * (.05 + (i % 3) * .035)) % 1.3 + 1.3) % 1.3 - .15, cy = (.2 + (i * .37) % .6) * H, cr = 34 + (i % 3) * 20;
+          g.globalAlpha = fade * .14; g.fillStyle = "#cdbfff";
+          g.beginPath(); g.arc(cx * W, cy, cr, 0, 6.283); g.arc(cx * W + cr * .9, cy + 6, cr * .75, 0, 6.283); g.arc(cx * W - cr * .9, cy + 8, cr * .65, 0, 6.283); g.fill();
+        }
+        var p = ease((t - .35) / 2.35), pos = bez(S, C, E, p), ahead = bez(S, C, E, Math.min(1, p + .02));
+        var ang = Math.atan2(ahead[1] - pos[1], ahead[0] - pos[0]);
+        /* yoʻnalish chizigʻi (punktir) */
+        g.globalAlpha = fade * .9; g.strokeStyle = ac; g.lineWidth = 2.4; g.setLineDash([2, 9]); g.lineCap = "round";
+        g.beginPath(); g.moveTo(S[0], S[1]);
+        for (i = 1; i <= 40; i++) { var q = bez(S, C, E, p * i / 40); g.lineTo(q[0], q[1]); }
+        g.stroke(); g.setLineDash([]);
+        /* pinlar */
+        var pin = function (x, y, label, a, hue) {
+          if (a <= 0) return;
+          var pr = (t * .9) % 1;
+          g.globalAlpha = fade * a * (1 - pr) * .6; g.strokeStyle = hue; g.lineWidth = 2; g.beginPath(); g.arc(x, y, 6 + pr * 26, 0, 6.283); g.stroke();
+          g.globalAlpha = fade * a; g.fillStyle = hue; g.beginPath(); g.arc(x, y, 6, 0, 6.283); g.fill();
+          g.fillStyle = "#fff"; g.beginPath(); g.arc(x, y, 2.5, 0, 6.283); g.fill();
+          g.font = "500 13px 'DM Mono', monospace"; g.textAlign = "center"; g.fillStyle = "#ece9fa"; g.fillText(label, x, y + 28);
+        };
+        pin(S[0], S[1], "Samarqand", ease((t - .1) / .3), ac);
+        pin(E[0], E[1], "Yangi manzil ✦", ease((t - 2.4) / .4), "#ffd166");
+        /* uchqunlar izi */
+        if (p > 0 && p < 1 && parts.length < 90) for (i = 0; i < 2; i++) parts.push([pos[0], pos[1], (Math.random() - .5) * 14, (Math.random() - .5) * 14 + 6, 1]);
+        for (i = parts.length - 1; i >= 0; i--) {
+          var pt = parts[i]; pt[0] += pt[2] * .03; pt[1] += pt[3] * .03; pt[4] -= .022;
+          if (pt[4] <= 0) { parts.splice(i, 1); continue; }
+          g.globalAlpha = fade * pt[4] * .8; g.fillStyle = i % 3 ? ac : "#ffd166"; g.beginPath(); g.arc(pt[0], pt[1], 1.2 + pt[4] * 2, 0, 6.283); g.fill();
+        }
+        /* samolyot */
+        g.globalAlpha = fade * clamp01(t / .5);
+        g.save(); g.translate(pos[0], pos[1]); g.rotate(ang);
+        g.shadowColor = ac; g.shadowBlur = 16; g.fillStyle = "#fff"; plane(g, 1.35); g.restore();
+        g.restore();
+      });
+    });
+
+    /* ---------- YANGI: OT YURISHI (shaxmat taxtasida ot sakrab oʻtadi) ---------- */
+    var TOUR = [[0, 7], [1, 5], [3, 4], [5, 5], [7, 4], [6, 2], [4, 1], [2, 0], [0, 1], [2, 2], [4, 3]];
+    V.chess.unshift(function () {
+      var ac = accent(), lit = {};
+      play(4300, function (g, W, H, t, fade) {
+        var S = Math.min(W * .9, 380), cs = S / 8, x0 = (W - S) / 2, y0 = (H - S) / 2 - 10, r, c, k;
+        g.fillStyle = "rgba(6,4,14," + (.9 * fade) + ")"; g.fillRect(0, 0, W, H);
+        g.save(); g.textAlign = "center"; g.textBaseline = "middle";
+        for (r = 0; r < 8; r++) for (c = 0; c < 8; c++) {
+          var a = ease((t - (r * 8 + c) * .008) / .3); if (a <= 0) continue;
+          g.globalAlpha = fade * a;
+          g.fillStyle = (r + c) % 2 ? "rgba(139,108,255,.34)" : "rgba(236,233,250,.1)";
+          g.fillRect(x0 + c * cs, y0 + r * cs, cs, cs);
+          var lt = lit[r * 8 + c];
+          if (lt !== undefined) { var la = clamp01(1 - (t - lt) / 1.6); g.globalAlpha = fade * la * .85; g.fillStyle = ac; g.fillRect(x0 + c * cs + 2, y0 + r * cs + 2, cs - 4, cs - 4); }
+        }
+        g.globalAlpha = fade; g.strokeStyle = ac; g.lineWidth = 2; g.strokeRect(x0 - 2, y0 - 2, S + 4, S + 4);
+        /* ot yurishi */
+        var T0 = .8, D = .3, n = TOUR.length - 1, u = (t - T0) / D, seg = Math.max(0, Math.min(n - 1, Math.floor(u))), f = clamp01(u - seg);
+        if (u < 0) { seg = 0; f = 0; }
+        if (u >= n) { seg = n - 1; f = 1; }
+        var A = TOUR[seg], B = TOUR[seg + 1], e = ease(f);
+        var px = x0 + (A[0] + (B[0] - A[0]) * e + .5) * cs, py = y0 + (A[1] + (B[1] - A[1]) * e + .5) * cs - Math.sin(f * Math.PI) * cs * .9;
+        for (k = 0; k <= seg; k++) { var T = TOUR[k]; if (lit[T[1] * 8 + T[0]] === undefined && (k < seg || f > .85)) lit[T[1] * 8 + T[0]] = T0 + k * D; }
+        /* iz */
+        g.globalAlpha = fade * .55; g.strokeStyle = "#ffd166"; g.lineWidth = 2.5; g.setLineDash([3, 6]); g.beginPath();
+        for (k = 0; k <= Math.min(seg, n); k++) { var P = TOUR[k]; var xx = x0 + (P[0] + .5) * cs, yy = y0 + (P[1] + .5) * cs; if (k) g.lineTo(xx, yy); else g.moveTo(xx, yy); }
+        if (t > T0) g.lineTo(px, y0 + (A[1] + (B[1] - A[1]) * e + .5) * cs);
+        g.stroke(); g.setLineDash([]);
+        /* soya + ot */
+        if (t > T0 - .2) {
+          var sa = clamp01((t - T0 + .2) / .2);
+          g.globalAlpha = fade * sa * .35; g.fillStyle = "#000"; g.beginPath(); g.ellipse(px, y0 + (A[1] + (B[1] - A[1]) * e + .5) * cs + cs * .32, cs * .28, cs * .09, 0, 0, 6.283); g.fill();
+          g.globalAlpha = fade * sa; g.shadowColor = ac; g.shadowBlur = 16; g.fillStyle = "#fff"; g.strokeStyle = "rgba(20,12,40,.9)"; g.lineWidth = 2.6; g.lineJoin = "round";
+          g.font = Math.round(cs * .95) + "px 'Segoe UI Symbol','Noto Sans Symbols 2','DejaVu Sans',serif";
+          g.strokeText("♞", px, py); g.fillText("♞", px, py); g.shadowBlur = 0;
+        }
+        var ta = ease((t - 3.3) / .4) * fade;
+        if (ta > 0) { g.globalAlpha = ta; g.fillStyle = "#fff"; g.font = "700 " + Math.round(cs * .6) + "px 'Unbounded', system-ui, sans-serif"; g.shadowColor = ac; g.shadowBlur = 16; g.fillText("Ot yurishi ♞", W / 2, y0 + S + cs * .95); }
+        g.restore();
+      });
+    });
+
+    /* ---------- YANGI: SIM-KARKAS GLOBUS, SAMARQANDDAN DUNYOGA ---------- */
+    var CITIES = [["Samarqand", 39.65, 66.96], ["Istanbul", 41.01, 28.98], ["Parij", 48.86, 2.35], ["Nyu-York", 40.71, -74.0], ["Tokio", 35.68, 139.69], ["Dubay", 25.2, 55.27]];
+    V.travel.unshift(function () {
+      var ac = accent(), RAD = Math.PI / 180;
+      play(7000, function (g, W, H, t, fade) {
+        var cx = W / 2, cy = H * .45, R = Math.min(W * .4, 175), tilt = 22 * RAD;
+        var lon0 = (60 - t * 13) * RAD, i, j;
+        var bgG = g.createRadialGradient(cx, cy, R * .2, cx, cy, Math.max(W, H));
+        bgG.addColorStop(0, "rgba(30,16,60," + (.93 * fade) + ")"); bgG.addColorStop(1, "rgba(6,4,16," + (.97 * fade) + ")");
+        g.fillStyle = bgG; g.fillRect(0, 0, W, H);
+        g.save();
+        for (i = 0; i < stars.length; i++) { var st = stars[i]; g.globalAlpha = fade * (.25 + .3 * Math.sin(t * 2 + st[2])); g.fillStyle = "#fff"; g.beginPath(); g.arc(st[0] * W, st[1] * H, st[3] * .9, 0, 6.283); g.fill(); }
+        var grow = ease(t / .7), Rg = R * (.6 + .4 * grow);
+        var proj = function (lat, lon, rr) {
+          var la = lat * RAD, lo = lon * RAD - lon0, cp = Math.cos(la), sp = Math.sin(la);
+          var vis = Math.sin(tilt) * sp + Math.cos(tilt) * cp * Math.cos(lo);
+          return [cx + rr * cp * Math.sin(lo), cy - rr * (Math.cos(tilt) * sp - Math.sin(tilt) * cp * Math.cos(lo)), vis];
+        };
+        /* shar */
+        var gl = g.createRadialGradient(cx - Rg * .3, cy - Rg * .3, Rg * .1, cx, cy, Rg);
+        gl.addColorStop(0, "rgba(120,90,255,.30)"); gl.addColorStop(1, "rgba(20,10,60,.55)");
+        g.globalAlpha = fade; g.fillStyle = gl; g.beginPath(); g.arc(cx, cy, Rg, 0, 6.283); g.fill();
+        g.strokeStyle = ac; g.lineWidth = 2; g.shadowColor = ac; g.shadowBlur = 18; g.beginPath(); g.arc(cx, cy, Rg, 0, 6.283); g.stroke(); g.shadowBlur = 0;
+        /* meridian va parallellar */
+        g.lineWidth = 1; g.strokeStyle = "rgba(200,185,255,.34)";
+        var line = function (pts) {
+          var on = false; g.beginPath();
+          for (var q = 0; q < pts.length; q++) { var p = pts[q]; if (p[2] > 0) { if (!on) { g.moveTo(p[0], p[1]); on = true; } else g.lineTo(p[0], p[1]); } else on = false; }
+          g.stroke();
+        };
+        g.globalAlpha = fade * grow;
+        for (i = 0; i < 12; i++) { var pts = []; for (j = -90; j <= 90; j += 6) pts.push(proj(j, i * 30, Rg)); line(pts); }
+        for (i = -60; i <= 60; i += 30) { var pts2 = []; for (j = 0; j <= 360; j += 6) pts2.push(proj(i, j, Rg)); line(pts2); }
+        /* yoʻnalish yoylari */
+        var S0 = CITIES[0], k;
+        for (k = 1; k < CITIES.length; k++) {
+          var C = CITIES[k], st0 = 1.0 + k * .8, pr = ease((t - st0) / 1.4); if (pr <= 0) continue;
+          var la1 = S0[1] * RAD, lo1 = S0[2] * RAD, la2 = C[1] * RAD, lo2 = C[2] * RAD;
+          var d = Math.acos(Math.min(1, Math.max(-1, Math.sin(la1) * Math.sin(la2) + Math.cos(la1) * Math.cos(la2) * Math.cos(lo2 - lo1))));
+          g.strokeStyle = k % 2 ? "#ffd166" : ac; g.lineWidth = 2; g.globalAlpha = fade * .9; g.beginPath();
+          var on = false, last = null;
+          for (j = 0; j <= 40; j++) {
+            var f = j / 40 * pr, A = Math.sin((1 - f) * d) / Math.sin(d), B = Math.sin(f * d) / Math.sin(d);
+            var x = A * Math.cos(la1) * Math.cos(lo1) + B * Math.cos(la2) * Math.cos(lo2), y = A * Math.cos(la1) * Math.sin(lo1) + B * Math.cos(la2) * Math.sin(lo2), z = A * Math.sin(la1) + B * Math.sin(la2);
+            var lat = Math.atan2(z, Math.sqrt(x * x + y * y)) / RAD, lon = Math.atan2(y, x) / RAD;
+            var lift = 1 + .22 * Math.sin(Math.PI * j / 40) * Math.sin(Math.PI * Math.min(1, pr)) ;
+            var pp = proj(lat, lon, Rg * lift);
+            if (pp[2] > 0) { if (!on) { g.moveTo(pp[0], pp[1]); on = true; } else g.lineTo(pp[0], pp[1]); last = pp; } else on = false;
+          }
+          g.stroke();
+          if (last && pr > .98) { g.fillStyle = "#ffd166"; }
+        }
+        /* shaharlar */
+        g.textAlign = "center"; g.font = "500 12px 'DM Mono', monospace";
+        for (k = 0; k < CITIES.length; k++) {
+          var Cc = CITIES[k], pj = proj(Cc[1], Cc[2], Rg), appear = k === 0 ? ease((t - .5) / .3) : ease((t - (1.0 + k * .8 + 1.1)) / .3);
+          if (pj[2] <= .05 || appear <= 0) continue;
+          var pu = (t * 1.1 + k * .3) % 1;
+          g.globalAlpha = fade * appear * (1 - pu) * .7; g.strokeStyle = k ? "#ffd166" : ac; g.lineWidth = 2; g.beginPath(); g.arc(pj[0], pj[1], 4 + pu * 18, 0, 6.283); g.stroke();
+          g.globalAlpha = fade * appear; g.fillStyle = k ? "#ffd166" : "#fff"; g.beginPath(); g.arc(pj[0], pj[1], k ? 3.5 : 5, 0, 6.283); g.fill();
+          g.fillStyle = "#ece9fa"; g.fillText(Cc[0], pj[0], pj[1] - 12);
+        }
+        var ta = ease((t - 5.4) / .5) * fade;
+        if (ta > 0) { g.globalAlpha = ta; g.fillStyle = "#fff"; g.font = "700 19px 'Unbounded', system-ui, sans-serif"; g.shadowColor = ac; g.shadowBlur = 16; g.fillText("Har bir yoʻl — yangi hikoya ✦", W / 2, cy + R + 56); }
+        g.restore();
+      });
+    });
+
+    /* ---------- YANGI: KOD OYNASI (dasturlash) ---------- */
+    var CODE = [
+      [["k", "const "], ["v", "me"], ["p", " = {"]],
+      [["p", "  "], ["v", "name"], ["p", ": "], ["s", "\"Shoxjahon\""], ["p", ","]],
+      [["p", "  "], ["v", "city"], ["p", ": "], ["s", "\"Samarqand\""], ["p", ","]],
+      [["p", "  "], ["v", "loves"], ["p", ": "], ["s", "\"dasturlash\""], ["p", ","]],
+      [["p", "};"]],
+      [["v", "me"], ["p", "."], ["f", "build"], ["p", "("], ["s", "\"future\""], ["p", ");"]]
+    ];
+    V.prog.unshift(function () {
+      if (fxBusy || calm) return; fxBusy = true; busyN++;
+      var box = document.createElement("div"); box.className = "codefx"; box.setAttribute("aria-hidden", "true");
+      box.innerHTML = '<canvas class="cw-mx"></canvas><div class="cw"><div class="cw-bar"><i></i><i></i><i></i><span>azizov.js</span></div><pre class="cw-pre"></pre></div>';
+      document.body.appendChild(box);
+      var pre = box.querySelector(".cw-pre"), mxc = box.querySelector(".cw-mx"), mraf = 0, mlast = 0;
+      var MW = window.innerWidth, MH = window.innerHeight, mg = mxc.getContext("2d"), mcols = Math.ceil(MW / 18), mdrops = [], mi;
+      mxc.width = MW; mxc.height = MH; mg.font = "16px monospace";
+      for (mi = 0; mi < mcols; mi++) mdrops.push(Math.random() * -20);
+      var mch = "01{}<>/;=$#azAZ";
+      var mframe = function (now) {
+        if (now - mlast > 66) {
+          mlast = now; mg.fillStyle = "rgba(6,4,14,.16)"; mg.fillRect(0, 0, MW, MH); mg.fillStyle = "#3df08a";
+          for (var q = 0; q < mcols; q++) {
+            mg.fillText(mch.charAt((Math.random() * mch.length) | 0), q * 18, mdrops[q] * 18);
+            if (mdrops[q] * 18 > MH && Math.random() > .96) mdrops[q] = 0;
+            mdrops[q] += 1;
+          }
+        }
+        mraf = requestAnimationFrame(mframe);
+      };
+      mraf = requestAnimationFrame(mframe);
+      var total = 0; CODE.forEach(function (l) { l.forEach(function (tk) { total += tk[1].length; }); total += 1; });
+      var n = 0, tm = 0;
+      var render = function (cnt, caret) {
+        var left = cnt, html = "";
+        CODE.forEach(function (l) {
+          l.forEach(function (tk) { if (left <= 0) return; var part = tk[1].slice(0, left); left -= part.length; html += '<span class="t-' + tk[0] + '">' + part.replace(/&/g, "&amp;").replace(/</g, "&lt;") + "</span>"; });
+          if (left > 0) { html += "\n"; left -= 1; }
+        });
+        pre.innerHTML = html + (caret ? '<span class="cw-caret"></span>' : "");
+      };
+      requestAnimationFrame(function () { box.classList.add("on"); });
+      var step = function () {
+        n += 2; render(Math.min(n, total), true);
+        if (n < total) { tm = setTimeout(step, 26); }
+        else { render(total, false); tm = setTimeout(done, 2400); }
+      };
+      var done = function () { cancelAnimationFrame(mraf); box.classList.remove("on"); setTimeout(function () { box.remove(); busyN = Math.max(0, busyN - 1); fxBusy = false; }, 400); };
+      tm = setTimeout(step, 500);
+    });
+
+    ["chess", "travel", "prog"].forEach(function (k) {
+      var n = 0;
+      bind(k + "Chip", function () { var arr = V[k]; if (arr.length) arr[k === "chess" ? arr.length - 1 : 0](); });
+    });
+  })();
 
   /* Kirish animatsiyasini olib tashlash */
   setTimeout(function () { var it = document.getElementById("intro"); if (it) it.remove(); }, 2900);
