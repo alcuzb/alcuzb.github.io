@@ -374,6 +374,21 @@ body { animation: tint 36s ease-in-out infinite; }
 .cw-caret { display: inline-block; width: 8px; height: 1.1em; vertical-align: -.2em; background: var(--accent); animation: blink .8s steps(1) infinite; }
 .cw-out { padding: 6px 16px 18px; font-family: var(--f-mono); font-size: 15px; color: #a6e3a1; opacity: 0; transform: translateY(6px); transition: opacity .3s ease, transform .3s ease; }
 .cw-out.show { opacity: 1; transform: none; }
+.hf { position: relative; border: 1px solid var(--line); border-radius: 22px; overflow: hidden; background: radial-gradient(70% 90% at 50% 40%, color-mix(in srgb, #ff4fd8 14%, transparent), transparent 70%), rgba(10, 8, 24, .55); }
+.hf-cv { display: block; width: 100%; height: 250px; touch-action: none; cursor: grab; -webkit-tap-highlight-color: transparent; }
+.hf-cv:active { cursor: grabbing; }
+.hf-tag { position: absolute; left: 14px; bottom: 10px; font-family: var(--f-mono); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
+.hf-pick { display: flex; flex-wrap: wrap; gap: 8px; }
+.hf-b { cursor: pointer; font-family: inherit; }
+.hf-b.on { border-color: #ff4fd8; color: #ff9be9; background: color-mix(in srgb, #ff4fd8 14%, transparent); }
+.hf-cam { position: absolute; top: 10px; right: 10px; width: 112px; height: 84px; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, #ff4fd8 55%, transparent); transform: scaleX(-1); background: #000; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
+.hf-cam video, .hf-cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.hf-camrow { display: flex; }
+.hf-cambtn { cursor: pointer; font-family: inherit; border-color: #ff4fd8; color: #ff9be9; background: color-mix(in srgb, #ff4fd8 12%, transparent); }
+.hf-cambtn:disabled { opacity: .6; cursor: default; }
+.hf-cambtn.on { background: color-mix(in srgb, #ff4fd8 28%, transparent); }
+.hf-msg { margin: 0; padding: 10px 14px; border-radius: 14px; border: 1px solid var(--line); background: var(--surface); font-size: 14px; color: var(--fg); }
+.hf-note { margin: 0; font-size: 12px; color: var(--muted); }
 .fxc { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 90; pointer-events: none; }
 .chip-link { padding: 0; border-color: var(--accent); }
 .chip-link a { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 16px; color: var(--accent); text-decoration: none; font-weight: 600; }
@@ -385,8 +400,8 @@ body { animation: tint 36s ease-in-out infinite; }
   padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .plp p { margin: 0; }
 .plp h2 { margin: 0; font-family: var(--f-display); font-size: 26px; }
-#plClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .2s, opacity .3s .2s; }
-.plp.open #plClose { transform: none; opacity: 1; }
+#plClose, #hfClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .2s, opacity .3s .2s; }
+.plp.open #plClose, .plp.open #hfClose { transform: none; opacity: 1; }
 
 /* tepa panel va menyu animatsiyalari */
 .bar { overflow: hidden; animation: barIn .7s cubic-bezier(.2, .7, .2, 1) both; }
@@ -420,6 +435,7 @@ body { animation: tint 36s ease-in-out infinite; }
 .menu.open .menu-link:nth-of-type(2) { animation-delay: .3s; }
 .menu.open .menu-link:nth-of-type(3) { animation-delay: .4s; }
 .menu.open .menu-link:nth-of-type(4) { animation-delay: .5s; }
+.menu.open .menu-link:nth-of-type(5) { animation-delay: .6s; }
 .menu-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .16) 50%, transparent 60%); transform: translateX(-120%); pointer-events: none; }
 .menu-link:active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
 .menu-link:active::after { transform: translateX(120%); transition: transform .6s; }
@@ -482,7 +498,7 @@ body { animation: tint 36s ease-in-out infinite; }
   .mini, .mini-disc, .lang-ind { animation: none !important; transition: none !important; }
   .bar, .bar::after, .av::before, .who b, #menuBtn, .menu-panel::before, .menu.open .menu-link { animation: none !important; }
   .menu-link { opacity: 1; transform: none; }
-  #menuClose, #plClose { opacity: 1; transform: none; transition: none; }
+  #menuClose, #plClose, #hfClose { opacity: 1; transform: none; transition: none; }
   .plp { transition: none; }
   .lb-fig::after, .intro::before, .intro-in, .lb-fig img.kb { animation: none !important; }
   body, .hero > *, h1 span, .band, .sec.in .chip, .caret, .disc, .eq i, .lb-fig img.swap { animation: none !important; }
@@ -547,6 +563,7 @@ body { animation: tint 36s ease-in-out infinite; }
     </ul>
   </section>
 
+
   <section class="sec" id="contact" aria-labelledby="h-contact">
     <div class="c-head">
       <h2 id="h-contact" data-t="m_contact">Aloqa</h2>
@@ -602,6 +619,7 @@ body { animation: tint 36s ease-in-out infinite; }
     <a class="menu-link" href="#about" data-t="m_about">Men haqimda</a>
     <a class="menu-link" href="#photos" data-t="m_photos">Rasmlarim</a>
     <a class="menu-link" href="#playlist" data-t="m_pl">Playlist</a>
+    <a class="menu-link" href="#handfigure">Hand Figure</a>
     <a class="menu-link" href="#contact" data-t="m_contact">Aloqa</a>
   </nav>
 </div>
@@ -636,6 +654,31 @@ body { animation: tint 36s ease-in-out infinite; }
     <ol class="tracks" id="tracks"></ol>
   </div>
   <audio id="audio" preload="metadata"></audio>
+  </div>
+</div>
+
+<div class="plp hfp" id="hfp" role="dialog" aria-modal="true" aria-label="Hand Figure" hidden>
+  <div class="plp-in">
+    <div class="menu-head">
+      <h2 id="h-hf">Hand Figure</h2>
+      <button class="menu-btn" id="hfClose" type="button" aria-label="Yopish"><b aria-hidden="true">✕</b></button>
+    </div>
+    <p data-t="hf_p">Qoʻl harakati bilan 3D shaklni boshqarish gʻoyasi. Barmoq bilan aylantiring, ikki barmoq bilan kattalashtiring.</p>
+    <div class="hf">
+      <canvas id="hfCv" class="hf-cv" aria-label="3D shakl: barmoq bilan aylantiriladi"></canvas>
+      <span class="hf-tag" data-t="hf_hint">Aylantirish uchun suring</span>
+      <div class="hf-cam" id="hfBox" hidden><video id="hfVid" playsinline muted autoplay></video><canvas id="hfOv" width="120" height="90"></canvas></div>
+    </div>
+    <div class="hf-pick" id="hfPick" role="group" aria-label="Shakl">
+      <button type="button" class="chip hf-b on" data-sh="cube" data-t="hf_cube">Kub</button>
+      <button type="button" class="chip hf-b" data-sh="pyr" data-t="hf_pyr">Piramida</button>
+      <button type="button" class="chip hf-b" data-sh="oct" data-t="hf_oct">Oktaedr</button>
+    </div>
+    <div class="hf-camrow">
+      <button type="button" class="chip hf-cambtn" id="hfCam" data-t="hf_cam">📷 Kamera bilan boshqarish</button>
+    </div>
+    <p class="hf-msg" id="hfMsg" hidden></p>
+    <p class="hf-note" data-t="hf_priv">Kamera tasviri qurilmangizda qoladi, hech qayerga yuborilmaydi.</p>
   </div>
 </div>
 
@@ -782,6 +825,8 @@ body { animation: tint 36s ease-in-out infinite; }
       k_birth: "Tugʻilgan sana", k_addr: "Manzil", v_addr: "Samarqand viloyati, Toyloq tumani",
       h_int: "Qiziqishlarim", c_travel: "Sayohat qilish 🗺️", c_prog: "Dasturlash 👾",
       swipe: "↔ Gorizontal suring",
+      hf_p: "Qoʻl harakati bilan 3D shaklni boshqarish gʻoyasi. Barmoq bilan aylantiring, ikki barmoq bilan kattalashtiring.", hf_hint: "Aylantirish uchun suring", hf_cube: "Kub", hf_pyr: "Piramida", hf_oct: "Oktaedr",
+      hf_cam: "📷 Kamera bilan boshqarish", hf_cam_off: "Kamerani oʻchirish", hf_loading: "Yuklanmoqda… (birinchi marta biroz kutiladi)", hf_show: "Qoʻlingizni kameraga koʻrsating: shakl qoʻlingiz yurgan tomonga buriladi, barmoqlarni yaqinlashtirsangiz kichrayadi, ikki qoʻl bilan kattalashtirasiz.", hf_noperm: "Kameraga ruxsat berilmadi yoki bu oynada kamera ishlamaydi. Saytni brauzerda oching.", hf_err: "Qoʻl kuzatuvi yuklanmadi. Internetni tekshirib, qayta urinib koʻring.", hf_priv: "Kamera tasviri qurilmangizda qoladi, hech qayerga yuborilmaydi.",
       lbl_tg: "Telegram profili", lbl_ig: "Instagram profili", lbl_steam: "Steam profili", lbl_phone: "Telefon", lbl_mail: "Pochta",
       cta_tg: "Telegramda ochish", cta_ig: "Instagramda ochish", cta_steam: "Steamda ochish",
       h_call: "Qoʻngʻiroq", cta_call: "Qoʻngʻiroq qilish", copy: "Nusxalash", h_mail: "Elektron pochta", cta_mail: "Xat yozish",
@@ -800,6 +845,8 @@ body { animation: tint 36s ease-in-out infinite; }
       k_birth: "Date of birth", k_addr: "Address", v_addr: "Samarkand region, Toyloq district",
       h_int: "My interests", c_travel: "Traveling 🗺️", c_prog: "Programming 👾",
       swipe: "↔ Swipe sideways",
+      hf_p: "An idea of controlling a 3D shape with hand movement. Rotate with one finger, zoom with two.", hf_hint: "Drag to rotate", hf_cube: "Cube", hf_pyr: "Pyramid", hf_oct: "Octahedron",
+      hf_cam: "📷 Control with camera", hf_cam_off: "Turn camera off", hf_loading: "Loading… (the first time takes a moment)", hf_show: "Show your hand to the camera: the shape turns with your hand, pinch your fingers to shrink it, use two hands to enlarge.", hf_noperm: "Camera permission was denied or the camera is unavailable here. Open the site in your browser.", hf_err: "Couldn't load hand tracking. Check your connection and try again.", hf_priv: "The camera image stays on your device and is never sent anywhere.",
       lbl_tg: "Telegram profile", lbl_ig: "Instagram profile", lbl_steam: "Steam profile", lbl_phone: "Phone", lbl_mail: "Email",
       cta_tg: "Open in Telegram", cta_ig: "Open in Instagram", cta_steam: "Open on Steam",
       h_call: "Call", cta_call: "Call me", copy: "Copy", h_mail: "Email", cta_mail: "Write an email",
@@ -818,6 +865,8 @@ body { animation: tint 36s ease-in-out infinite; }
       k_birth: "Дата рождения", k_addr: "Адрес", v_addr: "Самаркандская область, Тайлакский район",
       h_int: "Мои интересы", c_travel: "Путешествия 🗺️", c_prog: "Программирование 👾",
       swipe: "↔ Листайте в сторону",
+      hf_p: "Идея управления 3D-фигурой движением руки. Вращайте одним пальцем, увеличивайте двумя.", hf_hint: "Проведите, чтобы вращать", hf_cube: "Куб", hf_pyr: "Пирамида", hf_oct: "Октаэдр",
+      hf_cam: "📷 Управлять камерой", hf_cam_off: "Выключить камеру", hf_loading: "Загрузка… (в первый раз чуть дольше)", hf_show: "Покажите руку камере: фигура поворачивается за рукой, сведите пальцы, чтобы уменьшить, двумя руками — увеличить.", hf_noperm: "Нет доступа к камере или камера здесь недоступна. Откройте сайт в браузере.", hf_err: "Не удалось загрузить отслеживание руки. Проверьте интернет и повторите.", hf_priv: "Изображение с камеры остаётся на вашем устройстве и никуда не отправляется.",
       lbl_tg: "Профиль Telegram", lbl_ig: "Профиль Instagram", lbl_steam: "Профиль Steam", lbl_phone: "Телефон", lbl_mail: "Почта",
       cta_tg: "Открыть в Telegram", cta_ig: "Открыть в Instagram", cta_steam: "Открыть в Steam",
       h_call: "Звонок", cta_call: "Позвонить", copy: "Копировать", h_mail: "Эл. почта", cta_mail: "Написать письмо",
@@ -1091,6 +1140,7 @@ body { animation: tint 36s ease-in-out infinite; }
       var id = a.getAttribute("href").slice(1);
       closeMenu(true);
       if (id === "playlist") { openPl(); return; }
+      if (id === "handfigure") { openHf(); return; }
       var target = document.getElementById(id);
       if (target) jumpTo(target);
     });
@@ -1124,6 +1174,36 @@ body { animation: tint 36s ease-in-out infinite; }
   };
   document.getElementById("plClose").addEventListener("click", closePl);
   document.addEventListener("keydown", function (e) { if (plOpen && e.key === "Escape") closePl(); });
+
+  /* Hand Figure paneli */
+  var hfApi = {};
+  var hfp = document.getElementById("hfp");
+  var hfOpen = false;
+  var openHf = function () {
+    hfOpen = true;
+    busyN++;
+    hfp.hidden = false;
+    wrapEl.inert = true;
+    root.style.overflow = "hidden";
+    requestAnimationFrame(function () {
+      hfp.classList.add("open");
+      if (hfApi.resize) hfApi.resize();
+      document.getElementById("hfClose").focus({ preventScroll: true });
+    });
+  };
+  var closeHf = function () {
+    hfp.classList.remove("open");
+    hfOpen = false;
+    if (hfApi.stop) hfApi.stop();
+    busyN = Math.max(0, busyN - 1);
+    wrapEl.inert = false;
+    root.style.overflow = "";
+    setTimeout(function () { if (!hfOpen) hfp.hidden = true; }, 450);
+    var mb = document.getElementById("menuBtn");
+    if (mb && mb.focus) mb.focus({ preventScroll: true });
+  };
+  document.getElementById("hfClose").addEventListener("click", closeHf);
+  document.addEventListener("keydown", function (e) { if (hfOpen && e.key === "Escape") closeHf(); });
 
   /* Yozilib chiqadigan matn */
   var typedEl = document.getElementById("typed");
@@ -1780,6 +1860,157 @@ body { animation: tint 36s ease-in-out infinite; }
       var n = 0;
       bind(k + "Chip", function () { var arr = V[k]; if (arr.length) arr[k === "chess" ? arr.length - 1 : 0](); });
     });
+  })();
+
+  /* Hand Figure: neon 3D shakl (barmoq bilan aylantirish, ikki barmoq bilan kattalashtirish) */
+  (function () {
+    var cv = document.getElementById("hfCv"), pick = document.getElementById("hfPick");
+    if (!cv || !cv.getContext) return;
+    var g = cv.getContext("2d"), W = 0, H = 0, dpr = 1;
+    var SH = {
+      cube: { v: [[-1,-1,-1],[1,-1,-1],[1,1,-1],[-1,1,-1],[-1,-1,1],[1,-1,1],[1,1,1],[-1,1,1]], e: [[0,1],[1,2],[2,3],[3,0],[4,5],[5,6],[6,7],[7,4],[0,4],[1,5],[2,6],[3,7]] },
+      pyr: { v: [[-1.1,.9,-1.1],[1.1,.9,-1.1],[1.1,.9,1.1],[-1.1,.9,1.1],[0,-1.3,0]], e: [[0,1],[1,2],[2,3],[3,0],[0,4],[1,4],[2,4],[3,4]] },
+      oct: { v: [[1.4,0,0],[-1.4,0,0],[0,1.4,0],[0,-1.4,0],[0,0,1.4],[0,0,-1.4]], e: [[0,2],[0,3],[0,4],[0,5],[1,2],[1,3],[1,4],[1,5],[2,4],[4,3],[3,5],[5,2]] }
+    };
+    var camOn = false, cur = "cube", ax = -.45, ay = .6, vx = calm ? 0 : .006, vy = calm ? 0 : .003, zoom = 1, raf = 0, visible = false, t = 0;
+    var pts = {}, lastD = 0, drag = false;
+    var size = function () {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = cv.clientWidth; H = cv.clientHeight;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    var draw = function () {
+      g.clearRect(0, 0, W, H);
+      var sh = SH[cur], cx = W / 2, cy = H / 2 - 6, sc = Math.min(W, H) * .21 * zoom, i;
+      var ca = Math.cos(ax), sa = Math.sin(ax), cb = Math.cos(ay), sb = Math.sin(ay), P = [];
+      for (i = 0; i < sh.v.length; i++) {
+        var x = sh.v[i][0], y = sh.v[i][1], z = sh.v[i][2];
+        var y1 = y * ca - z * sa, z1 = y * sa + z * ca, x2 = x * cb + z1 * sb, z2 = -x * sb + z1 * cb;
+        var f = 3.2 / (3.2 + z2 * .6);
+        P.push([cx + x2 * sc * f, cy + y1 * sc * f, z2]);
+      }
+      g.lineCap = "round"; g.lineJoin = "round";
+      g.strokeStyle = "#ff4fd8"; g.lineWidth = 2.2; g.shadowColor = "#ff4fd8"; g.shadowBlur = 14;
+      g.beginPath();
+      for (i = 0; i < sh.e.length; i++) { var a = P[sh.e[i][0]], b = P[sh.e[i][1]]; g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); }
+      g.stroke(); g.shadowBlur = 0;
+      g.fillStyle = "#ffd6f6";
+      for (i = 0; i < P.length; i++) { g.beginPath(); g.arc(P[i][0], P[i][1], 3, 0, 6.283); g.fill(); }
+    };
+    var frame = function () {
+      raf = 0;
+      if (camOn || !visible) return;
+      if (!drag) { ay += vx; ax += vy; vx += (.006 - vx) * .01; vy += (.003 - vy) * .01; if (calm) { vx = 0; vy = 0; } }
+      draw();
+      if (!calm || drag) raf = requestAnimationFrame(frame);
+    };
+    var kick = function () { if (!raf && visible) raf = requestAnimationFrame(frame); };
+    size(); draw();
+    window.addEventListener("resize", function () { size(); draw(); });
+    hfApi.resize = function () { size(); draw(); kick(); };
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; if (visible) kick(); }, { threshold: .05 }).observe(cv);
+    } else { visible = true; kick(); }
+    cv.addEventListener("pointerdown", function (e) {
+      try { cv.setPointerCapture(e.pointerId); } catch (er) {}
+      pts[e.pointerId] = [e.clientX, e.clientY]; drag = true; lastD = 0; kick();
+    });
+    cv.addEventListener("pointermove", function (e) {
+      var p = pts[e.pointerId]; if (!p) return;
+      var ids = Object.keys(pts);
+      if (ids.length >= 2) {
+        pts[e.pointerId] = [e.clientX, e.clientY];
+        var A = pts[ids[0]], B = pts[ids[1]], d = Math.hypot(A[0] - B[0], A[1] - B[1]);
+        if (lastD) zoom = Math.max(.5, Math.min(2.2, zoom * d / lastD));
+        lastD = d; return;
+      }
+      var dx = e.clientX - p[0], dy = e.clientY - p[1];
+      ay += dx * .012; ax += dy * .012; vx = dx * .004; vy = dy * .004;
+      pts[e.pointerId] = [e.clientX, e.clientY];
+    });
+    var up = function (e) { delete pts[e.pointerId]; lastD = 0; if (!Object.keys(pts).length) { drag = false; kick(); } };
+    cv.addEventListener("pointerup", up); cv.addEventListener("pointercancel", up);
+    cv.addEventListener("wheel", function (e) { e.preventDefault(); zoom = Math.max(.5, Math.min(2.2, zoom * (e.deltaY < 0 ? 1.08 : .92))); kick(); }, { passive: false });
+    pick.addEventListener("click", function (e) {
+      var b = e.target.closest ? e.target.closest(".hf-b") : null; if (!b) return;
+      cur = b.getAttribute("data-sh");
+      [].slice.call(pick.querySelectorAll(".hf-b")).forEach(function (x) { x.classList.toggle("on", x === b); });
+      vx = .03; kick(); if (calm) draw();
+    });
+
+    /* ---------- Kamera bilan boshqarish (MediaPipe Hand Landmarker) ---------- */
+    var camBtn = document.getElementById("hfCam"), msg = document.getElementById("hfMsg"), vid = document.getElementById("hfVid"), ov = document.getElementById("hfOv"), box = document.getElementById("hfBox");
+    var BASE = "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.14";
+    var MODEL = "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
+    var CONN = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+    var stream = null, lm = null, lib = null, camRaf = 0, lastDet = 0, tAx = 0, tAy = 0, tZ = 1, starting = false;
+    var showMsg = function (k) { if (!k) { msg.hidden = true; return; } msg.textContent = T(k); msg.hidden = false; };
+    var hyp = function (a, b) { return Math.hypot(a.x - b.x, a.y - b.y); };
+    var clamp = function (v, a, b) { return Math.max(a, Math.min(b, v)); };
+    var drawHands = function (hands) {
+      var o = ov.getContext("2d"), i, j, h;
+      o.clearRect(0, 0, 120, 90); o.lineWidth = 1.6; o.strokeStyle = "#ff4fd8"; o.fillStyle = "#ffd6f6";
+      for (i = 0; i < hands.length; i++) {
+        h = hands[i]; o.beginPath();
+        for (j = 0; j < CONN.length; j++) { o.moveTo(h[CONN[j][0]].x * 120, h[CONN[j][0]].y * 90); o.lineTo(h[CONN[j][1]].x * 120, h[CONN[j][1]].y * 90); }
+        o.stroke();
+        for (j = 0; j < h.length; j++) { o.beginPath(); o.arc(h[j].x * 120, h[j].y * 90, 1.6, 0, 6.283); o.fill(); }
+      }
+    };
+    var control = function (hands) {
+      if (!hands.length) return;
+      var h = hands[0], p = h[9];
+      tAy = (0.5 - p.x) * 5.2;          /* oʻng-chap: ekran koʻzgusi sababli teskari */
+      tAx = (p.y - 0.5) * 4.2;
+      if (hands.length >= 2) tZ = clamp(0.55 + hyp(p, hands[1][9]) * 2.2, 0.5, 1.7);
+      else tZ = clamp(0.5 + hyp(h[4], h[8]) * 5.5, 0.5, 1.7);
+    };
+    var stopCam = function () {
+      camOn = false; starting = false;
+      cancelAnimationFrame(camRaf); camRaf = 0;
+      if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
+      if (lm && lm.close) { try { lm.close(); } catch (e) {} }
+      lm = null; vid.srcObject = null; box.hidden = true;
+      camBtn.disabled = false; camBtn.classList.remove("on"); camBtn.setAttribute("data-t", "hf_cam"); camBtn.textContent = T("hf_cam");
+      kick(); draw();
+    };
+    var camLoop = function (now) {
+      camRaf = requestAnimationFrame(camLoop);
+      if (!camOn || !visible || document.hidden) return;
+      if (now - lastDet > 45 && vid.readyState >= 2 && lm) {
+        lastDet = now;
+        var r = null;
+        try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
+        if (r) { var hs = r.landmarks || []; drawHands(hs); control(hs); }
+      }
+      ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18;
+      draw();
+    };
+    var startCam = async function () {
+      if (camOn || starting) return;
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showMsg("hf_noperm"); return; }
+      starting = true; camBtn.disabled = true; showMsg("hf_loading");
+      try {
+        stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user", width: { ideal: 480 }, height: { ideal: 360 } }, audio: false });
+      } catch (e) { starting = false; camBtn.disabled = false; showMsg("hf_noperm"); return; }
+      try {
+        if (!lib) {
+          var mod = await import(BASE + "/vision_bundle.mjs");
+          var fs = await mod.FilesetResolver.forVisionTasks(BASE + "/wasm");
+          lib = { mod: mod, fs: fs };
+        }
+        var mk = function (d) { return lib.mod.HandLandmarker.createFromOptions(lib.fs, { baseOptions: { modelAssetPath: MODEL, delegate: d }, runningMode: "VIDEO", numHands: 2 }); };
+        try { lm = await mk("GPU"); } catch (e1) { lm = await mk("CPU"); }
+        vid.srcObject = stream;
+        await vid.play();
+      } catch (e2) { stopCam(); showMsg("hf_err"); return; }
+      starting = false; camOn = true; tAx = ax; tAy = ay; tZ = zoom;
+      box.hidden = false; camBtn.disabled = false; camBtn.classList.add("on"); camBtn.removeAttribute("data-t"); camBtn.textContent = T("hf_cam_off");
+      showMsg("hf_show");
+      camRaf = requestAnimationFrame(camLoop);
+    };
+    hfApi.stop = function () { if (camOn || starting) { stopCam(); showMsg(null); } };
+    camBtn.addEventListener("click", function () { if (camOn || starting) { stopCam(); showMsg(null); } else startCam(); });
   })();
 
   /* Kirish animatsiyasini olib tashlash */
