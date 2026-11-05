@@ -384,14 +384,15 @@ body { animation: tint 36s ease-in-out infinite; }
 .hf-c { width: 28px; height: 28px; border-radius: 50%; border: 2px solid transparent; background: var(--c); cursor: pointer; padding: 0; box-shadow: 0 0 10px color-mix(in srgb, var(--c) 60%, transparent); }
 .hf-c.on { border-color: #fff; transform: scale(1.12); }
 .hf-b.on { border-color: #ff4fd8; color: #ff9be9; background: color-mix(in srgb, #ff4fd8 14%, transparent); }
-.hf-cam { position: absolute; top: 10px; right: 10px; width: 112px; height: 84px; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, #ff4fd8 55%, transparent); transform: scaleX(-1); background: #000; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
+.hf-cam { position: absolute; top: 10px; right: 10px; width: 150px; height: 112px; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, #ff4fd8 55%, transparent); transform: scaleX(-1); background: #000; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
 .hf-cam video, .hf-cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hf-fbar, .hf-fmsg { display: none; }
 .hf.cam-full { background: #000; max-width: 640px; margin-inline: auto; width: 100%; }
 .hf.cam-full .hf-cv { position: relative; z-index: 1; height: auto; aspect-ratio: 4 / 3; max-height: 72vh; }
-.hf.cam-full .hf-cam { inset: 0; top: 0; right: 0; width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; z-index: 0; }
-.hf.cam-full .hf-cam canvas, .hf.cam-full .hf-tag { display: none; }
-.hf.cam-full .hf-cam video { object-fit: contain; filter: brightness(.85) saturate(1.1); }
+.hf-bg { display: none; }
+.hf.cam-full .hf-bg { display: block; position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; transform: scaleX(-1); z-index: 0; filter: brightness(.85) saturate(1.1); }
+.hf.cam-full .hf-tag { display: none; }
+.hf.cam-full .hf-cam { z-index: 2; }
 .hf-fb { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .09); color: #fff; font-size: 20px; cursor: pointer; font-family: inherit; padding: 0; display: grid; place-items: center; }
 .hf-fb.on { border-color: #ff4fd8; background: color-mix(in srgb, #ff4fd8 30%, transparent); }
 .hf-fb i { width: 22px; height: 22px; border-radius: 50%; background: var(--c, #ff4fd8); display: block; }
@@ -714,6 +715,7 @@ body { animation: tint 36s ease-in-out infinite; }
     <div class="hf">
       <canvas id="hfCv" class="hf-cv" aria-label="3D shakl: barmoq bilan aylantiriladi"></canvas>
       <span class="hf-tag" data-t="hf_hint">Aylantirish uchun suring</span>
+      <video class="hf-bg" id="hfBg" playsinline muted autoplay></video>
       <div class="hf-cam" id="hfBox" hidden><video id="hfVid" playsinline muted autoplay></video><canvas id="hfOv" width="120" height="90"></canvas></div>
       <p class="hf-fmsg" id="hfFmsg" hidden></p>
       <div class="hf-fbar" id="hfFbar">
@@ -2169,7 +2171,7 @@ body { animation: tint 36s ease-in-out infinite; }
       cancelAnimationFrame(camRaf); camRaf = 0;
       if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
       if (lm && lm.close) { try { lm.close(); } catch (e) {} }
-      lm = null; vid.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); lastHands = []; size();
+      lm = null; vid.srcObject = null; var bgv2 = document.getElementById("hfBg"); if (bgv2) bgv2.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); lastHands = []; size();
       camBtn.disabled = false; camBtn.classList.remove("on"); camBtn.setAttribute("data-t", "hf_cam"); camBtn.textContent = T("hf_cam");
       kick(); draw();
     };
@@ -2180,7 +2182,7 @@ body { animation: tint 36s ease-in-out infinite; }
         lastDet = now;
         var r = null;
         try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
-        if (r) { var hs = r.landmarks || []; lastHands = hs; control(hs); }
+        if (r) { var hs = r.landmarks || []; lastHands = hs; drawHands(hs); control(hs); }
       }
       ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18; px += (tPx - px) * 0.3; py += (tPy - py) * 0.3;
       draw();
@@ -2201,6 +2203,7 @@ body { animation: tint 36s ease-in-out infinite; }
         var mk = function (d) { return lib.mod.HandLandmarker.createFromOptions(lib.fs, { baseOptions: { modelAssetPath: MODEL, delegate: d }, runningMode: "VIDEO", numHands: 2 }); };
         try { lm = await mk("GPU"); } catch (e1) { lm = await mk("CPU"); }
         vid.srcObject = stream;
+        var bgv = document.getElementById("hfBg"); if (bgv) { bgv.srcObject = stream; try { bgv.play(); } catch (e3) {} }
         await vid.play();
       } catch (e2) { stopCam(); showMsg("hf_err"); return; }
       starting = false; camOn = true; tAx = ax; tAy = ay; tZ = zoom;
