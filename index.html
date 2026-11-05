@@ -46,6 +46,8 @@ a, button { font-family: inherit; }
 
 #snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .wrap { position: relative; z-index: 1; }
+#caps { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 30; }
+.s-winter h1, .s-winter h2 { filter: drop-shadow(0 0 10px rgba(170, 215, 255, .28)); }
 
 /* tepa panel */
 .bar {
@@ -565,6 +567,7 @@ body { animation: tint 36s ease-in-out infinite; }
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
 <script>try{if(sessionStorage.getItem("azi")){document.getElementById("intro").remove()}else{sessionStorage.setItem("azi","1")}}catch(e){}</script>
 <canvas id="snow" aria-hidden="true"></canvas>
+<canvas id="caps" aria-hidden="true"></canvas>
 <div class="wrap">
   <header class="bar">
     <div class="who">
@@ -790,6 +793,8 @@ body { animation: tint 36s ease-in-out infinite; }
     return m === 11 || m < 2 ? "winter" : m < 5 ? "spring" : m < 8 ? "summer" : "autumn";
   };
   var SEASON = seasonNow();
+  var LEDGES = [], capsApi = null;
+  root.classList.add("s-" + SEASON);
   var LEAF = ["#E8643C", "#F2A33A", "#D9433B", "#C98A2B", "#B5532A", "#F5C45E"];
   var PET = ["#FFC2DD", "#FFD9E8", "#FFFFFF", "#F9A8D4"];
   var FLY = ["#FFE27A", "#B6F26B", "#FFD08A"];
@@ -810,7 +815,7 @@ body { animation: tint 36s ease-in-out infinite; }
         p.y = anywhere ? Math.random() * H : H + 12; p.r = 1 + Math.random() * 1.8; p.v = 0.15 + Math.random() * 0.4;
         p.a = 0.5 + Math.random() * 0.5; p.c = FLY[(Math.random() * FLY.length) | 0];
       } else {
-        p.r = 0.7 + Math.random() * 1.9; p.v = 0.35 + Math.random() * 0.9; p.a = 0.35 + Math.random() * 0.55;
+        p.r = 0.8 + Math.random() * 1.9; p.v = 0.35 + Math.random() * 0.9; p.a = 0.45 + Math.random() * 0.5; p.rot = Math.random() * 3.14; p.vr = (Math.random() - 0.5) * 0.02;
         p.c = r < 0.15 ? "#B9A4FF" : r < 0.3 ? "#9CC2FF" : "#EDEAFB";
       }
       return p;
@@ -842,18 +847,25 @@ body { animation: tint 36s ease-in-out infinite; }
       ctx.bezierCurveTo(s * 0.9, -s * 0.6, s * 0.7, s * 0.7, 0, s); ctx.bezierCurveTo(-s * 0.7, s * 0.7, -s * 0.9, -s * 0.6, 0, -s);
       ctx.fill();
     };
+    var land = function (f, py, inc) {
+      for (var q = 0; q < LEDGES.length; q++) {
+        var L = LEDGES[q];
+        if (f.x > L.x0 && f.x < L.x1 && py < L.y && f.y >= L.y - 1) { if (L.o.g < 1) L.o.g = Math.min(1, L.o.g + inc); return true; }
+      }
+      return false;
+    };
     var frame = function () {
       if (busyN) { raf = requestAnimationFrame(frame); return; }
       t += 0.012;
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < flakes.length; i++) {
-        var f = flakes[i];
+        var f = flakes[i], py0 = f.y;
         if (SEASON === "autumn" || SEASON === "spring") {
           var au = SEASON === "autumn";
           f.y += f.v * (au ? 1 : 0.9);
           f.x += Math.sin(t * f.sw * 2 + f.ph) * (au ? 0.9 : 0.6) + (au ? 0.25 : 0.15);
           f.rot += f.vr; f.fl += au ? 0.045 : 0.06;
-          if (f.y > H + 18) { flakes[i] = spawn(false); continue; }
+          if (f.y > H + 18 || land(f, py0, au ? 0.03 : 0.025)) { flakes[i] = spawn(false); continue; }
           if (f.x > W + 18) f.x = -18; else if (f.x < -18) f.x = W + 18;
           ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot + Math.sin(t * f.sw * 2 + f.ph) * 0.5);
           ctx.scale(0.35 + 0.65 * Math.abs(Math.cos(f.fl)), 1);
@@ -872,13 +884,14 @@ body { animation: tint 36s ease-in-out infinite; }
         } else {
           f.y += f.v * (0.6 + f.r * 0.3);
           f.x += Math.sin(t * f.sw + f.ph) * 0.35;
-          if (f.y > H + 6) { flakes[i] = spawn(false); continue; }
+          f.rot += f.vr;
+          if (f.y > H + 6 || land(f, py0, 0.015)) { flakes[i] = spawn(false); continue; }
           if (f.x > W + 6) f.x = -6; else if (f.x < -6) f.x = W + 6;
-          ctx.globalAlpha = f.a;
-          ctx.fillStyle = f.c;
+          ctx.globalAlpha = f.a; ctx.strokeStyle = f.c; ctx.lineWidth = 0.9; ctx.lineCap = "round";
+          var sz = Math.max(2.2, f.r * 2.1), k2;
           ctx.beginPath();
-          ctx.arc(f.x, f.y, f.r, 0, 6.2832);
-          ctx.fill();
+          for (k2 = 0; k2 < 3; k2++) { var an = f.rot + k2 * 1.0472, dx = Math.cos(an) * sz, dy = Math.sin(an) * sz; ctx.moveTo(f.x - dx, f.y - dy); ctx.lineTo(f.x + dx, f.y + dy); }
+          ctx.stroke();
         }
       }
       ctx.globalAlpha = 1;
@@ -889,7 +902,7 @@ body { animation: tint 36s ease-in-out infinite; }
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) { cancelAnimationFrame(raf); return; }
       var ns = seasonNow();
-      if (ns !== SEASON) { SEASON = ns; flakes = []; size(); if (vineApi) vineApi.rebuild(); }
+      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); flakes = []; size(); if (vineApi) vineApi.rebuild(); if (capsApi) capsApi.rebuild(); }
       cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
     });
     raf = requestAnimationFrame(frame);
@@ -2389,6 +2402,137 @@ body { animation: tint 36s ease-in-out infinite; }
     });
     hfApi.stop = function () { if (camOn || starting) { stopCam(); showMsg(null); } };
     camBtn.addEventListener("click", function () { if (camOn || starting) { stopCam(); showMsg(null); } else startCam(); });
+  })();
+
+  /* Fasl "qopqoqlari": qor uyumi, barglar, gulbarglar yoki oʻt, sahifadagi sarlavha, rasm va kartalarning ustida turadi */
+  (function () {
+    var cc = document.getElementById("caps"), g2 = cc && cc.getContext ? cc.getContext("2d") : null;
+    if (!g2) return;
+    var W2 = 0, H2 = 0, T = [], raf2 = 0, tm = 0, rg = document.createRange();
+    var LEAFC = ["#E8643C", "#F2A33A", "#D9433B", "#C98A2B", "#B5532A", "#F5C45E"], PETC = ["#FFC2DD", "#FFD9E8", "#FFFFFF", "#F9A8D4"];
+    var rng = function (seed) { return function () { seed |= 0; seed = seed + 0x6D2B79F5 | 0; var q = Math.imul(seed ^ seed >>> 15, 1 | seed); q = q + Math.imul(q ^ q >>> 7, 61 | q) ^ q; return ((q ^ q >>> 14) >>> 0) / 4294967296; }; };
+    var G0 = { winter: 0.3, autumn: 0.2, spring: 0.25, summer: 0 };
+    var sizeC = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W2 = window.innerWidth; H2 = window.innerHeight;
+      cc.width = Math.round(W2 * dpr); cc.height = Math.round(H2 * dpr); g2.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    var collect = function () {
+      T = [];
+      var add = function (sel, kind, hmax, ice) {
+        [].slice.call(document.querySelectorAll(sel)).forEach(function (el, i) {
+          var cs = getComputedStyle(el), r = rng(T.length * 7919 + 17), items = [], k;
+          for (k = 0; k < 170; k++) items.push({ u: r(), b: r(), c: r(), d: r() });
+          var tg = { el: el, kind: kind, g: G0[SEASON] || 0, hmax: hmax, ice: ice, items: items, s1: r() * 6, s2: r() * 6, s3: r() * 6,
+            fs: parseFloat(cs.fontSize) || 16, rad: parseFloat(cs.borderTopLeftRadius) || 0, clip: kind === "shot" || kind === "card" ? el.parentElement : null };
+          T.push(tg);
+        });
+      };
+      add("h1", "text", 11, false); add(".sec h2", "text", 6, false);
+      add(".bar", "box", 7, false); add(".shot", "shot", 10, true); add(".card", "card", 10, true); add(".chip", "box", 4, false);
+    };
+    var drawText = function (L, t, len, vis) {
+      var n, i, it, x, y = L.y, gg = Math.min(1, t.g);
+      g2.globalAlpha = vis;
+      if (SEASON === "winter") {
+        var h = t.hmax * gg, x2;
+        g2.shadowColor = "rgba(180,215,255,.7)"; g2.shadowBlur = 6; g2.fillStyle = "#F6FAFF";
+        g2.beginPath(); g2.moveTo(L.x0, y + 1.5);
+        for (x2 = L.x0; x2 <= L.x1; x2 += 3) {
+          var dx = x2 - L.x0, env = Math.pow(Math.sin(Math.PI * Math.min(1, dx / len)), 0.5);
+          var p = Math.max(0, 0.5 * Math.sin(dx * 0.06 + t.s1) + 0.35 * Math.sin(dx * 0.17 + t.s2) + 0.25 * Math.sin(dx * 0.37 + t.s3) + 0.45);
+          g2.lineTo(x2, y - 1 - h * env * p);
+        }
+        g2.lineTo(L.x1, y + 1.5); g2.closePath(); g2.fill(); g2.shadowBlur = 0;
+        g2.strokeStyle = "rgba(150,190,240,.55)"; g2.lineWidth = 1.1; g2.beginPath(); g2.moveTo(L.x0, y + 1.8); g2.lineTo(L.x1, y + 1.8); g2.stroke();
+        if (gg > 0.45) {
+          g2.strokeStyle = "#fff"; g2.lineWidth = 1;
+          for (i = 0; i < 3; i++) {
+            it = t.items[i]; x = L.x0 + it.u * len; var tw = 0.5 + 0.5 * Math.sin(tm * 2 + it.c * 9); if (tw < 0.2) continue;
+            var sy = y - h * 0.9 - 2, sr = 2 + tw * 2.2; g2.globalAlpha = vis * tw;
+            g2.beginPath(); g2.moveTo(x - sr, sy); g2.lineTo(x + sr, sy); g2.moveTo(x, sy - sr); g2.lineTo(x, sy + sr); g2.stroke();
+          }
+        }
+      } else if (SEASON === "autumn") {
+        n = Math.floor(len / 20 * gg * 1.3);
+        for (i = 0; i < n && i < t.items.length; i++) { it = t.items[i]; leaf(L.x0 + it.u * len, y - 1, 4 + it.b * 4.5, (it.c - 0.5) * 1.3, LEAFC[(it.d * 6) | 0]); }
+      } else if (SEASON === "spring") {
+        n = Math.floor(len / 14 * gg);
+        for (i = 0; i < n && i < t.items.length; i++) { it = t.items[i]; petalLie(L.x0 + it.u * len, y - 1, 2.6 + it.b * 2.4, (it.c - 0.5) * 1.2, PETC[(it.d * 4) | 0]); if (it.d > 0.94 && gg > 0.4) blossom(L.x0 + it.u * len, y - 3, 3.2); }
+      } else {
+        n = Math.floor(len / 18 * gg);
+        for (i = 0; i < n && i < t.items.length; i++) { it = t.items[i]; blade(L.x0 + it.u * len, y + 1, 3 + it.b * 6 * gg, (it.c - 0.5) * 6, it.d); }
+      }
+      g2.globalAlpha = 1;
+    };
+    var leaf = function (x, y, s, rot, c) {
+      g2.save(); g2.translate(x, y); g2.rotate(rot); g2.fillStyle = c; g2.beginPath(); g2.moveTo(-s, 0); g2.quadraticCurveTo(0, -s * 0.75, s, 0); g2.quadraticCurveTo(0, s * 0.75, -s, 0); g2.fill();
+      g2.globalAlpha *= 0.4; g2.strokeStyle = "#3a1608"; g2.lineWidth = 0.7; g2.beginPath(); g2.moveTo(-s, 0); g2.lineTo(s * 0.9, 0); g2.stroke(); g2.restore();
+    };
+    var petalLie = function (x, y, s, rot, c) { g2.save(); g2.translate(x, y); g2.rotate(rot); g2.fillStyle = c; g2.beginPath(); g2.ellipse(0, 0, s, s * 0.5, 0, 0, 6.2832); g2.fill(); g2.restore(); };
+    var blossom = function (x, y, s) {
+      g2.save(); g2.translate(x, y); g2.fillStyle = "#FFC2DD";
+      for (var q = 0; q < 5; q++) { g2.rotate(1.2566); g2.beginPath(); g2.ellipse(s * 0.6, 0, s * 0.55, s * 0.4, 0, 0, 6.2832); g2.fill(); }
+      g2.fillStyle = "#FFD25A"; g2.beginPath(); g2.arc(0, 0, s * 0.3, 0, 6.2832); g2.fill(); g2.restore();
+    };
+    var blade = function (x, y, h, lean, d) {
+      g2.strokeStyle = d < 0.5 ? "#5CBF4A" : "#7ED957"; g2.lineWidth = 1.3; g2.lineCap = "round";
+      g2.beginPath(); g2.moveTo(x, y); g2.quadraticCurveTo(x + lean * 0.2, y - h * 0.6, x + lean, y - h); g2.stroke();
+      if (d > 0.9) { g2.fillStyle = d > 0.96 ? "#FFD84A" : "#FF9BC9"; g2.beginPath(); g2.arc(x + lean, y - h, 2.1, 0, 6.2832); g2.fill(); }
+    };
+    var iciclesDraw = function (t, rect, x0, x1, vis) {
+      var len = x1 - x0, gg = Math.min(1, t.g), n = Math.floor(len / 24 * gg), i, it;
+      g2.fillStyle = "rgba(205,232,255,.85)"; g2.globalAlpha = vis * 0.9;
+      for (i = 0; i < n && i < 60; i++) {
+        it = t.items[i]; var x = x0 + it.u * len, h = (3 + it.b * 9) * gg;
+        g2.beginPath(); g2.moveTo(x - 1.5, rect.bottom - 1); g2.lineTo(x + 1.5, rect.bottom - 1); g2.lineTo(x, rect.bottom - 1 + h); g2.closePath(); g2.fill();
+      }
+      g2.globalAlpha = 1;
+    };
+    var frame2 = function () {
+      raf2 = requestAnimationFrame(frame2);
+      if (document.hidden) return;
+      render(true);
+    };
+    var render = function (animate) {
+      g2.clearRect(0, 0, W2, H2);
+      LEDGES.length = 0;
+      if (busyN > 0) return;
+      if (animate) tm += 0.016;
+      for (var i = 0; i < T.length; i++) {
+        var t = T[i], el = t.el, x0, x1, y, rect = el.getBoundingClientRect(), vis = 1;
+        if (rect.bottom < -20 || rect.top > H2 + 20 || rect.width < 4) continue;
+        if (t.kind === "text") {
+          rg.selectNodeContents(el); var rr = rg.getBoundingClientRect();
+          x0 = rr.left; x1 = rr.right; y = rr.top + t.fs * (el.tagName === "H1" ? 0.3 : 0.26);
+        } else { x0 = rect.left + t.rad * 0.7; x1 = rect.right - t.rad * 0.7; y = rect.top; }
+        if (t.clip) {
+          var cr = t.clip.getBoundingClientRect(), a0 = Math.max(x0, cr.left + 4), a1 = Math.min(x1, cr.right - 4);
+          vis = Math.max(0, Math.min(1, (a1 - a0) / Math.max(1, x1 - x0) * 1.3)); x0 = a0; x1 = a1;
+        }
+        if (x1 - x0 < 8 || y < -30 || y > H2 + 10) continue;
+        if (animate) {
+          var cap = SEASON === "summer" ? 0.85 : SEASON === "winter" ? 1 : 0.8;
+          if (t.g < cap) t.g = Math.min(cap, t.g + (SEASON === "summer" ? 0.006 : SEASON === "winter" ? 0.0006 : 0.0004));
+        }
+        var L = { x0: x0, x1: x1, y: y, o: t };
+        LEDGES.push(L);
+        drawText(L, t, x1 - x0, vis);
+        if (SEASON === "winter" && t.ice) iciclesDraw(t, rect, x0, x1, vis);
+      }
+    };
+    capsApi = {
+      rebuild: function () { collect(); }
+    };
+    sizeC(); collect();
+    window.addEventListener("resize", function () { sizeC(); collect(); if (calm) render(false); });
+    if (calm) {
+      T.forEach(function (t) { t.g = 0.7; });
+      window.addEventListener("scroll", function () { render(false); }, { passive: true });
+      setTimeout(function () { render(false); }, 3000);
+    } else {
+      raf2 = requestAnimationFrame(frame2);
+    }
   })();
 
   /* Kirish animatsiyasini olib tashlash */
