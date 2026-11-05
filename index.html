@@ -391,7 +391,7 @@ body { animation: tint 36s ease-in-out infinite; }
 .hf.cam-full .hf-cv { position: relative; z-index: 1; width: 100%; height: 100vh; height: 100dvh; }
 .hf.cam-full .hf-cam { inset: 0; top: 0; right: 0; width: 100%; height: 100%; border: 0; border-radius: 0; box-shadow: none; z-index: 0; }
 .hf.cam-full .hf-cam canvas, .hf.cam-full .hf-tag { display: none; }
-.hf.cam-full .hf-cam video { filter: brightness(.72) saturate(1.1); }
+.hf.cam-full .hf-cam video { object-fit: contain; filter: brightness(.8) saturate(1.1); }
 .hf.cam-full .hf-fbar { display: flex; position: absolute; z-index: 2; left: 50%; transform: translateX(-50%); bottom: max(18px, env(safe-area-inset-bottom)); gap: 12px; padding: 8px 12px; border-radius: 999px; background: rgba(10, 8, 24, .62); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid var(--line); }
 .hf.cam-full .hf-fmsg { display: block; position: absolute; z-index: 2; top: max(14px, env(safe-area-inset-top)); left: 14px; right: 14px; max-width: 560px; margin: 0 auto; text-align: center; padding: 10px 14px; border-radius: 14px; background: rgba(10, 8, 24, .62); color: #fff; font-size: 14px; line-height: 1.4; pointer-events: none; }
 .hf-fb { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line); background: rgba(255, 255, 255, .09); color: #fff; font-size: 20px; cursor: pointer; font-family: inherit; padding: 0; display: grid; place-items: center; }
@@ -1982,7 +1982,23 @@ body { animation: tint 36s ease-in-out infinite; }
       if (ri % 3 === 0) de.push([ri * 2, ri * 2 + 1]);
     }
     SH.dna = { v: dv, e: de, nd: true };
-    var COL = "#ff4fd8", pointing = false, lostAt = 0;
+    var COL = "#ff4fd8", pointing = false, lostAt = 0, lastHands = [], px = 0, py = 0, tPx = 0, tPy = 0;
+    var vidEl = document.getElementById("hfVid");
+    var mapP = function (p) {
+      var vw = vidEl.videoWidth || 4, vh = vidEl.videoHeight || 3, k = Math.min(W / vw, H / vh);
+      return [W / 2 + ((1 - p.x) - .5) * vw * k, H / 2 + (p.y - .5) * vh * k];
+    };
+    var CN = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
+    var skel = function () {
+      if (!camOn || !lastHands.length) return;
+      g.save(); g.lineWidth = 1.6; g.strokeStyle = "rgba(255,255,255,.55)"; g.fillStyle = "rgba(255,255,255,.85)"; g.shadowBlur = 0;
+      for (var hi2 = 0; hi2 < lastHands.length; hi2++) {
+        var hh = lastHands[hi2], m = hh.map(mapP), j2;
+        g.beginPath(); for (j2 = 0; j2 < CN.length; j2++) { g.moveTo(m[CN[j2][0]][0], m[CN[j2][0]][1]); g.lineTo(m[CN[j2][1]][0], m[CN[j2][1]][1]); } g.stroke();
+        for (j2 = 0; j2 < m.length; j2++) { g.beginPath(); g.arc(m[j2][0], m[j2][1], 2.2, 0, 6.283); g.fill(); }
+      }
+      g.restore();
+    };
     var drawMode = false, stroke = [], strokeDown = false, camDown = false, camTip = null;
     var camOn = false, cur = "cube", ax = -.45, ay = .6, vx = calm ? 0 : .006, vy = calm ? 0 : .003, zoom = 1, raf = 0, visible = false, t = 0;
     var pts = {}, lastD = 0, drag = false;
@@ -1997,10 +2013,12 @@ body { animation: tint 36s ease-in-out infinite; }
         g.lineCap = "round"; g.lineJoin = "round"; g.strokeStyle = COL; g.lineWidth = 3; g.shadowColor = COL; g.shadowBlur = 14;
         if (stroke.length > 1) { g.beginPath(); g.moveTo(stroke[0][0], stroke[0][1]); for (var si = 1; si < stroke.length; si++) g.lineTo(stroke[si][0], stroke[si][1]); g.stroke(); }
         g.shadowBlur = 0;
+        skel();
         if (camTip) { g.fillStyle = camDown ? COL : "#ffffff"; g.globalAlpha = camDown ? 1 : .7; g.beginPath(); g.arc(camTip[0], camTip[1], camDown ? 8 : 5, 0, 6.283); g.fill(); g.globalAlpha = 1; }
         return;
       }
       var sh = SH[cur], cx = W / 2, cy = H / 2 - 6, sc = Math.min(W, H) * .21 * zoom, i;
+      if (camOn) { sc *= .75; cx = px; cy = py - sc * 1.5; var rr0 = sc * 1.7; if (W > rr0 * 2) cx = Math.max(rr0, Math.min(W - rr0, cx)); if (H > rr0 * 2) cy = Math.max(rr0, Math.min(H - rr0, cy)); }
       var ca = Math.cos(ax), sa = Math.sin(ax), cb = Math.cos(ay), sb = Math.sin(ay), P = [];
       for (i = 0; i < sh.v.length; i++) {
         var x = sh.v[i][0], y = sh.v[i][1], z = sh.v[i][2];
@@ -2013,6 +2031,7 @@ body { animation: tint 36s ease-in-out infinite; }
       g.beginPath();
       for (i = 0; i < sh.e.length; i++) { var a = P[sh.e[i][0]], b = P[sh.e[i][1]]; g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); }
       g.stroke(); g.shadowBlur = 0;
+      skel();
       g.fillStyle = "#ffd6f6";
       if (!sh.nd) for (i = 0; i < P.length; i++) { g.beginPath(); g.arc(P[i][0], P[i][1], 3, 0, 6.283); g.fill(); }
     };
@@ -2124,8 +2143,7 @@ body { animation: tint 36s ease-in-out infinite; }
           var e8 = ext(8, 6), e12 = ext(12, 10), e16 = ext(16, 14), e20 = ext(20, 18);
           pt = e8 && !e12 && !e16 && !e20;
           op = e8 && e12 && e16 && e20;
-          var vw = vid.videoWidth || 4, vh = vid.videoHeight || 3, sc3 = Math.max(W / vw, H / vh);
-          var rx = clamp(W / 2 + ((1 - hd[8].x) - .5) * vw * sc3, 0, W), ry = clamp(H / 2 + (hd[8].y - .5) * vh * sc3, 0, H);
+          var mp = mapP(hd[8]), rx = clamp(mp[0], 0, W), ry = clamp(mp[1], 0, H);
           if (!camTip) camTip = [rx, ry];
           else { var dd = Math.hypot(rx - camTip[0], ry - camTip[1]), al = clamp(dd / 70, .22, .85); camTip = [camTip[0] + (rx - camTip[0]) * al, camTip[1] + (ry - camTip[1]) * al]; }
         } else camTip = null;
@@ -2142,7 +2160,7 @@ body { animation: tint 36s ease-in-out infinite; }
         return;
       }
       if (!hands.length) return;
-      var h = hands[0], p = h[9];
+      var h = hands[0], p = h[9], pm = mapP(p); tPx = pm[0]; tPy = pm[1];
       tAy = (0.5 - p.x) * 5.2;          /* oʻng-chap: ekran koʻzgusi sababli teskari */
       tAx = (p.y - 0.5) * 4.2;
       if (hands.length >= 2) tZ = clamp(0.55 + hyp(p, hands[1][9]) * 2.2, 0.5, 1.7);
@@ -2153,7 +2171,7 @@ body { animation: tint 36s ease-in-out infinite; }
       cancelAnimationFrame(camRaf); camRaf = 0;
       if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
       if (lm && lm.close) { try { lm.close(); } catch (e) {} }
-      lm = null; vid.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); size();
+      lm = null; vid.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); lastHands = []; size();
       camBtn.disabled = false; camBtn.classList.remove("on"); camBtn.setAttribute("data-t", "hf_cam"); camBtn.textContent = T("hf_cam");
       kick(); draw();
     };
@@ -2164,9 +2182,9 @@ body { animation: tint 36s ease-in-out infinite; }
         lastDet = now;
         var r = null;
         try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
-        if (r) { var hs = r.landmarks || []; drawHands(hs); control(hs); }
+        if (r) { var hs = r.landmarks || []; lastHands = hs; control(hs); }
       }
-      ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18;
+      ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18; px += (tPx - px) * 0.3; py += (tPy - py) * 0.3;
       draw();
     };
     var startCam = async function () {
@@ -2188,7 +2206,7 @@ body { animation: tint 36s ease-in-out infinite; }
         await vid.play();
       } catch (e2) { stopCam(); showMsg("hf_err"); return; }
       starting = false; camOn = true; tAx = ax; tAy = ay; tZ = zoom;
-      hfEl.classList.add("cam-full"); size(); draw();
+      hfEl.classList.add("cam-full"); size(); px = tPx = W / 2; py = tPy = H / 2 + 40; lastHands = []; draw();
       box.hidden = false; camBtn.disabled = false; camBtn.classList.add("on"); camBtn.removeAttribute("data-t"); camBtn.textContent = T("hf_cam_off");
       showMsg("hf_show");
       camRaf = requestAnimationFrame(camLoop);
