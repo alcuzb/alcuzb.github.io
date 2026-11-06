@@ -46,6 +46,7 @@ a, button { font-family: inherit; }
 
 #snow { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
 .wrap { position: relative; z-index: 1; }
+.s-winter h1, .s-winter h2 { filter: drop-shadow(0 0 10px rgba(170, 215, 255, .28)); }
 
 /* tepa panel */
 .bar {
@@ -340,6 +341,22 @@ h2 { font-family: var(--f-display); font-weight: 500; font-size: clamp(20px, 4.5
 body { animation: tint 36s ease-in-out infinite; }
 @keyframes rise { from { transform: translateY(18px); } }
 @keyframes flow { to { background-position: 100% 0; } }
+@keyframes shine { 0% { background-position: 100% 0, 0 0; } 45%, 100% { background-position: 0% 0, 0 0; } }
+@keyframes hfloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -2.5px; } }
+:root { --sh: #FFC857; }
+.s-winter { --sh: #FFFFFF; } .s-autumn { --sh: #FFC857; } .s-spring { --sh: #FFB3D6; } .s-summer { --sh: #FFF0A0; }
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  h1 span { display: inline-block; animation: flow 7s ease-in-out infinite alternate, hfloat 6.5s ease-in-out infinite; }
+  h1 .w1 {
+    background-image: linear-gradient(100deg, transparent 38%, var(--sh) 50%, transparent 62%), linear-gradient(var(--fg), var(--fg));
+    background-size: 300% 100%, 100% 100%; background-repeat: no-repeat; background-position: 100% 0, 0 0;
+    animation: shine 7s ease-in-out infinite, hfloat 6.5s ease-in-out -2s infinite;
+  }
+  .s-winter h1 .w1 { background-image: linear-gradient(100deg, transparent 38%, rgba(255, 255, 255, .95) 50%, transparent 62%), linear-gradient(180deg, #ffffff 10%, #a8d6ff 100%); }
+  .s-winter h1 span:not(.w1) { background-image: linear-gradient(90deg, #8cc8ff, #eaf7ff, #7fb8ff, #eaf7ff, #8cc8ff); }
+  .s-winter h2 { background: linear-gradient(180deg, #ffffff 20%, #a9d8ff 115%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+}
+.s-winter .sec p, .s-winter .fact-cell dd, .s-winter .info dd, .s-winter .typed-line .cl-d, .s-winter .who b { color: #E6F2FF; text-shadow: 0 0 8px rgba(150, 205, 255, .35), 0 1px 0 rgba(255, 255, 255, .18); }
 @keyframes slide { to { background-position: 100% 0; } }
 @keyframes pop { from { transform: translateY(10px) scale(.9); } }
 @keyframes imgin { from { opacity: 0; transform: scale(.96); } }
@@ -581,7 +598,7 @@ body { animation: tint 36s ease-in-out infinite; }
   </header>
 
   <header class="hero">
-    <h1>Shoxjahon <span>Azizov</span></h1>
+    <h1><span class="w1">Shoxjahon</span> <span>Azizov</span></h1>
     <p class="typed-line" aria-label=""><span id="typed" aria-hidden="true"></span><span class="caret" aria-hidden="true"></span></p>
     <dl class="facts">
       <div class="fact-cell"><dt data-t="k_city">Shahar</dt><dd data-t="v_city">Samarqand</dd></div>
@@ -790,13 +807,42 @@ body { animation: tint 36s ease-in-out infinite; }
     return m === 11 || m < 2 ? "winter" : m < 5 ? "spring" : m < 8 ? "summer" : "autumn";
   };
   var SEASON = seasonNow();
+  
+  root.classList.add("s-" + SEASON);
   var LEAF = ["#E8643C", "#F2A33A", "#D9433B", "#C98A2B", "#B5532A", "#F5C45E"];
   var PET = ["#FFC2DD", "#FFD9E8", "#FFFFFF", "#F9A8D4"];
-  var FLY = ["#FFE27A", "#B6F26B", "#FFD08A"];
+  var GREENS = ["#6CCF4E", "#4FB84A", "#8FE36A", "#3FA55B", "#A5E36B"];
+  var BFC = ["#FFB347", "#5FD0FF", "#F59BC6", "#FFE27A"];
   var cv = document.getElementById("snow");
   var ctx = cv.getContext ? cv.getContext("2d") : null;
   if (ctx && !calm) {
-    var W = 0, H = 0, flakes = [], raf = 0, t = 0;
+    var W = 0, H = 0, flakes = [], raf = 0, t = 0, SPR = null;
+    var RS = [3, 4.5, 6.5, 9];
+    var mkSprites = function () {
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      SPR = RS.map(function (R) {
+        return [0, 1, 2].map(function (v) {
+          var px = Math.ceil(R * 2 + 4), c = document.createElement("canvas"), g = c.getContext("2d");
+          c.width = c.height = Math.round(px * dpr);
+          g.scale(dpr, dpr); g.translate(px / 2, px / 2);
+          g.strokeStyle = "#EAF4FF"; g.fillStyle = "#EAF4FF"; g.lineCap = "round"; g.lineWidth = Math.max(0.9, R * 0.11);
+          for (var a = 0; a < 6; a++) {
+            g.save(); g.rotate(a * Math.PI / 3);
+            g.beginPath(); g.moveTo(0, 0); g.lineTo(R, 0);
+            var bs = v === 1 ? [0.38, 0.7] : [0.56], bl = R * (v === 1 ? 0.28 : 0.36);
+            for (var q = 0; q < bs.length; q++) {
+              g.moveTo(R * bs[q], 0); g.lineTo(R * bs[q] + bl * 0.6, bl * 0.85);
+              g.moveTo(R * bs[q], 0); g.lineTo(R * bs[q] + bl * 0.6, -bl * 0.85);
+            }
+            g.stroke();
+            if (v === 2) { g.beginPath(); g.arc(R, 0, R * 0.11, 0, 6.2832); g.fill(); }
+            g.restore();
+          }
+          g.beginPath(); g.arc(0, 0, R * 0.14, 0, 6.2832); g.fill();
+          return { c: c, px: px };
+        });
+      });
+    };
     var spawn = function (anywhere) {
       var r = Math.random();
       var p = { x: Math.random() * W, y: anywhere ? Math.random() * H : -14, ph: Math.random() * 6.28, sw: 0.3 + Math.random() * 0.8 };
@@ -807,11 +853,14 @@ body { animation: tint 36s ease-in-out infinite; }
         p.s = 3.5 + Math.random() * 4; p.v = 0.35 + Math.random() * 0.6; p.rot = Math.random() * 6.28; p.vr = (Math.random() - 0.5) * 0.05;
         p.fl = Math.random() * 6.28; p.a = 0.6 + Math.random() * 0.35; p.c = PET[(Math.random() * PET.length) | 0];
       } else if (SEASON === "summer") {
-        p.y = anywhere ? Math.random() * H : H + 12; p.r = 1 + Math.random() * 1.8; p.v = 0.15 + Math.random() * 0.4;
-        p.a = 0.5 + Math.random() * 0.5; p.c = FLY[(Math.random() * FLY.length) | 0];
+        p.rot = Math.random() * 6.28; p.vr = (Math.random() - 0.5) * 0.04; p.fl = Math.random() * 6.28;
+        if (r < 0.5) { p.k = 0; p.s = 7 + Math.random() * 7; p.v = 0.35 + Math.random() * 0.5; p.a = 0.75 + Math.random() * 0.2; p.c = GREENS[(Math.random() * GREENS.length) | 0]; }
+        else if (r < 0.84) { p.k = 1; p.s = 4 + Math.random() * 3; p.v = 0.3 + Math.random() * 0.4; p.a = 0.9; p.c = "#FFFFFF"; }
+        else { p.k = 2; p.s = 6 + Math.random() * 3; p.y = Math.random() * H; p.hd = Math.random() * 6.28; p.a = 0.92; p.c = BFC[(Math.random() * BFC.length) | 0]; }
       } else {
-        p.r = 0.7 + Math.random() * 1.9; p.v = 0.35 + Math.random() * 0.9; p.a = 0.35 + Math.random() * 0.55;
-        p.c = r < 0.15 ? "#B9A4FF" : r < 0.3 ? "#9CC2FF" : "#EDEAFB";
+        var z = Math.random();
+        p.ri = z < 0.4 ? 0 : z < 0.72 ? 1 : z < 0.92 ? 2 : 3; p.q = (Math.random() * 3) | 0;
+        p.v = 0.3 + p.ri * 0.18 + Math.random() * 0.45; p.a = 0.5 + Math.random() * 0.45; p.rot = Math.random() * 6.28; p.vr = (Math.random() - 0.5) * 0.025;
       }
       return p;
     };
@@ -822,8 +871,9 @@ body { animation: tint 36s ease-in-out infinite; }
       cv.width = Math.round(W * dpr);
       cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = SEASON === "winter" ? Math.max(40, Math.min(130, Math.round(W * H / 9000)))
-        : SEASON === "summer" ? Math.max(18, Math.min(46, Math.round(W * H / 14000)))
+      if (!SPR) mkSprites();
+      var n = SEASON === "winter" ? Math.max(30, Math.min(90, Math.round(W * H / 12000)))
+        : SEASON === "summer" ? Math.max(16, Math.min(38, Math.round(W * H / 15000)))
         : Math.max(SEASON === "autumn" ? 26 : 16, Math.min(SEASON === "autumn" ? 52 : 40, Math.round(W * H / (SEASON === "autumn" ? 10000 : 17000))));
       while (flakes.length < n) flakes.push(spawn(true));
       flakes.length = n;
@@ -833,7 +883,7 @@ body { animation: tint 36s ease-in-out infinite; }
       ctx.beginPath(); ctx.moveTo(0, -s);
       ctx.quadraticCurveTo(s * 0.95, -s * 0.25, 0, s); ctx.quadraticCurveTo(-s * 0.95, -s * 0.25, 0, -s);
       ctx.fill();
-      ctx.globalAlpha = p.a * 0.35; ctx.strokeStyle = "#3a1608"; ctx.lineWidth = 0.8;
+      ctx.globalAlpha = p.a * 0.35; ctx.strokeStyle = "#1c3a10"; ctx.lineWidth = 0.8;
       ctx.beginPath(); ctx.moveTo(0, -s); ctx.lineTo(0, s * 1.25); ctx.stroke();
     };
     var petal = function (p) {
@@ -842,14 +892,36 @@ body { animation: tint 36s ease-in-out infinite; }
       ctx.bezierCurveTo(s * 0.9, -s * 0.6, s * 0.7, s * 0.7, 0, s); ctx.bezierCurveTo(-s * 0.7, s * 0.7, -s * 0.9, -s * 0.6, 0, -s);
       ctx.fill();
     };
+    var daisy = function (p) {
+      var s = p.s, q;
+      ctx.fillStyle = "#FFFFFF";
+      for (q = 0; q < 8; q++) { ctx.rotate(0.7854); ctx.beginPath(); ctx.ellipse(s * 0.75, 0, s * 0.75, s * 0.28, 0, 0, 6.2832); ctx.fill(); }
+      ctx.fillStyle = "#FFD84A"; ctx.beginPath(); ctx.arc(0, 0, s * 0.38, 0, 6.2832); ctx.fill();
+    };
+    var butterfly = function (f) {
+      var s = f.s, flap = 0.25 + 0.75 * Math.abs(Math.sin(t * 14 + f.ph));
+      ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.hd + 1.5708); ctx.globalAlpha = f.a;
+      ctx.save(); ctx.scale(flap, 1); ctx.fillStyle = f.c;
+      ctx.beginPath(); ctx.ellipse(-s * 0.6, -s * 0.25, s * 0.6, s * 0.45, -0.5, 0, 6.2832); ctx.ellipse(s * 0.6, -s * 0.25, s * 0.6, s * 0.45, 0.5, 0, 6.2832);
+      ctx.ellipse(-s * 0.45, s * 0.4, s * 0.38, s * 0.3, 0.4, 0, 6.2832); ctx.ellipse(s * 0.45, s * 0.4, s * 0.38, s * 0.3, -0.4, 0, 6.2832); ctx.fill();
+      ctx.restore();
+      ctx.fillStyle = "#2a1a10"; ctx.fillRect(-0.7, -s * 0.6, 1.4, s * 1.3);
+      ctx.restore();
+    };
     var frame = function () {
       if (busyN) { raf = requestAnimationFrame(frame); return; }
       t += 0.012;
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < flakes.length; i++) {
         var f = flakes[i];
-        if (SEASON === "autumn" || SEASON === "spring") {
-          var au = SEASON === "autumn";
+        if (SEASON === "summer" && f.k === 2) {
+          f.hd += Math.sin(t * f.sw * 2 + f.ph) * 0.07;
+          f.x += Math.cos(f.hd) * 0.7; f.y += Math.sin(f.hd) * 0.5 + Math.sin(t * 3 + f.ph) * 0.25;
+          if (f.x < -20) f.x = W + 20; else if (f.x > W + 20) f.x = -20;
+          if (f.y < -20) f.y = H + 20; else if (f.y > H + 20) f.y = -20;
+          butterfly(f);
+        } else if (SEASON !== "winter") {
+          var au = SEASON === "autumn", sm = SEASON === "summer";
           f.y += f.v * (au ? 1 : 0.9);
           f.x += Math.sin(t * f.sw * 2 + f.ph) * (au ? 0.9 : 0.6) + (au ? 0.25 : 0.15);
           f.rot += f.vr; f.fl += au ? 0.045 : 0.06;
@@ -858,27 +930,18 @@ body { animation: tint 36s ease-in-out infinite; }
           ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot + Math.sin(t * f.sw * 2 + f.ph) * 0.5);
           ctx.scale(0.35 + 0.65 * Math.abs(Math.cos(f.fl)), 1);
           ctx.globalAlpha = f.a; ctx.fillStyle = f.c;
-          if (au) leaf(f); else petal(f);
+          if (sm) { if (f.k === 1) daisy(f); else leaf(f); } else if (au) leaf(f); else petal(f);
           ctx.restore();
-        } else if (SEASON === "summer") {
-          f.y -= f.v; f.x += Math.sin(t * f.sw * 2 + f.ph) * 0.45;
-          if (f.y < -12) { flakes[i] = spawn(false); continue; }
-          var tw = f.a * (0.45 + 0.55 * Math.sin(t * 3 * f.sw + f.ph));
-          if (tw < 0.02) continue;
-          ctx.fillStyle = f.c;
-          ctx.globalAlpha = tw * 0.12; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 5, 0, 6.2832); ctx.fill();
-          ctx.globalAlpha = tw * 0.28; ctx.beginPath(); ctx.arc(f.x, f.y, f.r * 2.4, 0, 6.2832); ctx.fill();
-          ctx.globalAlpha = tw; ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, 6.2832); ctx.fill();
         } else {
-          f.y += f.v * (0.6 + f.r * 0.3);
-          f.x += Math.sin(t * f.sw + f.ph) * 0.35;
-          if (f.y > H + 6) { flakes[i] = spawn(false); continue; }
-          if (f.x > W + 6) f.x = -6; else if (f.x < -6) f.x = W + 6;
-          ctx.globalAlpha = f.a;
-          ctx.fillStyle = f.c;
-          ctx.beginPath();
-          ctx.arc(f.x, f.y, f.r, 0, 6.2832);
-          ctx.fill();
+          f.y += f.v;
+          f.x += Math.sin(t * f.sw + f.ph) * 0.4;
+          f.rot += f.vr;
+          if (f.y > H + 12) { flakes[i] = spawn(false); continue; }
+          if (f.x > W + 12) f.x = -12; else if (f.x < -12) f.x = W + 12;
+          var sp = SPR[f.ri][f.q];
+          ctx.save(); ctx.translate(f.x, f.y); ctx.rotate(f.rot); ctx.globalAlpha = f.a;
+          ctx.drawImage(sp.c, -sp.px / 2, -sp.px / 2, sp.px, sp.px);
+          ctx.restore();
         }
       }
       ctx.globalAlpha = 1;
@@ -889,7 +952,7 @@ body { animation: tint 36s ease-in-out infinite; }
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) { cancelAnimationFrame(raf); return; }
       var ns = seasonNow();
-      if (ns !== SEASON) { SEASON = ns; flakes = []; size(); if (vineApi) vineApi.rebuild(); }
+      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); flakes = []; size(); if (vineApi) vineApi.rebuild(); }
       cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
     });
     raf = requestAnimationFrame(frame);
@@ -2149,8 +2212,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var COL = "#ff4fd8", pointing = false, lostAt = 0, lastHands = [], px = 0, py = 0, tPx = 0, tPy = 0;
     var vidEl = document.getElementById("hfVid");
     var mapP = function (p) {
-      var vw = vidEl.videoWidth || 4, vh = vidEl.videoHeight || 3, k = Math.min(W / vw, H / vh);
-      return [W / 2 + ((1 - p.x) - .5) * vw * k, H / 2 + (p.y - .5) * vh * k];
+      return [(1 - p.x) * W, p.y * H];
     };
     var CN = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[17,18],[18,19],[19,20],[0,17]];
     var skel = function () {
@@ -2177,12 +2239,10 @@ body { animation: tint 36s ease-in-out infinite; }
         g.lineCap = "round"; g.lineJoin = "round"; g.strokeStyle = COL; g.lineWidth = 3; g.shadowColor = COL; g.shadowBlur = 14;
         if (stroke.length > 1) { g.beginPath(); g.moveTo(stroke[0][0], stroke[0][1]); for (var si = 1; si < stroke.length; si++) g.lineTo(stroke[si][0], stroke[si][1]); g.stroke(); }
         g.shadowBlur = 0;
-        skel();
         if (camTip) { g.fillStyle = camDown ? COL : "#ffffff"; g.globalAlpha = camDown ? 1 : .7; g.beginPath(); g.arc(camTip[0], camTip[1], camDown ? 8 : 5, 0, 6.283); g.fill(); g.globalAlpha = 1; }
         return;
       }
       var sh = SH[cur], cx = W / 2, cy = H / 2 - 6, sc = Math.min(W, H) * .21 * zoom, i;
-      if (camOn) { sc *= .75; cx = px; cy = py - sc * 1.5; var rr0 = sc * 1.7; if (W > rr0 * 2) cx = Math.max(rr0, Math.min(W - rr0, cx)); if (H > rr0 * 2) cy = Math.max(rr0, Math.min(H - rr0, cy)); }
       var ca = Math.cos(ax), sa = Math.sin(ax), cb = Math.cos(ay), sb = Math.sin(ay), P = [];
       for (i = 0; i < sh.v.length; i++) {
         var x = sh.v[i][0], y = sh.v[i][1], z = sh.v[i][2];
@@ -2195,7 +2255,6 @@ body { animation: tint 36s ease-in-out infinite; }
       g.beginPath();
       for (i = 0; i < sh.e.length; i++) { var a = P[sh.e[i][0]], b = P[sh.e[i][1]]; g.moveTo(a[0], a[1]); g.lineTo(b[0], b[1]); }
       g.stroke(); g.shadowBlur = 0;
-      skel();
       g.fillStyle = "#ffd6f6";
       if (!sh.nd) for (i = 0; i < P.length; i++) { g.beginPath(); g.arc(P[i][0], P[i][1], 3, 0, 6.283); g.fill(); }
     };
@@ -2367,11 +2426,10 @@ body { animation: tint 36s ease-in-out infinite; }
         var mk = function (d) { return lib.mod.HandLandmarker.createFromOptions(lib.fs, { baseOptions: { modelAssetPath: MODEL, delegate: d }, runningMode: "VIDEO", numHands: 2 }); };
         try { lm = await mk("GPU"); } catch (e1) { lm = await mk("CPU"); }
         vid.srcObject = stream;
-        var bgv = document.getElementById("hfBg"); if (bgv) { bgv.srcObject = stream; try { bgv.play(); } catch (e3) {} }
         await vid.play();
       } catch (e2) { stopCam(); showMsg("hf_err"); return; }
       starting = false; camOn = true; tAx = ax; tAy = ay; tZ = zoom;
-      hfEl.classList.add("cam-full"); size(); px = tPx = W / 2; py = tPy = H / 2 + 40; lastHands = []; draw();
+      lastHands = [];
       box.hidden = false; camBtn.disabled = false; camBtn.classList.add("on"); camBtn.removeAttribute("data-t"); camBtn.textContent = T("hf_cam_off");
       showMsg("hf_show");
       camRaf = requestAnimationFrame(camLoop);
