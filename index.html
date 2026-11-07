@@ -95,12 +95,13 @@ a, button { font-family: inherit; }
 .menu-head { margin-bottom: 26px; }
 .menu-link + .menu-link { margin-top: -28px; }
 
-.menu-link:nth-of-type(1) { --mp: color-mix(in srgb, var(--accent) 16%, transparent); --mc: #fff; z-index: 1; }
-.menu-link:nth-of-type(2) { --mp: color-mix(in srgb, var(--accent) 24%, transparent); --mc: #fff; z-index: 2; }
-.menu-link:nth-of-type(3) { --mp: color-mix(in srgb, var(--accent) 32%, transparent); --mc: #fff; z-index: 3; }
-.menu-link:nth-of-type(4) { --mp: color-mix(in srgb, var(--accent) 40%, transparent); --mc: #fff; z-index: 4; }
-.menu-link:nth-of-type(5) { --mp: color-mix(in srgb, var(--accent) 48%, transparent); --mc: #fff; z-index: 5; }
-.menu-link { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent) !important; box-shadow: none !important; }
+/* fasl bilan oʻzgarmaydi — qatʻiy binafsha shisha */
+.menu-link:nth-of-type(1) { --mp: rgba(139,108,255,.10); --mc: #fff; z-index: 1; }
+.menu-link:nth-of-type(2) { --mp: rgba(139,108,255,.14); --mc: #fff; z-index: 2; }
+.menu-link:nth-of-type(3) { --mp: rgba(139,108,255,.18); --mc: #fff; z-index: 3; }
+.menu-link:nth-of-type(4) { --mp: rgba(139,108,255,.22); --mc: #fff; z-index: 4; }
+.menu-link:nth-of-type(5) { --mp: rgba(139,108,255,.26); --mc: #fff; z-index: 5; }
+.menu-link { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(190,160,255,.45) !important; box-shadow: none !important; }
 .menu-link:hover { filter: brightness(1.08); }
 
 /* tepa qism */
@@ -368,6 +369,8 @@ body { animation: tint 36s ease-in-out infinite; }
   .s-winter h2 { background: linear-gradient(180deg, #ffffff 20%, #a9d8ff 115%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 }
 .s-winter .sec p, .s-winter .fact-cell dd, .s-winter .info dd, .s-winter .typed-line .cl-d, .s-winter .who b { color: #E6F2FF; text-shadow: 0 0 8px rgba(150, 205, 255, .35), 0 1px 0 rgba(255, 255, 255, .18); }
+.s-winter .menu-link, .s-winter .menu-head, .s-winter .hf p, .s-winter .hf-tab, .s-winter .chip, .s-winter .lang, .s-winter .hf h3, .s-winter label, .s-winter .sec h3, .s-winter .sec span, .s-winter .fact-cell dt, .s-winter .info dt { color: #E6F2FF; text-shadow: 0 0 8px rgba(150, 205, 255, .4), 0 1px 0 rgba(255, 255, 255, .2); }
+.s-winter .menu-link { --mc: #EAF6FF; }
 @keyframes slide { to { background-position: 100% 0; } }
 @keyframes pop { from { transform: translateY(10px) scale(.9); } }
 @keyframes imgin { from { opacity: 0; transform: scale(.96); } }
