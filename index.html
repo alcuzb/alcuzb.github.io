@@ -72,7 +72,7 @@ a, button { font-family: inherit; }
 /* menyu */
 .menu {
   position: fixed; inset: 0; z-index: 60; display: flex; justify-content: flex-end;
-  background: rgba(10, 8, 24, .74);
+  background: rgba(10, 8, 24, .45); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
   opacity: 0; transition: opacity .25s ease;
 }
 .menu.open { opacity: 1; }
@@ -81,16 +81,27 @@ a, button { font-family: inherit; }
   padding-top: calc(16px + env(safe-area-inset-top, 0px));
   padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   padding-left: 18px; padding-right: max(16px, env(safe-area-inset-right, 0px));
-  background: rgba(17, 14, 34, .94); border-left: 1px solid var(--line);
+  background: transparent; border-left: 0;
   transform: translateX(100%); transition: transform .3s cubic-bezier(.2, .7, .2, 1);
 }
 .menu.open .menu-panel { transform: none; }
 .menu-head { display: flex; align-items: center; justify-content: space-between; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
 .menu-link {
-  display: block; padding: 16px 18px; border: 1px solid var(--line); border-radius: 16px;
-  background: rgba(236, 233, 250, .06); color: var(--fg); text-decoration: none; font-weight: 600; font-size: 17px;
+  display: block; padding: 16px 26px; height: 84px; border: 0; border-radius: 999px;
+  background: var(--mp, rgba(236, 233, 250, .06)); color: var(--mc, #fff); text-decoration: none; font-weight: 700; font-size: 17px;
+  font-family: "Unbounded", "Onest", sans-serif; letter-spacing: .01em; box-shadow: 0 -10px 24px rgba(0, 0, 0, .35);
 }
-.menu-link:hover { border-color: var(--accent); }
+.menu-panel { gap: 0; }
+.menu-head { margin-bottom: 26px; }
+.menu-link + .menu-link { margin-top: -28px; }
+
+.menu-link:nth-of-type(1) { --mp: color-mix(in srgb, var(--accent) 16%, transparent); --mc: #fff; z-index: 1; }
+.menu-link:nth-of-type(2) { --mp: color-mix(in srgb, var(--accent) 24%, transparent); --mc: #fff; z-index: 2; }
+.menu-link:nth-of-type(3) { --mp: color-mix(in srgb, var(--accent) 32%, transparent); --mc: #fff; z-index: 3; }
+.menu-link:nth-of-type(4) { --mp: color-mix(in srgb, var(--accent) 40%, transparent); --mc: #fff; z-index: 4; }
+.menu-link:nth-of-type(5) { --mp: color-mix(in srgb, var(--accent) 48%, transparent); --mc: #fff; z-index: 5; }
+.menu-link { -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid color-mix(in srgb, var(--accent) 45%, transparent) !important; box-shadow: none !important; }
+.menu-link:hover { filter: brightness(1.08); }
 
 /* tepa qism */
 .hero { display: flex; flex-direction: column; gap: 18px; }
@@ -411,7 +422,7 @@ body { animation: tint 36s ease-in-out infinite; }
 .hf-tab.on, .hf-b2.on { border-color: #ff4fd8; color: #ff9be9; background: color-mix(in srgb, #ff4fd8 14%, transparent); }
 .hf.sec-x .hf-tag { display: none; }
 .hf-b.on { border-color: #ff4fd8; color: #ff9be9; background: color-mix(in srgb, #ff4fd8 14%, transparent); }
-.hf-cam { position: absolute; top: 10px; right: 10px; width: 150px; height: 112px; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, #ff4fd8 55%, transparent); transform: scaleX(-1); background: #000; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
+.hf-cam { position: absolute; top: 10px; right: 10px; width: 120px; height: 90px; border-radius: 12px; overflow: hidden; border: 1px solid color-mix(in srgb, #ff4fd8 55%, transparent); transform: scaleX(-1); background: #000; box-shadow: 0 6px 18px rgba(0, 0, 0, .45); }
 .hf-cam video, .hf-cam canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
 .hf-fbar, .hf-fmsg { display: none; }
 .hf.cam-full { background: #000; max-width: 640px; margin-inline: auto; width: 100%; }
@@ -469,7 +480,7 @@ body { animation: tint 36s ease-in-out infinite; }
 @keyframes floaty { to { transform: translate(-30px, 60px); } }
 #menuClose { transform: rotate(-90deg) scale(.5); opacity: 0; transition: transform .5s cubic-bezier(.2, .8, .2, 1) .25s, opacity .3s .25s, border-color .2s ease; }
 .menu.open #menuClose { transform: none; opacity: 1; }
-.menu-link { position: relative; overflow: hidden; opacity: 0; transform: translateX(50px); transition: border-color .25s ease, background .25s ease; }
+.menu-link { position: relative; overflow: hidden; opacity: 0; transform: translateX(50px); transition: filter .25s ease; }
 .menu.open .menu-link { animation: li .55s cubic-bezier(.2, .8, .2, 1) forwards; }
 .menu.open .menu-link:nth-of-type(1) { animation-delay: .2s; }
 .menu.open .menu-link:nth-of-type(2) { animation-delay: .3s; }
@@ -477,7 +488,7 @@ body { animation: tint 36s ease-in-out infinite; }
 .menu.open .menu-link:nth-of-type(4) { animation-delay: .5s; }
 .menu.open .menu-link:nth-of-type(5) { animation-delay: .6s; }
 .menu-link::after { content: ""; position: absolute; inset: 0; background: linear-gradient(105deg, transparent 40%, rgba(255, 255, 255, .16) 50%, transparent 60%); transform: translateX(-120%); pointer-events: none; }
-.menu-link:active { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.menu-link:active { filter: brightness(1.15); }
 .menu-link:active::after { transform: translateX(120%); transition: transform .6s; }
 
 /* kirish animatsiyasi */
@@ -770,32 +781,6 @@ body { animation: tint 36s ease-in-out infinite; }
       <button type="button" class="chip hf-b" data-sh="tor" data-t="hf_tor">Halqa</button>
       <button type="button" class="chip hf-b" data-sh="dna" data-t="hf_dna">DNK</button>
       <button type="button" class="chip hf-b hf-draw" data-sh="draw" data-t="hf_draw">✍ Oʻzim chizaman</button>
-    </div>
-    <div class="hf-pick hf-sec" data-for="fin" role="group" aria-label="Barmoq" hidden>
-      <button type="button" class="chip hf-b2" data-fn="1">☝ 1</button>
-      <button type="button" class="chip hf-b2" data-fn="2">✌ 2</button>
-      <button type="button" class="chip hf-b2 on" data-fn="3">3</button>
-      <button type="button" class="chip hf-b2" data-fn="4">4</button>
-      <button type="button" class="chip hf-b2" data-fn="5">🖐 5</button>
-    </div>
-    <div class="hf-pick hf-sec" data-for="ndl" role="group" aria-label="Ignalar" hidden>
-      <button type="button" class="chip hf-b2 on" data-nf="0" data-t="hf_n0">Kirpi</button>
-      <button type="button" class="chip hf-b2" data-nf="1" data-t="hf_n1">Halqa</button>
-      <button type="button" class="chip hf-b2" data-nf="2" data-t="hf_n2">Girdob</button>
-      <button type="button" class="chip hf-b2" data-nf="3" data-t="hf_n3">Shar</button>
-      <button type="button" class="chip hf-b2" data-nf="4" data-t="hf_n4">Portlash</button>
-    </div>
-    <div class="hf-pick hf-sec" data-for="flw" role="group" aria-label="Oqim" hidden>
-      <button type="button" class="chip hf-b2 on" data-wf="0" data-t="hf_w0">Shar</button>
-      <button type="button" class="chip hf-b2" data-wf="1" data-t="hf_w1">Sochilish</button>
-      <button type="button" class="chip hf-b2" data-wf="2" data-t="hf_w2">Oʻqlar</button>
-    </div>
-    <div class="hf-pick hf-sec" data-for="cld" role="group" aria-label="Zarralar" hidden>
-      <button type="button" class="chip hf-b2 on" data-cf="0" data-t="hf_c0">Gullar</button>
-      <button type="button" class="chip hf-b2" data-cf="1" data-t="hf_c1">Qizil</button>
-      <button type="button" class="chip hf-b2" data-cf="2" data-t="hf_c2">Moviy</button>
-      <button type="button" class="chip hf-b2" data-cf="3" data-t="hf_c3">Yashil</button>
-      <button type="button" class="chip hf-b2" data-cf="4" data-t="hf_c4">Rang-barang</button>
     </div>
     <div class="hf-cols hf-sec" data-for="shape" id="hfCols" role="group" aria-label="Rang">
       <button type="button" class="hf-c on" data-c="#ff4fd8" style="--c:#ff4fd8" aria-label="Pushti"></button>
@@ -1128,9 +1113,9 @@ body { animation: tint 36s ease-in-out infinite; }
   Object.assign(DICT.uz, {
     hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar",
     hf_s_shape: DICT.uz.hf_p,
-    hf_s_fin: "Kameraga barmoq sonini koʻrsating: 1 — yorugʻ chiziq, 2 — yashil chiziq, 3 — piramida, 4 — kub, 5 — dodekaedr. Qoʻl yaqinlashsa shakl kattalashadi. Ikki qoʻl — ikki shakl. Kamerasiz: pastdagi raqamlarni bosing.",
+    hf_s_fin: "Kameraga barmoq sonini koʻrsating: 1 — yorugʻ chiziq, 2 — yashil chiziq, 3 — piramida, 4 — kub, 5 — dodekaedr. Qoʻl yaqinlashsa shakl kattalashadi. Ikki qoʻl — ikki shakl.",
     hf_s_ndl: "Yashil-sariq ignalardan shakllar: 1 barmoq — kirpi shar, 2 — halqa, 3 — girdob, 4 — aylanuvchi shar, 5 — portlash. Qoʻl surilsa, ignalar ergashadi.",
-    hf_s_flw: "Mushtum — ignalar shar boʻladi, kaftni ochsangiz sochiladi, «rok» belgisi (koʻrsatkich va jimjiloq) — yuqoriga oʻqlar yogʻiladi. Kamerasiz: sichqoncha/barmoq bilan suring.",
+    hf_s_flw: "Mushtum — ignalar shar boʻladi, kaftni ochsangiz sochiladi, «rok» belgisi (koʻrsatkich va jimjiloq) — yuqoriga oʻqlar yogʻiladi.",
     hf_s_cld: "Qoʻl atrofida rangli zarralar buluti: 1 barmoq — gullar, 2 — qizil, 3 — moviy, 4 — yashil, 5 — rang-barang, mushtum — toʻxtaydi.",
     hf_n0: "Kirpi", hf_n1: "Halqa", hf_n2: "Girdob", hf_n3: "Shar", hf_n4: "Portlash",
     hf_w0: "Shar", hf_w1: "Sochilish", hf_w2: "Oʻqlar",
@@ -1140,9 +1125,9 @@ body { animation: tint 36s ease-in-out infinite; }
   Object.assign(DICT.en, {
     hf_t_shape: "Shapes", hf_t_fin: "Fingers", hf_t_ndl: "Needles", hf_t_flw: "Stream", hf_t_cld: "Particles",
     hf_s_shape: DICT.en.hf_p,
-    hf_s_fin: "Show a number of fingers to the camera: 1 — glowing line, 2 — green line, 3 — pyramid, 4 — cube, 5 — dodecahedron. Move your hand closer to enlarge. Two hands — two shapes. No camera: tap the numbers below.",
+    hf_s_fin: "Show a number of fingers to the camera: 1 — glowing line, 2 — green line, 3 — pyramid, 4 — cube, 5 — dodecahedron. Move your hand closer to enlarge. Two hands — two shapes.",
     hf_s_ndl: "Shapes made of green-yellow needles: 1 finger — urchin ball, 2 — ring, 3 — vortex, 4 — spinning ball, 5 — burst. The needles follow your hand.",
-    hf_s_flw: "Fist — the needles gather into a ball, open palm — they scatter, “rock” sign (index and pinky) — arrows rain upward. No camera: drag with mouse/finger.",
+    hf_s_flw: "Fist — the needles gather into a ball, open palm — they scatter, “rock” sign (index and pinky) — arrows rain upward.",
     hf_s_cld: "A cloud of colored particles around your hand: 1 finger — flowers, 2 — red, 3 — blue, 4 — green, 5 — rainbow, fist — stops.",
     hf_n0: "Urchin", hf_n1: "Ring", hf_n2: "Vortex", hf_n3: "Ball", hf_n4: "Burst",
     hf_w0: "Sphere", hf_w1: "Scatter", hf_w2: "Arrows",
@@ -1152,9 +1137,9 @@ body { animation: tint 36s ease-in-out infinite; }
   Object.assign(DICT.ru, {
     hf_t_shape: "Фигуры", hf_t_fin: "Пальцы", hf_t_ndl: "Иглы", hf_t_flw: "Поток", hf_t_cld: "Частицы",
     hf_s_shape: DICT.ru.hf_p,
-    hf_s_fin: "Покажите камере число пальцев: 1 — светящаяся линия, 2 — зелёная линия, 3 — пирамида, 4 — куб, 5 — додекаэдр. Ближе рука — больше фигура. Две руки — две фигуры. Без камеры: нажмите цифры ниже.",
+    hf_s_fin: "Покажите камере число пальцев: 1 — светящаяся линия, 2 — зелёная линия, 3 — пирамида, 4 — куб, 5 — додекаэдр. Ближе рука — больше фигура. Две руки — две фигуры.",
     hf_s_ndl: "Фигуры из зелёно-жёлтых игл: 1 палец — ёж, 2 — кольцо, 3 — вихрь, 4 — вращающийся шар, 5 — взрыв. Иглы следуют за рукой.",
-    hf_s_flw: "Кулак — иглы собираются в шар, раскрытая ладонь — разлетаются, жест «рок» (указательный и мизинец) — вверх сыплются стрелы. Без камеры: водите мышью/пальцем.",
+    hf_s_flw: "Кулак — иглы собираются в шар, раскрытая ладонь — разлетаются, жест «рок» (указательный и мизинец) — вверх сыплются стрелы.",
     hf_s_cld: "Облако цветных частиц вокруг руки: 1 палец — цветы, 2 — красный, 3 — синий, 4 — зелёный, 5 — радуга, кулак — остановка.",
     hf_n0: "Ёж", hf_n1: "Кольцо", hf_n2: "Вихрь", hf_n3: "Шар", hf_n4: "Взрыв",
     hf_w0: "Шар", hf_w1: "Разлёт", hf_w2: "Стрелы",
@@ -2283,7 +2268,7 @@ body { animation: tint 36s ease-in-out infinite; }
     }
     SH.dna = { v: dv, e: de, nd: true };
     var COL = "#ff4fd8", pointing = false, lostAt = 0, lastHands = [], px = 0, py = 0, tPx = 0, tPy = 0;
-    var sec = "shape", HANDS = [], HS = [], PTR = { x: 0, y: 0, down: false, t: -1e9 }, manN = 3, ndMode = 0, flMode = 0, cPal = 0;
+    var sec = "shape", HANDS = [], HS = [], PTR = { x: 0, y: 0, down: false, t: -1e9 };
     var vidEl = document.getElementById("hfVid");
     var mapP = function (p) {
       return [(1 - p.x) * W, p.y * H];
@@ -2303,7 +2288,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var camOn = false, cur = "cube", ax = -.45, ay = .6, vx = calm ? 0 : .006, vy = calm ? 0 : .003, zoom = 1, raf = 0, visible = false, t = 0;
     var pts = {}, lastD = 0, drag = false;
     var size = function () {
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       W = cv.clientWidth; H = cv.clientHeight;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr); g.setTransform(dpr, 0, 0, dpr, 0, 0);
     };
@@ -2479,7 +2464,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var camLoop = function (now) {
       camRaf = requestAnimationFrame(camLoop);
       if (!camOn || !visible || document.hidden) return;
-      if (now - lastDet > 33 && vid.readyState >= 2 && lm) {
+      if (now - lastDet > 22 && vid.readyState >= 2 && lm) {
         lastDet = now;
         var r = null;
         try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
@@ -2531,8 +2516,9 @@ body { animation: tint 36s ease-in-out infinite; }
     var inputs = function () {
       if (camOn && HANDS.length) return HANDS;
       var now = performance.now();
-      if (now - PTR.t < 2500) return [{ x: PTR.x, y: PTR.y, n: manN, scale: 0.2, ptr: true, down: PTR.down }];
-      return [{ x: W / 2 + Math.sin(st * 0.7) * W * 0.2, y: H / 2 + Math.cos(st * 0.9) * H * 0.12, n: manN, scale: 0.2, idle: true, down: false }];
+      var dn = 1 + (Math.floor(st / 2.5) % 5);
+      if (now - PTR.t < 2500) return [{ x: PTR.x, y: PTR.y, n: PTR.down ? 0 : dn, scale: 0.2, ptr: true, down: PTR.down, rock: false }];
+      return [{ x: W / 2 + Math.sin(st * 0.7) * W * 0.2, y: H / 2 + Math.cos(st * 0.9) * H * 0.12, n: dn, scale: 0.2, idle: true, down: false, rock: sec === "flw" && dn === 3 }];
     };
     var rot3 = function (x, y, z, ca, sa, cb, sb) {
       var x1 = x * cb + z * sb, z1 = -x * sb + z * cb, y1 = y * ca - z1 * sa, z2 = y * sa + z1 * ca;
@@ -2559,7 +2545,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var renderFin = function (hs) {
       var base = Math.min(W, H) * 0.2;
       for (var i = 0; i < hs.length && i < 2; i++) {
-        var h = hs[i], n = (h.ptr || h.idle) ? manN : h.n, s2 = finS[i] || (finS[i] = { x: h.x, y: h.y, k: 0, n: -1, a: 0, b: 0 });
+        var h = hs[i], n = h.n, s2 = finS[i] || (finS[i] = { x: h.x, y: h.y, k: 0, n: -1, a: 0, b: 0 });
         if (n !== s2.n) { s2.n = n; s2.k = 0.25; }
         s2.k += ((n > 0 ? 1 : 0) - s2.k) * 0.14;
         s2.x += (h.x - s2.x) * 0.3; s2.y += (h.y - s2.y) * 0.3; s2.a += 0.017; s2.b += 0.024;
@@ -2570,7 +2556,7 @@ body { animation: tint 36s ease-in-out infinite; }
       }
     };
     /* ---- 2) Ignalar ---- */
-    var NN = 620, ND = null, ndForm = -1;
+    var NN = 640, ND = null, ndForm = -1;
     var setForm = function (f) {
       var i, y, r, th, x1, z1, an, ph2, nx, ny, nz, rr2, arm, len, u1, u2, l;
       ndForm = f;
@@ -2608,7 +2594,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var renderNdl = function (hs) {
       if (!ND) initNdl();
       var h = hs[0], f;
-      if (h.ptr || h.idle) f = h.down ? 3 : ndMode; else f = [3, 0, 1, 2, 3, 4][h.n] || 0;
+      f = [3, 0, 1, 2, 3, 4][h.n] || 0;
       if (f !== ndForm) setForm(f);
       ND.cx += (h.x - ND.cx) * 0.18; ND.cy += (h.y - ND.cy) * 0.18; ND.sz += (clamp(h.scale / 0.2, 0.6, 1.7) - ND.sz) * 0.15;
       ND.ay += 0.014; ND.ax = 0.35 + Math.sin(st * 0.5) * 0.15;
@@ -2631,7 +2617,7 @@ body { animation: tint 36s ease-in-out infinite; }
       }
     };
     /* ---- 3) Oqim ---- */
-    var FLN = 440, AN = 120, FL = null;
+    var FLN = 460, AN = 120, FL = null;
     var initFlw = function () {
       FL = { x: new Float32Array(FLN), y: new Float32Array(FLN), vx: new Float32Array(FLN), vy: new Float32Array(FLN), th: new Float32Array(FLN), ph: new Float32Array(FLN), kk: new Float32Array(FLN), a0: new Float32Array(FLN),
         ax: new Float32Array(AN), ay: new Float32Array(AN), av: new Float32Array(AN), cx: W / 2, cy: H / 2, spin: 0, m: 0 };
@@ -2642,7 +2628,7 @@ body { animation: tint 36s ease-in-out infinite; }
     var renderFlw = function (hs) {
       if (!FL) initFlw();
       var h = hs[0], m;
-      if (h.ptr || h.idle) m = h.down ? 0 : flMode; else m = h.rock ? 2 : (h.n >= 5 ? 1 : 0);
+      m = h.rock ? 2 : (h.n >= 5 ? 1 : 0);
       FL.cx += (h.x - FL.cx) * 0.22; FL.cy += (h.y - FL.cy) * 0.22; FL.spin += 0.018;
       var R2 = Math.min(W, H) * 0.2 * clamp(h.scale / 0.2, 0.6, 1.6), i, j;
       g.globalCompositeOperation = "lighter"; g.lineCap = "round";
@@ -2703,13 +2689,13 @@ body { animation: tint 36s ease-in-out infinite; }
     var CL = null;
     var renderCld = function (hs) {
       if (!CL) CL = { p: [], cx: W / 2, cy: H / 2, B: Math.min(W, H) * 0.28 };
-      var h = hs[0], pal, n = (h.ptr || h.idle) ? (h.down ? 0 : cPal + 1) : h.n;
+      var h = hs[0], pal, n = h.n;
       pal = n > 0 ? n - 1 : -1;
       CL.cx += (h.x - CL.cx) * 0.2; CL.cy += (h.y - CL.cy) * 0.2;
       CL.B += (Math.min(W, H) * 0.3 * clamp(h.scale / 0.2, 0.7, 1.4) - CL.B) * 0.15;
       var B = CL.B, cx = CL.cx, cy = CL.cy, P = CL.p, i, q;
       if (pal >= 0) {
-        for (i = 0; i < 4 && P.length < 260; i++) {
+        for (i = 0; i < 4 && P.length < 280; i++) {
           var cl = CP[pal], col = cl[(Math.random() * cl.length) | 0];
           P.push({ x: cx + (Math.random() + Math.random() - 1) * B * 0.8, y: cy + (Math.random() + Math.random() - 1) * B * 0.8, vx: (Math.random() - 0.5) * 0.8, vy: (Math.random() - 0.5) * 0.8 - 0.2,
             l: 0, m: 70 + Math.random() * 70, sz: 14 + Math.random() * 22, col: col, fl: pal === 0 && Math.random() < 0.35, rot: Math.random() * 6.28, vr: (Math.random() - 0.5) * 0.06 });
@@ -2755,18 +2741,10 @@ body { animation: tint 36s ease-in-out infinite; }
       hfEl.classList.toggle("sec-x", name !== "shape");
       if (name === "ndl") ND = null; if (name === "flw") FL = null; if (name === "cld") CL = null; if (name === "fin") finS = [];
       if (camOn) showMsg(name === "shape" ? "hf_show" : "hf_show2"); else showMsg(null);
+      if (name !== "shape" && !camOn && !starting) startCam();
       kick(); draw();
     };
     if (tabsEl) tabsEl.addEventListener("click", function (e) { var b = e.target.closest ? e.target.closest(".hf-tab") : null; if (b) setSec(b.getAttribute("data-sec")); });
-    var bindChips = function (attr, fn) {
-      [].slice.call(document.querySelectorAll("#hfp .hf-b2[" + attr + "]")).forEach(function (b, i, all) {
-        b.addEventListener("click", function () { all.forEach(function (x) { x.classList.toggle("on", x === b); }); fn(+b.getAttribute(attr)); kick(); if (calm) draw(); });
-      });
-    };
-    bindChips("data-fn", function (v) { manN = v; });
-    bindChips("data-nf", function (v) { ndMode = v; });
-    bindChips("data-wf", function (v) { flMode = v; });
-    bindChips("data-cf", function (v) { cPal = v; });
     var fb = function (id, fn) { var el = document.getElementById(id); if (el) el.addEventListener("click", fn); };
     fb("fStop", function () { stopCam(); showMsg(null); });
     fb("fDraw", function () { var b = pick.querySelector('[data-sh="draw"]'); if (b) b.click(); });
