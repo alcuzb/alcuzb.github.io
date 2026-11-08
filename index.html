@@ -675,6 +675,14 @@ body { animation: tint 36s ease-in-out infinite; }
 .s-autumn h1 { filter: drop-shadow(0 0 10px rgba(255, 140, 50, .3)); }
 @media (prefers-reduced-motion: reduce) { .s-winter h1 span::before, .s-winter h2::before, .s-spring h1 span::before, .s-spring h2::before, .s-summer h1 span::before, .s-summer h2::before, .s-autumn h1 span::before, .s-autumn h2::before { animation: none; opacity: 0; } .s-summer h1 span::after, .s-summer h2::after, .s-autumn h1 span::after, .s-autumn h2::after { animation: none; clip-path: none; } }
 .s-summer h2, .s-autumn h2 { width: fit-content; max-width: 100%; }
+
+/* chirmoviq sarlavhalarni oʻrab chiqadi — eski tagidagi bezaklar olib tashlandi */
+.s-winter h1 span::before, .s-winter h1 span::after, .s-winter h2::before, .s-winter h2::after,
+.s-spring h1 span::before, .s-spring h1 span::after, .s-spring h2::before, .s-spring h2::after,
+.s-summer h1 span::before, .s-summer h1 span::after, .s-summer h2::before, .s-summer h2::after,
+.s-autumn h1 span::before, .s-autumn h1 span::after, .s-autumn h2::before, .s-autumn h2::after { content: none !important; display: none !important; }
+.hv { position: relative; display: block; width: fit-content; max-width: 100%; }
+.hv > h2 { position: relative; z-index: 1; }
 </style>
 
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
@@ -1057,7 +1065,7 @@ body { animation: tint 36s ease-in-out infinite; }
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) { cancelAnimationFrame(raf); return; }
       var ns = seasonNow();
-      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); flakes = []; size(); if (vineApi) vineApi.rebuild(); }
+      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); flakes = []; size(); if (vineApi) vineApi.rebuild(); if (typeof hvRebuild === "function") hvRebuild(); }
       cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
     });
     raf = requestAnimationFrame(frame);
@@ -1679,6 +1687,81 @@ body { animation: tint 36s ease-in-out infinite; }
     var rt = 0;
     window.addEventListener("resize", function () { clearTimeout(rt); rt = setTimeout(function () { if (done) settle(); }, 150); });
   })();
+
+  /* Sarlavhalar: chirmoviq sanadagidek matn ichidan oʻrab chiqadi */
+  var hvList = [];
+  (function () {
+    var GREEN = ["#7EDC8F", "#4CAF68", "#8FE388"], LEAFC = ["#E8643C", "#F2A33A", "#D9433B", "#C98A2B", "#B5532A", "#F5C45E"];
+    var STEM = { autumn: "#A8622E", spring: "#5CBF72", summer: "#6CCF4E", winter: "#A9D2FF" };
+    var ease = function (u) { return u < .5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2; };
+    var back2 = function (u) { var c = 1.7; return 1 + (c + 1) * Math.pow(u - 1, 3) + c * Math.pow(u - 1, 2); };
+    var mkVine = function (h) {
+      var wrap = document.createElement("span"); wrap.className = "hv";
+      h.parentNode.insertBefore(wrap, h);
+      var back = document.createElement("canvas"), front = document.createElement("canvas");
+      back.className = "cl-cv cl-back"; front.className = "cl-cv cl-front"; back.setAttribute("aria-hidden", "true"); front.setAttribute("aria-hidden", "true");
+      wrap.appendChild(back); wrap.appendChild(h); wrap.appendChild(front);
+      var gb = back.getContext("2d"), gf = front.getContext("2d"), S = { CW: 0, CH: 0, X0: 0, X1: 0, CY: 0, AMP: 0, PER: 90, items: [] }, grown = false, vraf = 0, seen = false;
+      var yAt = function (x) { return S.CY + S.AMP * Math.sin((x - S.X0) / S.PER * 6.2832); };
+      var front0 = function (x) { return Math.cos((x - S.X0) / S.PER * 6.2832) > 0; };
+      var build = function () {
+        var dpr = Math.min(window.devicePixelRatio || 1, 2), lr = wrap.getBoundingClientRect(), k = 0, x;
+        S.CW = Math.round(lr.width); S.CH = Math.round(lr.height + 60);
+        [back, front].forEach(function (c) { c.width = Math.round(S.CW * dpr); c.height = Math.round(S.CH * dpr); });
+        gb.setTransform(dpr, 0, 0, dpr, 0, 0); gf.setTransform(dpr, 0, 0, dpr, 0, 0);
+        S.X0 = 2; S.X1 = Math.max(S.X0 + 20, S.CW - 2); S.CY = S.CH / 2; S.AMP = Math.min(10, Math.max(6, lr.height * .28)); S.PER = Math.max(48, (S.X1 - S.X0) / 3.2);
+        S.items = [];
+        var step = SEASON === "winter" ? 22 : 19;
+        for (x = S.X0 + 8; x < S.X1 - 4; x += step * (0.8 + Math.random() * 0.4), k++) {
+          var r = Math.random(), it = { x: x, side: k % 2 ? 1 : -1, s: 5 + Math.random() * 3.5, f: front0(x), j: (Math.random() - 0.5) * 0.5 };
+          if (SEASON === "autumn") { it.t = "leaf"; it.c = LEAFC[(Math.random() * LEAFC.length) | 0]; it.s += 1.5; }
+          else if (SEASON === "spring") { if (k % 3 === 2) { it.t = "blossom"; it.c = r < .5 ? "#FFC2DD" : "#FFFFFF"; it.s = 4.5 + Math.random() * 2; } else { it.t = "leaf"; it.c = GREEN[(Math.random() * 3) | 0]; } }
+          else if (SEASON === "summer") { if (k % 3 === 2) { it.t = "sun"; it.c = "#FFD84A"; it.s = 5 + Math.random() * 2; } else { it.t = "leaf"; it.c = GREEN[(Math.random() * 3) | 0]; } }
+          else { it.t = k % 3 === 1 ? "ice" : "flake"; it.c = "#DCEBFF"; it.s = 4.5 + Math.random() * 3; }
+          S.items.push(it);
+        }
+      };
+      var drawItem = function (g, it, sc) {
+        var th = Math.atan2(S.AMP * 6.2832 / S.PER * Math.cos((it.x - S.X0) / S.PER * 6.2832), 1), a = th + it.side * (1.05 + it.j), s = it.s, q;
+        g.save(); g.translate(it.x, yAt(it.x)); g.rotate(a); g.scale(sc, sc); g.fillStyle = it.c;
+        if (it.t === "leaf" || it.t === "ice") {
+          g.globalAlpha = it.t === "ice" ? .85 : .95;
+          g.beginPath(); g.moveTo(0, 0); g.quadraticCurveTo(s, -s * .85, s * 2, 0); g.quadraticCurveTo(s, s * .85, 0, 0); g.fill();
+          g.globalAlpha = .3; g.strokeStyle = it.t === "ice" ? "#6a9be0" : "#2a1408"; g.lineWidth = .8; g.beginPath(); g.moveTo(0, 0); g.lineTo(s * 1.9, 0); g.stroke();
+        } else if (it.t === "blossom" || it.t === "sun") {
+          var n = it.t === "sun" ? 8 : 5; g.translate(s * 1.1, 0);
+          for (q = 0; q < n; q++) { g.rotate(6.2832 / n); g.beginPath(); g.ellipse(s * .62, 0, s * (it.t === "sun" ? .55 : .5), s * (it.t === "sun" ? .22 : .4), 0, 0, 6.2832); g.fill(); }
+          g.fillStyle = it.t === "sun" ? "#B8651B" : "#FFD25A"; g.beginPath(); g.arc(0, 0, s * .32, 0, 6.2832); g.fill();
+        } else {
+          g.translate(s * 1.1, 0); g.strokeStyle = it.c; g.lineWidth = 1.1; g.lineCap = "round";
+          for (q = 0; q < 6; q++) { g.rotate(1.0472); g.beginPath(); g.moveTo(0, 0); g.lineTo(s, 0); g.moveTo(s * .55, 0); g.lineTo(s * .8, s * .25); g.moveTo(s * .55, 0); g.lineTo(s * .8, -s * .25); g.stroke(); }
+        }
+        g.restore();
+      };
+      var drawVine = function (gr) {
+        gb.clearRect(0, 0, S.CW, S.CH); gf.clearRect(0, 0, S.CW, S.CH);
+        var gx = S.X0 + (S.X1 - S.X0) * gr, x, px = S.X0, py = yAt(S.X0), st = SEASON, i;
+        [gb, gf].forEach(function (g) { g.lineCap = "round"; g.lineWidth = st === "winter" ? 1.4 : 2; g.strokeStyle = STEM[st]; g.shadowColor = st === "winter" ? "#9CC8FF" : "transparent"; g.shadowBlur = st === "winter" ? 5 : 0; });
+        for (x = S.X0 + 3; x <= gx; x += 3) { var y = yAt(x), g = front0(x) ? gf : gb; g.beginPath(); g.moveTo(px, py); g.lineTo(x, y); g.stroke(); px = x; py = y; }
+        gb.shadowBlur = 0; gf.shadowBlur = 0;
+        for (i = 0; i < S.items.length; i++) { var it = S.items[i], u = Math.max(0, Math.min(1, (gx - it.x) / 34)); if (u > 0) drawItem(it.f ? gf : gb, it, back2(u)); }
+      };
+      var grow = function () {
+        cancelAnimationFrame(vraf); build(); grown = true;
+        if (calm) { drawVine(1); return; }
+        var t0 = 0, run = function (ts) { if (!t0) t0 = ts; var u = Math.min(1, (ts - t0) / 2200); drawVine(ease(u)); if (u < 1) vraf = requestAnimationFrame(run); };
+        vraf = requestAnimationFrame(run);
+      };
+      var settle = function () { if (!grown) return; cancelAnimationFrame(vraf); build(); drawVine(1); };
+      if ("IntersectionObserver" in window) {
+        new IntersectionObserver(function (en, ob) { if (en[0].isIntersecting && !seen) { seen = true; setTimeout(grow, 350); ob.disconnect(); } }, { threshold: .6 }).observe(wrap);
+      } else { seen = true; grow(); }
+      if ("ResizeObserver" in window) { var lw = 0; new ResizeObserver(function () { var w = wrap.getBoundingClientRect().width; if (Math.abs(w - lw) > 1) { lw = w; settle(); } }).observe(wrap); }
+      hvList.push(settle);
+    };
+    [].slice.call(document.querySelectorAll('h2[id^="h-"]')).forEach(function (h) { if (h.id !== "h-hf") mkVine(h); });
+  })();
+  var hvRebuild = function () { hvList.forEach(function (f) { f(); }); };
 
   /* Playlist */
   var tracks = [
