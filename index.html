@@ -450,6 +450,11 @@ body { animation: tint 36s ease-in-out infinite; }
 /* playlist: alohida panel */
 .plp { position: fixed; inset: 0; z-index: 70; background: #0E0B1F; overflow-y: auto; transform: translateY(100%); transition: transform .45s cubic-bezier(.2, .8, .2, 1); }
 .plp.open { transform: none; }
+/* Ritmga mos fon */
+.plp-fx { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+.plp > .plp-in { position: relative; z-index: 1; }
+.disc { transform: scale(var(--beat, 1)); }
+
 .plp-in { max-width: 720px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px;
   padding: calc(16px + env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) calc(32px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px)); }
 .plp p { margin: 0; }
@@ -802,6 +807,7 @@ body { animation: tint 36s ease-in-out infinite; }
 </div>
 
 <div class="plp" id="plp" role="dialog" aria-modal="true" aria-label="Playlist" hidden>
+  <canvas class="plp-fx" id="plpFx" aria-hidden="true"></canvas>
   <div class="plp-in">
     <div class="menu-head">
       <h2 id="h-pl" data-t="m_pl">Playlist</h2>
@@ -846,6 +852,7 @@ body { animation: tint 36s ease-in-out infinite; }
       <button type="button" class="chip hf-tab" data-sec="ndl" data-t="hf_t_ndl">Ignalar</button>
       <button type="button" class="chip hf-tab" data-sec="flw" data-t="hf_t_flw">Oqim</button>
       <button type="button" class="chip hf-tab" data-sec="cld" data-t="hf_t_cld">Zarralar</button>
+      <button type="button" class="chip hf-tab" data-sec="xry" data-t="hf_t_xry">X-Ray</button>
     </div>
     <p id="hfSecP" data-t="hf_p">Qoʻl harakati bilan 3D shaklni boshqarish gʻoyasi. Barmoq bilan aylantiring, ikki barmoq bilan kattalashtiring.</p>
     <div class="hf">
@@ -1202,7 +1209,7 @@ body { animation: tint 36s ease-in-out infinite; }
   };
   var THEMES = SEASON_THEMES[SEASON];
   Object.assign(DICT.uz, {
-    hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar",
+    hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar", hf_t_xry: "X-Ray", hf_s_xry: "Yuzingiz va qoʻlingiz ichini rentgendek koʻring.", xr_load: "X-Ray yuklanmoqda…", xr_face: "Yuzingizni kameraga qarating",
     hf_s_shape: DICT.uz.hf_p,
     hf_s_fin: "Kameraga barmoq sonini koʻrsating: 1 — yorugʻ chiziq, 2 — yashil chiziq, 3 — piramida, 4 — kub, 5 — dodekaedr. Qoʻl yaqinlashsa shakl kattalashadi. Ikki qoʻl — ikki shakl.",
     hf_s_ndl: "Yashil-sariq ignalardan shakllar: 1 barmoq — kirpi shar, 2 — halqa, 3 — girdob, 4 — aylanuvchi shar, 5 — portlash. Qoʻl surilsa, ignalar ergashadi.",
@@ -1214,7 +1221,7 @@ body { animation: tint 36s ease-in-out infinite; }
     hf_show2: "Qoʻlingizni kameraga koʻrsating: barmoq sonini oʻzgartiring, qoʻlni surib koʻring."
   });
   Object.assign(DICT.en, {
-    hf_t_shape: "Shapes", hf_t_fin: "Fingers", hf_t_ndl: "Needles", hf_t_flw: "Stream", hf_t_cld: "Particles",
+    hf_t_shape: "Shapes", hf_t_fin: "Fingers", hf_t_ndl: "Needles", hf_t_flw: "Stream", hf_t_cld: "Particles", hf_t_xry: "X-Ray", hf_s_xry: "See inside your face and hand like an X-ray.", xr_load: "Loading X-Ray…", xr_face: "Look at the camera",
     hf_s_shape: DICT.en.hf_p,
     hf_s_fin: "Show a number of fingers to the camera: 1 — glowing line, 2 — green line, 3 — pyramid, 4 — cube, 5 — dodecahedron. Move your hand closer to enlarge. Two hands — two shapes.",
     hf_s_ndl: "Shapes made of green-yellow needles: 1 finger — urchin ball, 2 — ring, 3 — vortex, 4 — spinning ball, 5 — burst. The needles follow your hand.",
@@ -1226,7 +1233,7 @@ body { animation: tint 36s ease-in-out infinite; }
     hf_show2: "Show your hand to the camera: change the number of fingers, move your hand."
   });
   Object.assign(DICT.ru, {
-    hf_t_shape: "Фигуры", hf_t_fin: "Пальцы", hf_t_ndl: "Иглы", hf_t_flw: "Поток", hf_t_cld: "Частицы",
+    hf_t_shape: "Фигуры", hf_t_fin: "Пальцы", hf_t_ndl: "Иглы", hf_t_flw: "Поток", hf_t_cld: "Частицы", hf_t_xry: "X-Ray", hf_s_xry: "Смотрите на лицо и руку как на рентгене.", xr_load: "Загрузка X-Ray…", xr_face: "Посмотрите в камеру",
     hf_s_shape: DICT.ru.hf_p,
     hf_s_fin: "Покажите камере число пальцев: 1 — светящаяся линия, 2 — зелёная линия, 3 — пирамида, 4 — куб, 5 — додекаэдр. Ближе рука — больше фигура. Две руки — две фигуры.",
     hf_s_ndl: "Фигуры из зелёно-жёлтых игл: 1 палец — ёж, 2 — кольцо, 3 — вихрь, 4 — вращающийся шар, 5 — взрыв. Иглы следуют за рукой.",
@@ -1503,6 +1510,7 @@ body { animation: tint 36s ease-in-out infinite; }
     plOpen = true;
     busyN++;
     plp.hidden = false;
+    if (typeof fxStart === "function") setTimeout(fxStart, 0);
     syncMini();
     wrapEl.inert = true;
     root.style.overflow = "hidden";
@@ -1774,7 +1782,11 @@ body { animation: tint 36s ease-in-out infinite; }
     { t: "Alone", a: "Lowx", f: "s7.mp3", d: "3:23" },
     { t: "Life Letters", a: "", f: "s8.mp3", d: "4:21" },
     { t: "I Know", a: "", f: "s9.mp3", d: "2:52" },
-    { t: "Noch", a: "Islam", f: "s10.mp3", d: "3:21" }
+    { t: "Noch", a: "Islam", f: "s10.mp3", d: "3:21" },
+    { t: "Gül Gözlim", a: "Sahib Günəli", f: "s11.mp3", d: "3:48" },
+    { t: "Indila (Enigma)", a: "Kamro", f: "s12.mp3", d: "4:58" },
+    { t: "İkili Delilik", a: "Sezen Aksu", f: "s13.mp3", d: "5:04" },
+    { t: "Snowman", a: "Sia", f: "s14.mp3", d: "2:45" }
   ];
   var audio = document.getElementById("audio");
   var playerEl = document.getElementById("player");
@@ -1985,6 +1997,89 @@ body { animation: tint 36s ease-in-out infinite; }
   document.getElementById("miniPlay").addEventListener("click", togglePlay);
   document.getElementById("miniNext").addEventListener("click", function () { setTrack(cur + 1, true); });
   document.getElementById("miniOpen").addEventListener("click", openPl);
+
+  /* Ritmga mos animatsiyali fon: har bir qoʻshiqqa alohida uslub, vaqti-vaqti bilan almashadi */
+  var fx = document.getElementById("plpFx"), fxc = fx.getContext("2d");
+  var an = null, fd = null, fxRaf = 0, fxSmooth = [], bAvg = 0, lastB = 0, lvl = 0, fxPh = 0;
+  var fxSty = 0, fxT0 = 0, fxA = 1, fxNext = -1, fxBeat = 0, fxSt = {};
+  var initAn = function () {
+    if (an !== null) { try { if (an.ctx.state === "suspended") an.ctx.resume(); } catch (e) {} return; }
+    an = false;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext;
+      var ctx = new AC(), src = ctx.createMediaElementSource(audio), nd = ctx.createAnalyser();
+      nd.fftSize = 128; nd.smoothingTimeConstant = .78;
+      src.connect(nd); nd.connect(ctx.destination);
+      an = { ctx: ctx, node: nd }; fd = new Uint8Array(nd.frequencyBinCount);
+    } catch (e) { an = false; }
+  };
+  audio.addEventListener("play", initAn);
+  var hsl = function (h, sat, l, a) { return "hsla(" + (((h % 360) + 360) % 360) + "," + sat + "%," + l + "%," + a + ")"; };
+  var CX = function (W, H) { return [W / 2, H * .3]; };
+  var STY = [
+    /* 1 Aylana spektr: markazdan nurlar */
+    function (c, W, H, d) {
+      var o = CX(W, H), n = 64, R0 = Math.min(W, H) * (.16 + d.lvl * .06), k;
+      c.globalCompositeOperation = "lighter";
+      var g = c.createRadialGradient(o[0], o[1], 0, o[0], o[1], R0 * 3.2);
+      g.addColorStop(0, hsl(d.hue, 90, 60, .25 + d.lvl * .45)); g.addColorStop(1, hsl(d.hue, 90, 50, 0));
+      c.fillStyle = g; c.fillRect(0, 0, W, H);
+      c.lineCap = "round"; c.lineWidth = Math.max(2, W / 120);
+      for (k = 0; k < n; k++) {
+        var v = d.b[Math.floor(Math.abs(k - n / 2) / (n / 2) * (d.N - 1))] || 0, a = k / n * 6.283 + d.ph * .25, L = 6 + v * Math.min(W, H) * .38;
+        c.strokeStyle = hsl(d.hue + k * 3.5, 90, 66, .85);
+        c.beginPath(); c.moveTo(o[0] + Math.cos(a) * R0, o[1] + Math.sin(a) * R0); c.lineTo(o[0] + Math.cos(a) * (R0 + L), o[1] + Math.sin(a) * (R0 + L)); c.stroke();
+      }
+      c.strokeStyle = hsl(d.hue + 40, 90, 78, .7); c.lineWidth = 2; c.beginPath(); c.arc(o[0], o[1], R0 * .92, 0, 6.283); c.stroke();
+    }
+  ];
+  var fxSet = function (i) {
+    return;
+  };
+  var fxLoop = function (now) {
+    if (!plOpen) { fxRaf = 0; return; }
+    var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    var W = fx.clientWidth, H = fx.clientHeight;
+    if (fx.width !== Math.round(W * dpr)) { fx.width = Math.round(W * dpr); fx.height = Math.round(H * dpr); }
+    fxc.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var N = 32, bins = new Array(N), playing = !audio.paused, t = now / 1000, k, real = false;
+    if (an && an.node && playing) {
+      an.node.getByteFrequencyData(fd);
+      var sum = 0; for (k = 0; k < fd.length; k++) sum += fd[k];
+      real = sum > 20;
+      if (real) for (k = 0; k < N; k++) bins[k] = fd[Math.min(fd.length - 1, Math.floor(k * 0.9 + 1))] / 255;
+    }
+    if (!real) {
+      var bp = playing ? Math.pow(Math.max(0, Math.sin(t * Math.PI * 2 * 1.7)), 6) : 0;
+      for (k = 0; k < N; k++) bins[k] = playing ? Math.max(0, (0.35 + 0.35 * Math.sin(t * 2.3 + k * .6)) * (1 - k / N * .6) * (.5 + bp * .7)) : 0;
+    }
+    for (k = 0; k < N; k++) fxSmooth[k] = (fxSmooth[k] || 0) * .6 + bins[k] * .4;
+    var bass = (fxSmooth[0] + fxSmooth[1] + fxSmooth[2] + fxSmooth[3]) / 4, mid = 0, hi = 0;
+    for (k = 4; k < 16; k++) mid += fxSmooth[k]; mid /= 12;
+    for (k = 16; k < N; k++) hi += fxSmooth[k]; hi /= (N - 16);
+    bAvg = bAvg * .94 + bass * .06; lvl = lvl * .85 + bass * .15;
+    var beat = false;
+    if (playing && bass > bAvg * 1.22 + .04 && now - lastB > 260) { lastB = now; beat = true; }
+    plp.style.setProperty("--beat", (1 + lvl * .22).toFixed(3));
+    fxPh += (calm ? .004 : .01) + lvl * .05;
+    /* uslub almashishi: qoʻshiq oʻzgarsa yoki har ~16 soniyada */
+    if (!fxT0) fxT0 = now;
+    if (fxNext >= 0) {
+      fxA -= .05;
+      if (fxA <= 0) { fxA = 0; fxSty = fxNext; fxNext = -1; fxT0 = now; fxSt = {}; }
+    } else if (fxA < 1) fxA = Math.min(1, fxA + .05);
+    fx.style.opacity = fxA.toFixed(2);
+    fxc.clearRect(0, 0, W, H);
+    fxc.globalCompositeOperation = "source-over"; fxc.globalAlpha = 1; fxc.shadowBlur = 0;
+    var d = { b: fxSmooth, N: N, bass: bass, mid: mid, hi: hi, lvl: lvl, hue: (255 + cur * 31) % 360, ph: fxPh, playing: playing, beat: beat };
+    try { STY[fxSty](fxc, W, H, d); } catch (er) {}
+    fxc.globalCompositeOperation = "source-over"; fxc.shadowBlur = 0;
+    fxRaf = requestAnimationFrame(fxLoop);
+  };
+  var fxStart = function () { if (!fxRaf) fxRaf = requestAnimationFrame(fxLoop); };
+  var setTrack2 = setTrack;
+  setTrack = function (i, a) { setTrack2(i, a); fxSet(cur); };
+  fxSty = 0;
 
   /* Til */
   var langBtns = [].slice.call(document.querySelectorAll("#langSeg button"));
@@ -2623,6 +2718,8 @@ body { animation: tint 36s ease-in-out infinite; }
       cancelAnimationFrame(camRaf); camRaf = 0;
       if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
       if (lm && lm.close) { try { lm.close(); } catch (e) {} }
+      if (fl && fl.close) { try { fl.close(); } catch (e) {} }
+      fl = null; FP = null; fAlpha = 0; flFail = false;
       lm = null; vid.srcObject = null; var bgv2 = document.getElementById("hfBg"); if (bgv2) bgv2.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); lastHands = []; size();
       camBtn.disabled = false; camBtn.classList.remove("on"); camBtn.setAttribute("data-t", "hf_cam"); camBtn.textContent = T("hf_cam");
       kick(); draw();
@@ -2633,8 +2730,13 @@ body { animation: tint 36s ease-in-out infinite; }
       if (now - lastDet > 22 && vid.readyState >= 2 && lm) {
         lastDet = now;
         var r = null;
-        try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
-        if (r) { var hs = r.landmarks || []; lastHands = hs; drawHands(hs); control(hs); }
+        if (sec === "xry" && !fl) ensureFace();
+        if (sec === "xry" && fl && (fTick = !fTick)) {
+          try { var fr = fl.detectForVideo(vid, now); if (fr && fr.faceLandmarks && fr.faceLandmarks[0]) takeFace(fr.faceLandmarks[0]); } catch (e3) {}
+        } else {
+          try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
+          if (r) { var hs = r.landmarks || []; lastHands = hs; drawHands(hs); control(hs); }
+        }
       }
       ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18; px += (tPx - px) * 0.3; py += (tPy - py) * 0.3;
       draw();
@@ -2970,13 +3072,243 @@ body { animation: tint 36s ease-in-out infinite; }
       st += 0.016;
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
       var hs = inputs();
-      if (camOn && (sec === "fin" || sec === "cld") && vid.readyState >= 2) {
+      if (camOn && (sec === "fin" || sec === "cld" || sec === "xry") && vid.readyState >= 2) {
         g.save(); g.translate(W, 0); g.scale(-1, 1); g.globalAlpha = 0.8; g.drawImage(vid, 0, 0, W, H); g.restore();
-        g.globalAlpha = 1; g.fillStyle = "rgba(4,3,14,.32)"; g.fillRect(0, 0, W, H);
+        g.globalAlpha = 1; g.fillStyle = sec === "xry" ? "rgba(4,3,14,.18)" : "rgba(4,3,14,.32)"; g.fillRect(0, 0, W, H);
       }
       g.globalAlpha = 1;
-      if (sec === "fin") renderFin(hs); else if (sec === "ndl") renderNdl(hs); else if (sec === "flw") renderFlw(hs); else if (sec === "cld") renderCld(hs);
+      if (sec === "fin") renderFin(hs); else if (sec === "ndl") renderNdl(hs); else if (sec === "flw") renderFlw(hs); else if (sec === "cld") renderCld(hs); else if (sec === "xry") renderXry(hs);
       g.globalCompositeOperation = "source-over"; g.globalAlpha = 1; g.shadowBlur = 0;
+    };
+    /* ================= X-Ray: yuz suyagi + miya + qoʻl skeleti ================= */
+    var FMODEL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
+    var fl = null, flBusy = false, flFail = false, fTick = false, FP = null, fJaw = 0, fSeen = 0, fAlpha = 0;
+    var OVAL = [10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
+    var KEYS = [10, 152, 234, 454, 168, 13, 14, 1, 33, 263].concat(OVAL);
+    var ensureFace = async function () {
+      if (fl || flBusy || flFail || !lib) return;
+      flBusy = true;
+      try {
+        var mkf = function (d) { return lib.mod.FaceLandmarker.createFromOptions(lib.fs, { baseOptions: { modelAssetPath: FMODEL, delegate: d }, runningMode: "VIDEO", numFaces: 1, outputFaceBlendshapes: false }); };
+        try { fl = await mkf("GPU"); } catch (e1) { fl = await mkf("CPU"); }
+      } catch (e2) { flFail = true; }
+      flBusy = false;
+    };
+    var takeFace = function (lmk) {
+      var i, k, p, q;
+      if (!FP) FP = {};
+      for (i = 0; i < KEYS.length; i++) {
+        k = KEYS[i]; p = lmk[k]; if (!p) continue;
+        q = [(1 - p.x) * W, p.y * H, -p.z * W];
+        var o = FP[k];
+        if (!o) FP[k] = q; else { o[0] += (q[0] - o[0]) * .55; o[1] += (q[1] - o[1]) * .55; o[2] += (q[2] - o[2]) * .35; }
+      }
+      var h = Math.hypot(FP[10][0] - FP[152][0], FP[10][1] - FP[152][1]) || 1;
+      var jd = Math.hypot(FP[13][0] - FP[14][0], FP[13][1] - FP[14][1]) / h;
+      var jt = clamp((jd - .03) / .17, 0, 1);
+      fJaw += (jt - fJaw) * .5;
+      fSeen = performance.now();
+    };
+    /* model: x oʻng, y yuqori, z old; birlik = yuz yarim kengligi */
+    var XM = null;
+    var elp = function (cx, cy, cz, rx, ry, rz, th, ph) {
+      return [cx + rx * Math.sin(th) * Math.cos(ph), cy + ry * Math.cos(th), cz + rz * Math.sin(th) * Math.sin(ph)];
+    };
+    var rnd = (function () { var s = 7; return function () { s = (s * 16807) % 2147483647; return s / 2147483647; }; })();
+    var buildXM = function () {
+      var X = { cran: [], gyri: [], cere: [], dots: [], mand: [], orb: [], nas: [], zyg: [], uteeth: [], lteeth: [], labels: [] }, i, j, k, ln;
+      var cc = [0, .6, -.95], cr = [1, .95, 1.3];
+      for (i = 1; i <= 8; i++) { ln = []; var th = i / 9 * 1.75; for (j = 0; j <= 40; j++) ln.push(elp(cc[0], cc[1], cc[2], cr[0], cr[1], cr[2], th, j / 40 * 6.2832)); X.cran.push(ln); }
+      for (i = 0; i < 14; i++) { ln = []; var ph = i / 14 * 6.2832; for (j = 0; j <= 24; j++) ln.push(elp(cc[0], cc[1], cc[2], cr[0], cr[1], cr[2], j / 24 * 1.75, ph)); X.cran.push(ln); }
+      for (i = 0; i < 520; i++) X.dots.push(elp(cc[0], cc[1], cc[2], cr[0] * (.97 + rnd() * .04), cr[1] * (.97 + rnd() * .04), cr[2] * (.97 + rnd() * .04), Math.acos(1 - rnd() * 1.7), rnd() * 6.2832));
+      var bc = [0, .65, -.95], br = [.86, .78, 1.12];
+      for (i = 0; i < 46; i++) {
+        ln = []; var u = rnd() * 6.2832, v = .2 + rnd() * 1.4, L = 14 + Math.floor(rnd() * 16), du = (rnd() - .5) * .5, dv = (rnd() - .5) * .3;
+        for (j = 0; j < L; j++) {
+          u += du + (rnd() - .5) * .45; v += dv + (rnd() - .5) * .3; v = clamp(v, .12, 1.65); du *= .92; dv *= .92; du += (rnd() - .5) * .2; dv += (rnd() - .5) * .12;
+          ln.push(elp(bc[0], bc[1], bc[2], br[0] * (1 + (rnd() - .5) * .05), br[1] * (1 + (rnd() - .5) * .05), br[2] * (1 + (rnd() - .5) * .05), v, u));
+        }
+        X.gyri.push(ln);
+      }
+      X.fiss = []; for (j = 0; j <= 30; j++) { var tt = j / 30 * 1.5 + .05; X.fiss.push(elp(bc[0], bc[1], bc[2], 0, br[1] * 1.01, br[2] * 1.01, tt, 1.5708)); }
+      X.fiss2 = []; for (j = 0; j <= 30; j++) { var t2 = j / 30 * 1.5 + .05; X.fiss2.push(elp(bc[0], bc[1], bc[2], 0, br[1] * 1.01, br[2] * 1.01, t2, 4.7124)); }
+      for (i = 0; i < 14; i++) { ln = []; var u3 = rnd() * 6.2832, v3 = 1.0 + rnd() * .35; for (j = 0; j < 14; j++) { u3 += (rnd() - .5) * .9 + .25; ln.push(elp(0, -.15, -1.65, .55, .32, .45, v3 + (rnd() - .5) * .5, u3)); } X.cere.push(ln); }
+      X.stem = [[0, -.15, -1.3], [0, -.5, -1.35], [0, -.95, -1.4]];
+      for (k = -1; k <= 1; k += 2) {
+        ln = []; for (j = 0; j <= 20; j++) { var a = j / 20 * 6.2832; ln.push([k * .43 + Math.cos(a) * .27, Math.sin(a) * .25, .12]); } X.orb.push(ln);
+        X.eye = X.eye || []; X.eye.push([k * .43, 0, .05]);
+        X.zyg.push([[k * .64, -.1, .12], [k * .78, -.2, .02], [k * .92, -.1, -.3], [k * 1.0, 0, -.75]]);
+        X.zyg.push([[k * .6, -.2, .1], [k * .66, -.45, .06], [k * .7, -.62, .02]]);
+      }
+      X.nas = [[0, -.02, .26], [-.1, -.35, .3], [-.17, -.6, .3], [0, -.72, .34], [.17, -.6, .3], [.1, -.35, .3], [0, -.02, .26]];
+      X.nbone = [[0, .22, .3], [0, 0, .32], [0, -.3, .34]];
+      for (i = 0; i < 9; i++) { var tx = (i - 4) / 4 * .62; X.uteeth.push([tx, -.86, .22 + .24 * (1 - tx * tx / .39) - .1 * Math.abs(tx)]); }
+      X.uarc = X.uteeth.map(function (p) { return [p[0], p[1] + .1, p[2] - .02]; });
+      X.hinge = [0, -.15, -.7];
+      X.mandOut = [[-.97, -.12, -.7], [-.95, -.55, -.62], [-.82, -1.0, -.5], [-.55, -1.32, -.12], [-.25, -1.48, .18], [0, -1.54, .24], [.25, -1.48, .18], [.55, -1.32, -.12], [.82, -1.0, -.5], [.95, -.55, -.62], [.97, -.12, -.7]];
+      for (i = 0; i < 9; i++) { var tx2 = (i - 4) / 4 * .5; X.lteeth.push([tx2, -1.05, .12 + .2 * (1 - tx2 * tx2 / .25) - .08 * Math.abs(tx2)]); }
+      X.labels = [
+        ["Frontal bone", .2, 1.05, .3, 1], ["Frontal lobe", -.3, .9, .1, 0], ["Parietal bone", .6, 1.35, -.9, 1], ["Parietal lobe", -.5, 1.1, -1, 0],
+        ["Temporal bone", .95, .2, -.8, 1], ["Temporal lobe", -.8, .25, -.7, 0], ["Occipital bone", .5, .85, -2.2, 1], ["Occipital lobe", -.5, .7, -2.05, 0],
+        ["Cerebellum", .35, -.12, -1.7, 0], ["Pons (brainstem)", 0, -.5, -1.35, 0], ["Eyeball", .43, 0, .1, 1], ["Nasal bone", 0, -.1, .33, 0],
+        ["Zygomatic bone (cheekbone)", -.9, -.12, -.3, 0], ["Maxilla (upper jaw)", .6, -.55, .02, 1], ["Teeth", 0, -.9, .42, 0], ["Mandible (lower jaw)", -.7, -1.2, -.35, 0],
+        ["Masseter", .88, -.8, -.55, 1], ["Temporalis", -1, .55, -.7, 0]
+      ];
+      return X;
+    };
+    var hullOf = function (P) {
+      var pts = P.slice().sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; }), lo = [], up = [], i;
+      var cr = function (o, a, b) { return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); };
+      for (i = 0; i < pts.length; i++) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], pts[i]) <= 0) lo.pop(); lo.push(pts[i]); }
+      for (i = pts.length - 1; i >= 0; i--) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], pts[i]) <= 0) up.pop(); up.push(pts[i]); }
+      up.pop(); lo.pop(); return lo.concat(up);
+    };
+    var renderBones = function (h) {
+      var m = h.map(mapP), s = Math.hypot(m[0][0] - m[9][0], m[0][1] - m[9][1]) || 40, i, j;
+      var dx = (m[9][0] - m[0][0]) / s, dy = (m[9][1] - m[0][1]) / s, px2 = -dy, py2 = dx;
+      var chains = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]], mc = [1, 5, 9, 13, 17];
+      g.save(); g.lineCap = "round"; g.lineJoin = "round";
+      g.fillStyle = "rgba(90,150,255,.13)"; g.strokeStyle = "rgba(110,170,255,.5)"; g.lineWidth = 1.6;
+      g.beginPath(); [0, 1, 5, 9, 13, 17].forEach(function (k, n) { if (n) g.lineTo(m[k][0], m[k][1]); else g.moveTo(m[k][0], m[k][1]); }); g.closePath(); g.fill();
+      chains.forEach(function (c) { g.lineWidth = s * .33; g.strokeStyle = "rgba(90,150,255,.14)"; g.beginPath(); g.moveTo(m[c[0]][0], m[c[0]][1]); for (j = 1; j < 4; j++) g.lineTo(m[c[j]][0], m[c[j]][1]); g.stroke(); });
+      /* bilak suyaklari */
+      for (i = -1; i <= 1; i += 2) {
+        var sx = m[0][0] + px2 * s * .16 * i, sy = m[0][1] + py2 * s * .16 * i, ex = sx - dx * s * .95, ey = sy - dy * s * .95;
+        var lg = g.createLinearGradient(sx, sy, ex, ey); lg.addColorStop(0, "rgba(225,240,255,.85)"); lg.addColorStop(1, "rgba(225,240,255,0)");
+        g.strokeStyle = lg; g.lineWidth = s * .11; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.stroke();
+      }
+      /* bilak (karpal) suyaklari */
+      g.fillStyle = "rgba(210,232,255,.28)"; g.strokeStyle = "rgba(235,246,255,.85)"; g.lineWidth = 1;
+      for (i = 0; i < 8; i++) {
+        var row = i < 4 ? 0 : 1, kk = (i % 4) - 1.5, cx2 = m[0][0] + dx * s * (.1 + row * .13) + px2 * s * .085 * kk * (row ? 1.1 : .95), cy2 = m[0][1] + dy * s * (.1 + row * .13) + py2 * s * .085 * kk * (row ? 1.1 : .95);
+        g.beginPath(); g.arc(cx2, cy2, s * .052, 0, 6.2832); g.fill(); g.stroke();
+      }
+      /* suyaklar */
+      var bone = function (a, b, w, r1, r2) {
+        var ax2 = m[a][0], ay2 = m[a][1], bx = m[b][0], by = m[b][1], L = Math.hypot(bx - ax2, by - ay2) || 1, ux = (bx - ax2) / L, uy = (by - ay2) / L;
+        var sa = ax2 + ux * r1 * .6, sb = ay2 + uy * r1 * .6, ea = bx - ux * r2 * .6, eb = by - uy * r2 * .6;
+        g.strokeStyle = "rgba(120,180,255,.45)"; g.lineWidth = w + 3; g.beginPath(); g.moveTo(sa, sb); g.lineTo(ea, eb); g.stroke();
+        g.strokeStyle = "rgba(240,248,255,.92)"; g.lineWidth = Math.max(1.2, w * .55); g.beginPath(); g.moveTo(sa, sb); g.lineTo(ea, eb); g.stroke();
+        g.fillStyle = "rgba(200,225,255,.3)"; g.strokeStyle = "rgba(245,250,255,.95)"; g.lineWidth = 1.1;
+        g.beginPath(); g.arc(ax2, ay2, r1, 0, 6.2832); g.fill(); g.stroke();
+        g.beginPath(); g.arc(bx, by, r2, 0, 6.2832); g.fill(); g.stroke();
+      };
+      for (i = 0; i < 5; i++) {
+        var c = chains[i];
+        bone(0, mc[i], s * .12, s * .06, s * .068);
+        bone(c[0], c[1], s * .1, s * .068, s * .06);
+        bone(c[1], c[2], s * .085, s * .06, s * .052);
+        bone(c[2], c[3], s * .07, s * .052, s * .04);
+      }
+      g.restore();
+    };
+    var renderXry = function (hs) {
+      var now = performance.now(), i, j, k, p;
+      var ready = !!fl, alive = FP && now - fSeen < 500;
+      if (alive) fAlpha = Math.min(1, fAlpha + .1); else fAlpha = Math.max(0, fAlpha - .06);
+      g.save();
+      if (fAlpha > .02 && FP) {
+        if (!XM) XM = buildXM();
+        var A = FP[234], B = FP[454], T0 = FP[10], C0 = FP[152], E = FP[168];
+        var ex = [A[0] - B[0], A[1] - B[1], A[2] - B[2]], el = Math.hypot(ex[0], ex[1], ex[2]) || 1; ex = [ex[0] / el, ex[1] / el, ex[2] / el];
+        var ey = [T0[0] - C0[0], T0[1] - C0[1], T0[2] - C0[2]], dd = ey[0] * ex[0] + ey[1] * ex[1] + ey[2] * ex[2];
+        ey = [ey[0] - dd * ex[0], ey[1] - dd * ex[1], ey[2] - dd * ex[2]]; var yl = Math.hypot(ey[0], ey[1], ey[2]) || 1; ey = [ey[0] / yl, ey[1] / yl, ey[2] / yl];
+        var ez = [ey[1] * ex[2] - ey[2] * ex[1], ey[2] * ex[0] - ey[0] * ex[2], ey[0] * ex[1] - ey[1] * ex[0]];
+        var U = el / 2, ox = E[0], oy = E[1], oz = E[2];
+        var tf = function (q, jaw) {
+          var x = q[0], y = q[1], z = q[2];
+          if (jaw) { var th = fJaw * .5, dy = y - XM.hinge[1], dz = z - XM.hinge[2]; y = XM.hinge[1] + dy * Math.cos(th) - dz * Math.sin(th); z = XM.hinge[2] + dy * Math.sin(th) + dz * Math.cos(th); }
+          return [ox + (x * ex[0] + y * ey[0] + z * ez[0]) * U, oy + (x * ex[1] + y * ey[1] + z * ez[1]) * U, oz + (x * ex[2] + y * ey[2] + z * ez[2]) * U];
+        };
+        g.globalAlpha = fAlpha;
+        var allP = [];
+        XM.cran.forEach(function (ln) { ln.forEach(function (q, n) { if (n % 3 === 0) allP.push(tf(q)); }); });
+        XM.mandOut.forEach(function (q) { allP.push(tf(q, 1)); });
+        var hull = hullOf(allP.map(function (q) { return [q[0], q[1]]; }));
+        /* tashqi koʻk nur va tana */
+        var hp = function () { g.beginPath(); hull.forEach(function (q, n) { if (n) g.lineTo(q[0], q[1]); else g.moveTo(q[0], q[1]); }); g.closePath(); };
+        hp(); g.fillStyle = "rgba(20,40,110,.34)"; g.fill();
+        g.lineJoin = "round"; g.strokeStyle = "rgba(40,90,230,.28)"; g.lineWidth = U * .22; hp(); g.stroke();
+        g.strokeStyle = "rgba(70,130,255,.65)"; g.lineWidth = U * .07; hp(); g.stroke();
+        /* miya */
+        var bcn = tf([0, .65, -.95]), brp = [];
+        var rg = g.createRadialGradient(bcn[0], bcn[1] - U * .1, U * .1, bcn[0], bcn[1], U * 1.15);
+        rg.addColorStop(0, "rgba(255,130,190,.62)"); rg.addColorStop(.6, "rgba(190,70,150,.5)"); rg.addColorStop(1, "rgba(90,30,110,.18)");
+        g.fillStyle = rg; g.beginPath(); g.ellipse(bcn[0], bcn[1], U * .9, U * .95, Math.atan2(ex[1], ex[0]), 0, 6.2832); g.fill();
+        g.lineWidth = 1.2; g.lineCap = "round"; g.lineJoin = "round";
+        XM.gyri.forEach(function (ln) {
+          var q0 = ln.map(function (q) { return tf(q); });
+          g.beginPath();
+          q0.forEach(function (q, n) { if (n) g.lineTo(q[0], q[1]); else g.moveTo(q[0], q[1]); });
+          var zf = (q0[0][2] - oz) / U;
+          g.strokeStyle = "rgba(255," + (170 + (zf > 0 ? 40 : 0)) + ",220," + (zf > -.3 ? .6 : .26) + ")"; g.stroke();
+        });
+        [XM.fiss, XM.fiss2].forEach(function (ln) { g.strokeStyle = "rgba(255,225,245,.5)"; g.lineWidth = 1.4; g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke(); });
+        g.strokeStyle = "rgba(250,150,190,.55)"; g.lineWidth = 1;
+        XM.cere.forEach(function (ln) { g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke(); });
+        g.strokeStyle = "rgba(255,200,230,.6)"; g.lineWidth = U * .09; g.beginPath(); XM.stem.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke();
+        /* kalla suyagi (toʻr + nuqtalar) */
+        g.globalCompositeOperation = "lighter"; g.lineWidth = .8;
+        XM.cran.forEach(function (ln) {
+          g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); });
+          g.strokeStyle = "rgba(190,215,255,.2)"; g.stroke();
+        });
+        g.fillStyle = "rgba(220,235,255,.5)";
+        XM.dots.forEach(function (q) { var t2 = tf(q); g.fillRect(t2[0] - .6, t2[1] - .6, 1.3, 1.3); });
+        g.globalCompositeOperation = "source-over";
+        var path = function (ln, jaw) { g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q, jaw); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); };
+        var glow = function (ln, w, jaw, col) { path(ln, jaw); g.strokeStyle = "rgba(90,150,255,.35)"; g.lineWidth = w + 4; g.stroke(); path(ln, jaw); g.strokeStyle = col || "rgba(240,248,255,.92)"; g.lineWidth = w; g.stroke(); };
+        /* koz kosasi, burun, yonoq */
+        XM.orb.forEach(function (ln) { glow(ln, 2); });
+        XM.eye.forEach(function (q) { var t2 = tf(q); g.fillStyle = "rgba(210,230,255,.38)"; g.strokeStyle = "rgba(255,255,255,.9)"; g.lineWidth = 1.2; g.beginPath(); g.arc(t2[0], t2[1], U * .15, 0, 6.2832); g.fill(); g.stroke(); g.fillStyle = "rgba(20,30,60,.7)"; g.beginPath(); g.arc(t2[0], t2[1], U * .055, 0, 6.2832); g.fill(); });
+        glow(XM.nas, 1.8); glow(XM.nbone, 1.6);
+        XM.zyg.forEach(function (ln) { glow(ln, 2.2); });
+        glow(XM.uarc, 1.8);
+        /* yuqori tishlar */
+        var tooth = function (q, jaw, up) {
+          var t2 = tf(q, jaw), w = U * .105, h2 = U * .17, ang = Math.atan2(ex[1], ex[0]);
+          g.save(); g.translate(t2[0], t2[1]); g.rotate(ang);
+          g.fillStyle = "rgba(235,245,255,.55)"; g.strokeStyle = "rgba(255,255,255,.95)"; g.lineWidth = 1;
+          g.beginPath(); g.rect(-w / 2, up ? 0 : -h2, w, h2); g.fill(); g.stroke(); g.restore();
+        };
+        XM.uteeth.forEach(function (q) { tooth(q, 0, 1); });
+        /* pastki jag va tishlar (ochilishga mos) */
+        glow(XM.mandOut, 2.6, 1);
+        var rh = [XM.mandOut[0], XM.hinge, [-.9, -.8, -.6]]; glow([XM.mandOut[0], XM.mandOut[1]], 2, 1);
+        XM.lteeth.forEach(function (q) { tooth(q, 1, 0); });
+        /* yorliqlar */
+        g.font = "600 9.5px system-ui, sans-serif"; g.textBaseline = "middle";
+        var cx0 = tf([0, .3, -.8])[0], L = [], R = [];
+        XM.labels.forEach(function (lb) {
+          var t2 = tf([lb[1], lb[2], lb[3]]), o = { t: lb[0], x: t2[0], y: t2[1], b: lb[4] };
+          if (t2[0] < cx0) L.push(o); else R.push(o);
+        });
+        var place = function (arr, xs, al) {
+          arr.sort(function (a, b) { return a.y - b.y; });
+          var last = -1e9, n;
+          for (n = 0; n < arr.length; n++) { var yy = Math.max(arr[n].y, last + 12); arr[n].ly = yy; last = yy; }
+          for (n = arr.length - 1; n >= 0; n--) { if (arr[n].ly > H - 10) arr[n].ly = H - 10 - (arr.length - 1 - n) * 12; }
+          g.textAlign = al;
+          arr.forEach(function (o) {
+            g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = .8; g.beginPath(); g.moveTo(o.x, o.y); g.lineTo(xs + (al === "left" ? -4 : 4), o.ly); g.lineTo(xs, o.ly); g.stroke();
+            g.fillStyle = "#fff"; g.beginPath(); g.arc(o.x, o.y, 1.6, 0, 6.2832); g.fill();
+            g.font = (o.b ? "700 " : "500 ") + "9.5px system-ui, sans-serif"; g.fillText(o.t, xs + (al === "left" ? 2 : -2), o.ly);
+          });
+        };
+        var hx0 = Math.min.apply(null, hull.map(function (q) { return q[0]; })), hx1 = Math.max.apply(null, hull.map(function (q) { return q[0]; }));
+        var mwL = 0, mwR = 0; g.font = "700 9.5px system-ui, sans-serif";
+        L.forEach(function (o) { mwL = Math.max(mwL, g.measureText(o.t).width); }); R.forEach(function (o) { mwR = Math.max(mwR, g.measureText(o.t).width); });
+        place(L, Math.max(6 + mwL + 6, Math.min(hx0 - 14, W * .3)), "right");
+        place(R, Math.min(W - 6 - mwR - 6, Math.max(hx1 + 14, W * .7)), "left");
+      }
+      g.restore(); g.globalAlpha = 1;
+      /* qoʻl skeleti */
+      if (camOn) lastHands.forEach(function (h) { renderBones(h); });
+      /* holat yozuvi */
+      if (camOn && (!ready || fAlpha < .05)) {
+        g.fillStyle = "rgba(255,255,255,.85)"; g.font = "600 13px system-ui, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
+        g.fillText(ready ? T("xr_face") : T("xr_load"), W / 2, H * .12);
+      }
     };
     /* boʻlim tugmalari */
     var tabsEl = document.getElementById("hfTabs"), secEls = [].slice.call(document.querySelectorAll("#hfp .hf-sec")), secP = document.getElementById("hfSecP");
@@ -2985,7 +3317,7 @@ body { animation: tint 36s ease-in-out infinite; }
       [].slice.call(tabsEl.querySelectorAll(".hf-tab")).forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-sec") === name); });
       secEls.forEach(function (el) { el.hidden = el.getAttribute("data-for") !== name; });
       secP.setAttribute("data-t", "hf_s_" + name); secP.textContent = T("hf_s_" + name); secP.hidden = name !== "shape";
-      hfEl.classList.toggle("bgcam", name === "fin" || name === "cld");
+      hfEl.classList.toggle("bgcam", name === "fin" || name === "cld" || name === "xry");
       hfEl.classList.toggle("sec-x", name !== "shape");
       if (name === "ndl") ND = null; if (name === "flw") FL = null; if (name === "cld") CL = null; if (name === "fin") finS = [];
       if (camOn) showMsg(name === "shape" ? "hf_show" : "hf_show2"); else showMsg(null);
