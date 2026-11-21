@@ -650,6 +650,17 @@ body { animation: tint 36s ease-in-out infinite; }
 .s-winter h2, .s-spring h2 { width: fit-content; max-width: 100%; }
 .hf.bgcam .hf-cam { display: none; }
 
+/* ===== Yangi yil (faqat qish) ===== */
+.sec[hidden] { display: none; }
+.ny-box { border: 1px solid rgba(170, 200, 255, .28); border-radius: 22px; background: radial-gradient(90% 70% at 50% 40%, rgba(60, 90, 190, .28), rgba(10, 14, 40, .55)); padding: 10px; max-width: 440px; width: 100%; }
+.ny-cv { display: block; width: 100%; aspect-ratio: 300 / 340; touch-action: manipulation; cursor: pointer; }
+.ny-ctl { display: flex; flex-wrap: wrap; gap: 8px; }
+.ny-ctl .chip { cursor: pointer; font-family: inherit; }
+.rec-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.rec-c { border: 1px solid rgba(170, 200, 255, .26); border-radius: 18px; padding: 16px 14px; background: linear-gradient(160deg, rgba(120, 170, 255, .14), rgba(120, 170, 255, .04)); display: flex; flex-direction: column; gap: 4px; }
+.rec-c b { font-family: var(--f-display); font-size: clamp(34px, 11vw, 48px); line-height: 1; font-weight: 800; background: linear-gradient(180deg, #fff, #9cc8ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.rec-c span { font-size: 13px; color: var(--muted); }
+
 /* ===== bezaklar v2 ===== */
 .s-winter h1 span::after, .s-winter h2::after { height: 28px; top: 92%; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='30' viewBox='0 0 160 30'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23f4fcff'/%3E%3Cstop offset='.6' stop-color='%23b8e2ff' stop-opacity='.85'/%3E%3Cstop offset='1' stop-color='%236fb2ff' stop-opacity='.4'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d=%22M0 0H160V2 L160 2 L151.5 24 L143 2 L143 2 L136.5 14 L130 2 L130 2 L122.0 21 L114 2 L114 2 L108.0 10 L102 2 L102 2 L93.0 27 L84 2 L84 2 L77.5 13 L71 2 L71 2 L63.0 22 L55 2 L55 2 L49.5 9 L44 2 L44 2 L35.5 25 L27 2 L27 2 L21.0 11 L15 2 L15 2 L7.5 20 L0 2Z%22 fill='url(%23g)'/%3E%3Cpath d='M149.5 3L151.5 22' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M134.9 3L136.5 12' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M120.1 3L122.0 19' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M106.6 3L108.0 8' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M90.8 3L93.0 25' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M75.9 3L77.5 11' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M61.1 3L63.0 20' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M48.2 3L49.5 7' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M33.5 3L35.5 23' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M19.6 3L21.0 9' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3Cpath d='M5.7 3L7.5 18' stroke='white' stroke-opacity='.75' stroke-width='1' fill='none'/%3E%3C/svg%3E") repeat-x 0 0 / auto 100%; animation: grow 2.6s .4s ease-out forwards, icesh 4.8s 3s ease-in-out infinite; }
 .s-winter h1 span::after { top: 80%; }
@@ -745,6 +756,29 @@ body { animation: tint 36s ease-in-out infinite; }
     </ul>
   </section>
 
+
+  <section class="sec ny" id="ny" aria-labelledby="ny-h" hidden>
+    <h2 id="ny-h" data-t="ny_h">Yangi yil archasi</h2>
+    <div class="ny-box"><canvas class="ny-cv" id="nyCv" aria-label="Yangi yil archasi"></canvas></div>
+    <div class="ny-ctl">
+      <button type="button" class="chip" id="nyLights" data-t="ny_lights">Chiroqlar ✨</button>
+      <button type="button" class="chip" id="nyClear" data-t="ny_clear">Bezaklarni tozalash</button>
+    </div>
+    <p data-t="ny_hint">Archani bosing — shar osiladi, yulduzni bosing — uchqun chiqadi.</p>
+  </section>
+
+  <section class="sec" id="rec" aria-labelledby="rec-h" hidden>
+    <h2 id="rec-h" data-t="rec_h">2026-yil xulosasi</h2>
+    <div class="rec-grid" id="recGrid">
+      <div class="rec-c"><b data-n="18">18</b><span data-t="rec_1">yoshga toʻldim</span></div>
+      <div class="rec-c"><b data-n="5">5</b><span data-t="rec_2">ta loyiha qildim</span></div>
+      <div class="rec-c"><b data-n="4">4</b><span data-t="rec_3">ta til bilaman</span></div>
+      <div class="rec-c"><b data-n="14">14</b><span data-t="rec_4">ta qoʻshiq playlistda</span></div>
+      <div class="rec-c"><b data-n="4">4</b><span data-t="rec_5">ta fasl dizayni saytda</span></div>
+      <div class="rec-c"><b data-n="6">6</b><span data-t="rec_6">ta Hand Figure boʻlimi</span></div>
+    </div>
+    <p data-t="rec_p">Loyihalar: HUMAN 3D, KNOWLEDGE UNIVERSE, Mafia oʻyini, Boshqaruv markazi va shu shaxsiy sahifa.</p>
+  </section>
 
   <section class="sec" id="contact" aria-labelledby="h-contact">
     <div class="c-head">
@@ -852,7 +886,6 @@ body { animation: tint 36s ease-in-out infinite; }
       <button type="button" class="chip hf-tab" data-sec="ndl" data-t="hf_t_ndl">Ignalar</button>
       <button type="button" class="chip hf-tab" data-sec="flw" data-t="hf_t_flw">Oqim</button>
       <button type="button" class="chip hf-tab" data-sec="cld" data-t="hf_t_cld">Zarralar</button>
-      <button type="button" class="chip hf-tab" data-sec="xry" data-t="hf_t_xry">X-Ray</button>
     </div>
     <p id="hfSecP" data-t="hf_p">Qoʻl harakati bilan 3D shaklni boshqarish gʻoyasi. Barmoq bilan aylantiring, ikki barmoq bilan kattalashtiring.</p>
     <div class="hf">
@@ -929,6 +962,13 @@ body { animation: tint 36s ease-in-out infinite; }
   var SEASON = seasonNow();
   
   root.classList.add("s-" + SEASON);
+  var nyApply = function () {
+    var m = new Date().getMonth(), w = SEASON === "winter", forced = /[?&]season=winter/.test(location.search);
+    var a = document.getElementById("ny"), b = document.getElementById("rec");
+    if (a) a.hidden = !(w && (m === 11 || forced)); /* archa: faqat dekabrda, 1-yanvardan yoʻqoladi */
+    if (b) b.hidden = !w;
+  };
+  nyApply();
   var LEAF = ["#E8643C", "#F2A33A", "#D9433B", "#C98A2B", "#B5532A", "#F5C45E"];
   var PET = ["#FFC2DD", "#FFD9E8", "#FFFFFF", "#F9A8D4"];
   var GREENS = ["#6CCF4E", "#4FB84A", "#8FE36A", "#3FA55B", "#A5E36B"];
@@ -1028,8 +1068,15 @@ body { animation: tint 36s ease-in-out infinite; }
       ctx.fillStyle = "#2a1a10"; ctx.fillRect(-0.7, -s * 0.6, 1.4, s * 1.3);
       ctx.restore();
     };
+    var SNP = { x: 0, y: 0, vx: 0, vy: 0, on: false, t: 0 };
+    var snpMove = function (e) { var n = performance.now(); SNP.vx = (e.clientX - SNP.x) * 0.6; SNP.vy = (e.clientY - SNP.y) * 0.6; SNP.x = e.clientX; SNP.y = e.clientY; SNP.on = true; SNP.t = n; };
+    window.addEventListener("pointermove", snpMove, { passive: true });
+    window.addEventListener("pointerdown", snpMove, { passive: true });
+    window.addEventListener("pointerup", function () { SNP.on = false; }, { passive: true });
+    window.addEventListener("pointercancel", function () { SNP.on = false; }, { passive: true });
     var frame = function () {
       if (busyN) { raf = requestAnimationFrame(frame); return; }
+      if (SNP.on && performance.now() - SNP.t > 400) SNP.on = false;
       t += 0.012;
       ctx.clearRect(0, 0, W, H);
       for (var i = 0; i < flakes.length; i++) {
@@ -1056,6 +1103,10 @@ body { animation: tint 36s ease-in-out infinite; }
           f.y += f.v;
           f.x += Math.sin(t * f.sw + f.ph) * 0.4;
           f.rot += f.vr;
+          if (SNP.on) {
+            var qx = f.x - SNP.x, qy = f.y - SNP.y, qd = Math.hypot(qx, qy);
+            if (qd < 120 && qd > 0.1) { var qf = (120 - qd) / 120; f.x += qx / qd * qf * 5 + SNP.vx * qf * 0.5; f.y += qy / qd * qf * 3 + SNP.vy * qf * 0.3; }
+          }
           if (f.y > H + 12) { flakes[i] = spawn(false); continue; }
           if (f.x > W + 12) f.x = -12; else if (f.x < -12) f.x = W + 12;
           var sp = SPR[f.ri][f.q];
@@ -1072,7 +1123,7 @@ body { animation: tint 36s ease-in-out infinite; }
     document.addEventListener("visibilitychange", function () {
       if (document.hidden) { cancelAnimationFrame(raf); return; }
       var ns = seasonNow();
-      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); flakes = []; size(); if (vineApi) vineApi.rebuild(); if (typeof hvRebuild === "function") hvRebuild(); }
+      if (ns !== SEASON) { root.classList.remove("s-" + SEASON); SEASON = ns; root.classList.add("s-" + SEASON); nyApply(); flakes = []; size(); if (vineApi) vineApi.rebuild(); if (typeof hvRebuild === "function") hvRebuild(); }
       cancelAnimationFrame(raf); raf = requestAnimationFrame(frame);
     });
     raf = requestAnimationFrame(frame);
@@ -1208,8 +1259,11 @@ body { animation: tint 36s ease-in-out infinite; }
     summer: { sun: ["#FFC857", "#FF9F43"], sky: ["#5FD0FF", "#3AA0FF"], lime: ["#B6F26B", "#7BD84A"], coral: ["#FF8A7A", "#F2607A"] }
   };
   var THEMES = SEASON_THEMES[SEASON];
+  Object.assign(DICT.uz, { ny_h: "Yangi yil archasi", ny_lights: "Chiroqlar ✨", ny_clear: "Bezaklarni tozalash", ny_hint: "Archani bosing — shar osiladi, yulduzni bosing — uchqun chiqadi.", rec_h: "2026-yil xulosasi", rec_1: "yoshga toʻldim", rec_2: "ta loyiha qildim", rec_3: "ta til bilaman", rec_4: "ta qoʻshiq playlistda", rec_5: "ta fasl dizayni saytda", rec_6: "ta Hand Figure boʻlimi", rec_p: "Loyihalar: HUMAN 3D, KNOWLEDGE UNIVERSE, Mafia oʻyini, Boshqaruv markazi va shu shaxsiy sahifa." });
+  Object.assign(DICT.en, { ny_h: "New Year tree", ny_lights: "Lights ✨", ny_clear: "Clear ornaments", ny_hint: "Tap the tree to hang a bauble, tap the star for sparkles.", rec_h: "My 2026 in numbers", rec_1: "years old now", rec_2: "projects built", rec_3: "languages I speak", rec_4: "songs in my playlist", rec_5: "seasonal designs on the site", rec_6: "Hand Figure sections", rec_p: "Projects: HUMAN 3D, KNOWLEDGE UNIVERSE, Mafia game, Control center and this personal page." });
+  Object.assign(DICT.ru, { ny_h: "Новогодняя ёлка", ny_lights: "Огни ✨", ny_clear: "Убрать игрушки", ny_hint: "Нажмите на ёлку — повесится шар, на звезду — искры.", rec_h: "Мой 2026 в цифрах", rec_1: "лет мне исполнилось", rec_2: "проектов сделал", rec_3: "языка знаю", rec_4: "песен в плейлисте", rec_5: "сезонных дизайна на сайте", rec_6: "разделов Hand Figure", rec_p: "Проекты: HUMAN 3D, KNOWLEDGE UNIVERSE, игра Мафия, Центр управления и эта личная страница." });
   Object.assign(DICT.uz, {
-    hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar", hf_t_xry: "X-Ray", hf_s_xry: "Yuzingiz va qoʻlingiz ichini rentgendek koʻring.", xr_load: "X-Ray yuklanmoqda…", xr_face: "Yuzingizni kameraga qarating",
+    hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar",
     hf_s_shape: DICT.uz.hf_p,
     hf_s_fin: "Kameraga barmoq sonini koʻrsating: 1 — yorugʻ chiziq, 2 — yashil chiziq, 3 — piramida, 4 — kub, 5 — dodekaedr. Qoʻl yaqinlashsa shakl kattalashadi. Ikki qoʻl — ikki shakl.",
     hf_s_ndl: "Yashil-sariq ignalardan shakllar: 1 barmoq — kirpi shar, 2 — halqa, 3 — girdob, 4 — aylanuvchi shar, 5 — portlash. Qoʻl surilsa, ignalar ergashadi.",
@@ -1221,7 +1275,7 @@ body { animation: tint 36s ease-in-out infinite; }
     hf_show2: "Qoʻlingizni kameraga koʻrsating: barmoq sonini oʻzgartiring, qoʻlni surib koʻring."
   });
   Object.assign(DICT.en, {
-    hf_t_shape: "Shapes", hf_t_fin: "Fingers", hf_t_ndl: "Needles", hf_t_flw: "Stream", hf_t_cld: "Particles", hf_t_xry: "X-Ray", hf_s_xry: "See inside your face and hand like an X-ray.", xr_load: "Loading X-Ray…", xr_face: "Look at the camera",
+    hf_t_shape: "Shapes", hf_t_fin: "Fingers", hf_t_ndl: "Needles", hf_t_flw: "Stream", hf_t_cld: "Particles",
     hf_s_shape: DICT.en.hf_p,
     hf_s_fin: "Show a number of fingers to the camera: 1 — glowing line, 2 — green line, 3 — pyramid, 4 — cube, 5 — dodecahedron. Move your hand closer to enlarge. Two hands — two shapes.",
     hf_s_ndl: "Shapes made of green-yellow needles: 1 finger — urchin ball, 2 — ring, 3 — vortex, 4 — spinning ball, 5 — burst. The needles follow your hand.",
@@ -1233,7 +1287,7 @@ body { animation: tint 36s ease-in-out infinite; }
     hf_show2: "Show your hand to the camera: change the number of fingers, move your hand."
   });
   Object.assign(DICT.ru, {
-    hf_t_shape: "Фигуры", hf_t_fin: "Пальцы", hf_t_ndl: "Иглы", hf_t_flw: "Поток", hf_t_cld: "Частицы", hf_t_xry: "X-Ray", hf_s_xry: "Смотрите на лицо и руку как на рентгене.", xr_load: "Загрузка X-Ray…", xr_face: "Посмотрите в камеру",
+    hf_t_shape: "Фигуры", hf_t_fin: "Пальцы", hf_t_ndl: "Иглы", hf_t_flw: "Поток", hf_t_cld: "Частицы",
     hf_s_shape: DICT.ru.hf_p,
     hf_s_fin: "Покажите камере число пальцев: 1 — светящаяся линия, 2 — зелёная линия, 3 — пирамида, 4 — куб, 5 — додекаэдр. Ближе рука — больше фигура. Две руки — две фигуры.",
     hf_s_ndl: "Фигуры из зелёно-жёлтых игл: 1 палец — ёж, 2 — кольцо, 3 — вихрь, 4 — вращающийся шар, 5 — взрыв. Иглы следуют за рукой.",
@@ -2718,8 +2772,6 @@ body { animation: tint 36s ease-in-out infinite; }
       cancelAnimationFrame(camRaf); camRaf = 0;
       if (stream) { stream.getTracks().forEach(function (t) { t.stop(); }); stream = null; }
       if (lm && lm.close) { try { lm.close(); } catch (e) {} }
-      if (fl && fl.close) { try { fl.close(); } catch (e) {} }
-      fl = null; FP = null; fAlpha = 0; flFail = false;
       lm = null; vid.srcObject = null; var bgv2 = document.getElementById("hfBg"); if (bgv2) bgv2.srcObject = null; box.hidden = true; hfEl.classList.remove("cam-full"); lastHands = []; size();
       camBtn.disabled = false; camBtn.classList.remove("on"); camBtn.setAttribute("data-t", "hf_cam"); camBtn.textContent = T("hf_cam");
       kick(); draw();
@@ -2730,13 +2782,8 @@ body { animation: tint 36s ease-in-out infinite; }
       if (now - lastDet > 22 && vid.readyState >= 2 && lm) {
         lastDet = now;
         var r = null;
-        if (sec === "xry" && !fl) ensureFace();
-        if (sec === "xry" && fl && (fTick = !fTick)) {
-          try { var fr = fl.detectForVideo(vid, now); if (fr && fr.faceLandmarks && fr.faceLandmarks[0]) takeFace(fr.faceLandmarks[0]); } catch (e3) {}
-        } else {
-          try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
-          if (r) { var hs = r.landmarks || []; lastHands = hs; drawHands(hs); control(hs); }
-        }
+        try { r = lm.detectForVideo(vid, now); } catch (e) { r = null; }
+        if (r) { var hs = r.landmarks || []; lastHands = hs; drawHands(hs); control(hs); }
       }
       ay += (tAy - ay) * 0.22; ax += (tAx - ax) * 0.22; zoom += (tZ - zoom) * 0.18; px += (tPx - px) * 0.3; py += (tPy - py) * 0.3;
       draw();
@@ -3072,243 +3119,13 @@ body { animation: tint 36s ease-in-out infinite; }
       st += 0.016;
       g.setTransform(dpr, 0, 0, dpr, 0, 0); g.clearRect(0, 0, W, H);
       var hs = inputs();
-      if (camOn && (sec === "fin" || sec === "cld" || sec === "xry") && vid.readyState >= 2) {
+      if (camOn && (sec === "fin" || sec === "cld") && vid.readyState >= 2) {
         g.save(); g.translate(W, 0); g.scale(-1, 1); g.globalAlpha = 0.8; g.drawImage(vid, 0, 0, W, H); g.restore();
-        g.globalAlpha = 1; g.fillStyle = sec === "xry" ? "rgba(4,3,14,.18)" : "rgba(4,3,14,.32)"; g.fillRect(0, 0, W, H);
+        g.globalAlpha = 1; g.fillStyle = "rgba(4,3,14,.32)"; g.fillRect(0, 0, W, H);
       }
       g.globalAlpha = 1;
-      if (sec === "fin") renderFin(hs); else if (sec === "ndl") renderNdl(hs); else if (sec === "flw") renderFlw(hs); else if (sec === "cld") renderCld(hs); else if (sec === "xry") renderXry(hs);
+      if (sec === "fin") renderFin(hs); else if (sec === "ndl") renderNdl(hs); else if (sec === "flw") renderFlw(hs); else if (sec === "cld") renderCld(hs);
       g.globalCompositeOperation = "source-over"; g.globalAlpha = 1; g.shadowBlur = 0;
-    };
-    /* ================= X-Ray: yuz suyagi + miya + qoʻl skeleti ================= */
-    var FMODEL = "https://storage.googleapis.com/mediapipe-models/face_landmarker/face_landmarker/float16/1/face_landmarker.task";
-    var fl = null, flBusy = false, flFail = false, fTick = false, FP = null, fJaw = 0, fSeen = 0, fAlpha = 0;
-    var OVAL = [10,338,297,332,284,251,389,356,454,323,361,288,397,365,379,378,400,377,152,148,176,149,150,136,172,58,132,93,234,127,162,21,54,103,67,109];
-    var KEYS = [10, 152, 234, 454, 168, 13, 14, 1, 33, 263].concat(OVAL);
-    var ensureFace = async function () {
-      if (fl || flBusy || flFail || !lib) return;
-      flBusy = true;
-      try {
-        var mkf = function (d) { return lib.mod.FaceLandmarker.createFromOptions(lib.fs, { baseOptions: { modelAssetPath: FMODEL, delegate: d }, runningMode: "VIDEO", numFaces: 1, outputFaceBlendshapes: false }); };
-        try { fl = await mkf("GPU"); } catch (e1) { fl = await mkf("CPU"); }
-      } catch (e2) { flFail = true; }
-      flBusy = false;
-    };
-    var takeFace = function (lmk) {
-      var i, k, p, q;
-      if (!FP) FP = {};
-      for (i = 0; i < KEYS.length; i++) {
-        k = KEYS[i]; p = lmk[k]; if (!p) continue;
-        q = [(1 - p.x) * W, p.y * H, -p.z * W];
-        var o = FP[k];
-        if (!o) FP[k] = q; else { o[0] += (q[0] - o[0]) * .55; o[1] += (q[1] - o[1]) * .55; o[2] += (q[2] - o[2]) * .35; }
-      }
-      var h = Math.hypot(FP[10][0] - FP[152][0], FP[10][1] - FP[152][1]) || 1;
-      var jd = Math.hypot(FP[13][0] - FP[14][0], FP[13][1] - FP[14][1]) / h;
-      var jt = clamp((jd - .03) / .17, 0, 1);
-      fJaw += (jt - fJaw) * .5;
-      fSeen = performance.now();
-    };
-    /* model: x oʻng, y yuqori, z old; birlik = yuz yarim kengligi */
-    var XM = null;
-    var elp = function (cx, cy, cz, rx, ry, rz, th, ph) {
-      return [cx + rx * Math.sin(th) * Math.cos(ph), cy + ry * Math.cos(th), cz + rz * Math.sin(th) * Math.sin(ph)];
-    };
-    var rnd = (function () { var s = 7; return function () { s = (s * 16807) % 2147483647; return s / 2147483647; }; })();
-    var buildXM = function () {
-      var X = { cran: [], gyri: [], cere: [], dots: [], mand: [], orb: [], nas: [], zyg: [], uteeth: [], lteeth: [], labels: [] }, i, j, k, ln;
-      var cc = [0, .6, -.95], cr = [1, .95, 1.3];
-      for (i = 1; i <= 8; i++) { ln = []; var th = i / 9 * 1.75; for (j = 0; j <= 40; j++) ln.push(elp(cc[0], cc[1], cc[2], cr[0], cr[1], cr[2], th, j / 40 * 6.2832)); X.cran.push(ln); }
-      for (i = 0; i < 14; i++) { ln = []; var ph = i / 14 * 6.2832; for (j = 0; j <= 24; j++) ln.push(elp(cc[0], cc[1], cc[2], cr[0], cr[1], cr[2], j / 24 * 1.75, ph)); X.cran.push(ln); }
-      for (i = 0; i < 520; i++) X.dots.push(elp(cc[0], cc[1], cc[2], cr[0] * (.97 + rnd() * .04), cr[1] * (.97 + rnd() * .04), cr[2] * (.97 + rnd() * .04), Math.acos(1 - rnd() * 1.7), rnd() * 6.2832));
-      var bc = [0, .65, -.95], br = [.86, .78, 1.12];
-      for (i = 0; i < 46; i++) {
-        ln = []; var u = rnd() * 6.2832, v = .2 + rnd() * 1.4, L = 14 + Math.floor(rnd() * 16), du = (rnd() - .5) * .5, dv = (rnd() - .5) * .3;
-        for (j = 0; j < L; j++) {
-          u += du + (rnd() - .5) * .45; v += dv + (rnd() - .5) * .3; v = clamp(v, .12, 1.65); du *= .92; dv *= .92; du += (rnd() - .5) * .2; dv += (rnd() - .5) * .12;
-          ln.push(elp(bc[0], bc[1], bc[2], br[0] * (1 + (rnd() - .5) * .05), br[1] * (1 + (rnd() - .5) * .05), br[2] * (1 + (rnd() - .5) * .05), v, u));
-        }
-        X.gyri.push(ln);
-      }
-      X.fiss = []; for (j = 0; j <= 30; j++) { var tt = j / 30 * 1.5 + .05; X.fiss.push(elp(bc[0], bc[1], bc[2], 0, br[1] * 1.01, br[2] * 1.01, tt, 1.5708)); }
-      X.fiss2 = []; for (j = 0; j <= 30; j++) { var t2 = j / 30 * 1.5 + .05; X.fiss2.push(elp(bc[0], bc[1], bc[2], 0, br[1] * 1.01, br[2] * 1.01, t2, 4.7124)); }
-      for (i = 0; i < 14; i++) { ln = []; var u3 = rnd() * 6.2832, v3 = 1.0 + rnd() * .35; for (j = 0; j < 14; j++) { u3 += (rnd() - .5) * .9 + .25; ln.push(elp(0, -.15, -1.65, .55, .32, .45, v3 + (rnd() - .5) * .5, u3)); } X.cere.push(ln); }
-      X.stem = [[0, -.15, -1.3], [0, -.5, -1.35], [0, -.95, -1.4]];
-      for (k = -1; k <= 1; k += 2) {
-        ln = []; for (j = 0; j <= 20; j++) { var a = j / 20 * 6.2832; ln.push([k * .43 + Math.cos(a) * .27, Math.sin(a) * .25, .12]); } X.orb.push(ln);
-        X.eye = X.eye || []; X.eye.push([k * .43, 0, .05]);
-        X.zyg.push([[k * .64, -.1, .12], [k * .78, -.2, .02], [k * .92, -.1, -.3], [k * 1.0, 0, -.75]]);
-        X.zyg.push([[k * .6, -.2, .1], [k * .66, -.45, .06], [k * .7, -.62, .02]]);
-      }
-      X.nas = [[0, -.02, .26], [-.1, -.35, .3], [-.17, -.6, .3], [0, -.72, .34], [.17, -.6, .3], [.1, -.35, .3], [0, -.02, .26]];
-      X.nbone = [[0, .22, .3], [0, 0, .32], [0, -.3, .34]];
-      for (i = 0; i < 9; i++) { var tx = (i - 4) / 4 * .62; X.uteeth.push([tx, -.86, .22 + .24 * (1 - tx * tx / .39) - .1 * Math.abs(tx)]); }
-      X.uarc = X.uteeth.map(function (p) { return [p[0], p[1] + .1, p[2] - .02]; });
-      X.hinge = [0, -.15, -.7];
-      X.mandOut = [[-.97, -.12, -.7], [-.95, -.55, -.62], [-.82, -1.0, -.5], [-.55, -1.32, -.12], [-.25, -1.48, .18], [0, -1.54, .24], [.25, -1.48, .18], [.55, -1.32, -.12], [.82, -1.0, -.5], [.95, -.55, -.62], [.97, -.12, -.7]];
-      for (i = 0; i < 9; i++) { var tx2 = (i - 4) / 4 * .5; X.lteeth.push([tx2, -1.05, .12 + .2 * (1 - tx2 * tx2 / .25) - .08 * Math.abs(tx2)]); }
-      X.labels = [
-        ["Frontal bone", .2, 1.05, .3, 1], ["Frontal lobe", -.3, .9, .1, 0], ["Parietal bone", .6, 1.35, -.9, 1], ["Parietal lobe", -.5, 1.1, -1, 0],
-        ["Temporal bone", .95, .2, -.8, 1], ["Temporal lobe", -.8, .25, -.7, 0], ["Occipital bone", .5, .85, -2.2, 1], ["Occipital lobe", -.5, .7, -2.05, 0],
-        ["Cerebellum", .35, -.12, -1.7, 0], ["Pons (brainstem)", 0, -.5, -1.35, 0], ["Eyeball", .43, 0, .1, 1], ["Nasal bone", 0, -.1, .33, 0],
-        ["Zygomatic bone (cheekbone)", -.9, -.12, -.3, 0], ["Maxilla (upper jaw)", .6, -.55, .02, 1], ["Teeth", 0, -.9, .42, 0], ["Mandible (lower jaw)", -.7, -1.2, -.35, 0],
-        ["Masseter", .88, -.8, -.55, 1], ["Temporalis", -1, .55, -.7, 0]
-      ];
-      return X;
-    };
-    var hullOf = function (P) {
-      var pts = P.slice().sort(function (a, b) { return a[0] - b[0] || a[1] - b[1]; }), lo = [], up = [], i;
-      var cr = function (o, a, b) { return (a[0] - o[0]) * (b[1] - o[1]) - (a[1] - o[1]) * (b[0] - o[0]); };
-      for (i = 0; i < pts.length; i++) { while (lo.length >= 2 && cr(lo[lo.length - 2], lo[lo.length - 1], pts[i]) <= 0) lo.pop(); lo.push(pts[i]); }
-      for (i = pts.length - 1; i >= 0; i--) { while (up.length >= 2 && cr(up[up.length - 2], up[up.length - 1], pts[i]) <= 0) up.pop(); up.push(pts[i]); }
-      up.pop(); lo.pop(); return lo.concat(up);
-    };
-    var renderBones = function (h) {
-      var m = h.map(mapP), s = Math.hypot(m[0][0] - m[9][0], m[0][1] - m[9][1]) || 40, i, j;
-      var dx = (m[9][0] - m[0][0]) / s, dy = (m[9][1] - m[0][1]) / s, px2 = -dy, py2 = dx;
-      var chains = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16], [17, 18, 19, 20]], mc = [1, 5, 9, 13, 17];
-      g.save(); g.lineCap = "round"; g.lineJoin = "round";
-      g.fillStyle = "rgba(90,150,255,.13)"; g.strokeStyle = "rgba(110,170,255,.5)"; g.lineWidth = 1.6;
-      g.beginPath(); [0, 1, 5, 9, 13, 17].forEach(function (k, n) { if (n) g.lineTo(m[k][0], m[k][1]); else g.moveTo(m[k][0], m[k][1]); }); g.closePath(); g.fill();
-      chains.forEach(function (c) { g.lineWidth = s * .33; g.strokeStyle = "rgba(90,150,255,.14)"; g.beginPath(); g.moveTo(m[c[0]][0], m[c[0]][1]); for (j = 1; j < 4; j++) g.lineTo(m[c[j]][0], m[c[j]][1]); g.stroke(); });
-      /* bilak suyaklari */
-      for (i = -1; i <= 1; i += 2) {
-        var sx = m[0][0] + px2 * s * .16 * i, sy = m[0][1] + py2 * s * .16 * i, ex = sx - dx * s * .95, ey = sy - dy * s * .95;
-        var lg = g.createLinearGradient(sx, sy, ex, ey); lg.addColorStop(0, "rgba(225,240,255,.85)"); lg.addColorStop(1, "rgba(225,240,255,0)");
-        g.strokeStyle = lg; g.lineWidth = s * .11; g.beginPath(); g.moveTo(sx, sy); g.lineTo(ex, ey); g.stroke();
-      }
-      /* bilak (karpal) suyaklari */
-      g.fillStyle = "rgba(210,232,255,.28)"; g.strokeStyle = "rgba(235,246,255,.85)"; g.lineWidth = 1;
-      for (i = 0; i < 8; i++) {
-        var row = i < 4 ? 0 : 1, kk = (i % 4) - 1.5, cx2 = m[0][0] + dx * s * (.1 + row * .13) + px2 * s * .085 * kk * (row ? 1.1 : .95), cy2 = m[0][1] + dy * s * (.1 + row * .13) + py2 * s * .085 * kk * (row ? 1.1 : .95);
-        g.beginPath(); g.arc(cx2, cy2, s * .052, 0, 6.2832); g.fill(); g.stroke();
-      }
-      /* suyaklar */
-      var bone = function (a, b, w, r1, r2) {
-        var ax2 = m[a][0], ay2 = m[a][1], bx = m[b][0], by = m[b][1], L = Math.hypot(bx - ax2, by - ay2) || 1, ux = (bx - ax2) / L, uy = (by - ay2) / L;
-        var sa = ax2 + ux * r1 * .6, sb = ay2 + uy * r1 * .6, ea = bx - ux * r2 * .6, eb = by - uy * r2 * .6;
-        g.strokeStyle = "rgba(120,180,255,.45)"; g.lineWidth = w + 3; g.beginPath(); g.moveTo(sa, sb); g.lineTo(ea, eb); g.stroke();
-        g.strokeStyle = "rgba(240,248,255,.92)"; g.lineWidth = Math.max(1.2, w * .55); g.beginPath(); g.moveTo(sa, sb); g.lineTo(ea, eb); g.stroke();
-        g.fillStyle = "rgba(200,225,255,.3)"; g.strokeStyle = "rgba(245,250,255,.95)"; g.lineWidth = 1.1;
-        g.beginPath(); g.arc(ax2, ay2, r1, 0, 6.2832); g.fill(); g.stroke();
-        g.beginPath(); g.arc(bx, by, r2, 0, 6.2832); g.fill(); g.stroke();
-      };
-      for (i = 0; i < 5; i++) {
-        var c = chains[i];
-        bone(0, mc[i], s * .12, s * .06, s * .068);
-        bone(c[0], c[1], s * .1, s * .068, s * .06);
-        bone(c[1], c[2], s * .085, s * .06, s * .052);
-        bone(c[2], c[3], s * .07, s * .052, s * .04);
-      }
-      g.restore();
-    };
-    var renderXry = function (hs) {
-      var now = performance.now(), i, j, k, p;
-      var ready = !!fl, alive = FP && now - fSeen < 500;
-      if (alive) fAlpha = Math.min(1, fAlpha + .1); else fAlpha = Math.max(0, fAlpha - .06);
-      g.save();
-      if (fAlpha > .02 && FP) {
-        if (!XM) XM = buildXM();
-        var A = FP[234], B = FP[454], T0 = FP[10], C0 = FP[152], E = FP[168];
-        var ex = [A[0] - B[0], A[1] - B[1], A[2] - B[2]], el = Math.hypot(ex[0], ex[1], ex[2]) || 1; ex = [ex[0] / el, ex[1] / el, ex[2] / el];
-        var ey = [T0[0] - C0[0], T0[1] - C0[1], T0[2] - C0[2]], dd = ey[0] * ex[0] + ey[1] * ex[1] + ey[2] * ex[2];
-        ey = [ey[0] - dd * ex[0], ey[1] - dd * ex[1], ey[2] - dd * ex[2]]; var yl = Math.hypot(ey[0], ey[1], ey[2]) || 1; ey = [ey[0] / yl, ey[1] / yl, ey[2] / yl];
-        var ez = [ey[1] * ex[2] - ey[2] * ex[1], ey[2] * ex[0] - ey[0] * ex[2], ey[0] * ex[1] - ey[1] * ex[0]];
-        var U = el / 2, ox = E[0], oy = E[1], oz = E[2];
-        var tf = function (q, jaw) {
-          var x = q[0], y = q[1], z = q[2];
-          if (jaw) { var th = fJaw * .5, dy = y - XM.hinge[1], dz = z - XM.hinge[2]; y = XM.hinge[1] + dy * Math.cos(th) - dz * Math.sin(th); z = XM.hinge[2] + dy * Math.sin(th) + dz * Math.cos(th); }
-          return [ox + (x * ex[0] + y * ey[0] + z * ez[0]) * U, oy + (x * ex[1] + y * ey[1] + z * ez[1]) * U, oz + (x * ex[2] + y * ey[2] + z * ez[2]) * U];
-        };
-        g.globalAlpha = fAlpha;
-        var allP = [];
-        XM.cran.forEach(function (ln) { ln.forEach(function (q, n) { if (n % 3 === 0) allP.push(tf(q)); }); });
-        XM.mandOut.forEach(function (q) { allP.push(tf(q, 1)); });
-        var hull = hullOf(allP.map(function (q) { return [q[0], q[1]]; }));
-        /* tashqi koʻk nur va tana */
-        var hp = function () { g.beginPath(); hull.forEach(function (q, n) { if (n) g.lineTo(q[0], q[1]); else g.moveTo(q[0], q[1]); }); g.closePath(); };
-        hp(); g.fillStyle = "rgba(20,40,110,.34)"; g.fill();
-        g.lineJoin = "round"; g.strokeStyle = "rgba(40,90,230,.28)"; g.lineWidth = U * .22; hp(); g.stroke();
-        g.strokeStyle = "rgba(70,130,255,.65)"; g.lineWidth = U * .07; hp(); g.stroke();
-        /* miya */
-        var bcn = tf([0, .65, -.95]), brp = [];
-        var rg = g.createRadialGradient(bcn[0], bcn[1] - U * .1, U * .1, bcn[0], bcn[1], U * 1.15);
-        rg.addColorStop(0, "rgba(255,130,190,.62)"); rg.addColorStop(.6, "rgba(190,70,150,.5)"); rg.addColorStop(1, "rgba(90,30,110,.18)");
-        g.fillStyle = rg; g.beginPath(); g.ellipse(bcn[0], bcn[1], U * .9, U * .95, Math.atan2(ex[1], ex[0]), 0, 6.2832); g.fill();
-        g.lineWidth = 1.2; g.lineCap = "round"; g.lineJoin = "round";
-        XM.gyri.forEach(function (ln) {
-          var q0 = ln.map(function (q) { return tf(q); });
-          g.beginPath();
-          q0.forEach(function (q, n) { if (n) g.lineTo(q[0], q[1]); else g.moveTo(q[0], q[1]); });
-          var zf = (q0[0][2] - oz) / U;
-          g.strokeStyle = "rgba(255," + (170 + (zf > 0 ? 40 : 0)) + ",220," + (zf > -.3 ? .6 : .26) + ")"; g.stroke();
-        });
-        [XM.fiss, XM.fiss2].forEach(function (ln) { g.strokeStyle = "rgba(255,225,245,.5)"; g.lineWidth = 1.4; g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke(); });
-        g.strokeStyle = "rgba(250,150,190,.55)"; g.lineWidth = 1;
-        XM.cere.forEach(function (ln) { g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke(); });
-        g.strokeStyle = "rgba(255,200,230,.6)"; g.lineWidth = U * .09; g.beginPath(); XM.stem.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); g.stroke();
-        /* kalla suyagi (toʻr + nuqtalar) */
-        g.globalCompositeOperation = "lighter"; g.lineWidth = .8;
-        XM.cran.forEach(function (ln) {
-          g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); });
-          g.strokeStyle = "rgba(190,215,255,.2)"; g.stroke();
-        });
-        g.fillStyle = "rgba(220,235,255,.5)";
-        XM.dots.forEach(function (q) { var t2 = tf(q); g.fillRect(t2[0] - .6, t2[1] - .6, 1.3, 1.3); });
-        g.globalCompositeOperation = "source-over";
-        var path = function (ln, jaw) { g.beginPath(); ln.forEach(function (q, n) { var t2 = tf(q, jaw); if (n) g.lineTo(t2[0], t2[1]); else g.moveTo(t2[0], t2[1]); }); };
-        var glow = function (ln, w, jaw, col) { path(ln, jaw); g.strokeStyle = "rgba(90,150,255,.35)"; g.lineWidth = w + 4; g.stroke(); path(ln, jaw); g.strokeStyle = col || "rgba(240,248,255,.92)"; g.lineWidth = w; g.stroke(); };
-        /* koz kosasi, burun, yonoq */
-        XM.orb.forEach(function (ln) { glow(ln, 2); });
-        XM.eye.forEach(function (q) { var t2 = tf(q); g.fillStyle = "rgba(210,230,255,.38)"; g.strokeStyle = "rgba(255,255,255,.9)"; g.lineWidth = 1.2; g.beginPath(); g.arc(t2[0], t2[1], U * .15, 0, 6.2832); g.fill(); g.stroke(); g.fillStyle = "rgba(20,30,60,.7)"; g.beginPath(); g.arc(t2[0], t2[1], U * .055, 0, 6.2832); g.fill(); });
-        glow(XM.nas, 1.8); glow(XM.nbone, 1.6);
-        XM.zyg.forEach(function (ln) { glow(ln, 2.2); });
-        glow(XM.uarc, 1.8);
-        /* yuqori tishlar */
-        var tooth = function (q, jaw, up) {
-          var t2 = tf(q, jaw), w = U * .105, h2 = U * .17, ang = Math.atan2(ex[1], ex[0]);
-          g.save(); g.translate(t2[0], t2[1]); g.rotate(ang);
-          g.fillStyle = "rgba(235,245,255,.55)"; g.strokeStyle = "rgba(255,255,255,.95)"; g.lineWidth = 1;
-          g.beginPath(); g.rect(-w / 2, up ? 0 : -h2, w, h2); g.fill(); g.stroke(); g.restore();
-        };
-        XM.uteeth.forEach(function (q) { tooth(q, 0, 1); });
-        /* pastki jag va tishlar (ochilishga mos) */
-        glow(XM.mandOut, 2.6, 1);
-        var rh = [XM.mandOut[0], XM.hinge, [-.9, -.8, -.6]]; glow([XM.mandOut[0], XM.mandOut[1]], 2, 1);
-        XM.lteeth.forEach(function (q) { tooth(q, 1, 0); });
-        /* yorliqlar */
-        g.font = "600 9.5px system-ui, sans-serif"; g.textBaseline = "middle";
-        var cx0 = tf([0, .3, -.8])[0], L = [], R = [];
-        XM.labels.forEach(function (lb) {
-          var t2 = tf([lb[1], lb[2], lb[3]]), o = { t: lb[0], x: t2[0], y: t2[1], b: lb[4] };
-          if (t2[0] < cx0) L.push(o); else R.push(o);
-        });
-        var place = function (arr, xs, al) {
-          arr.sort(function (a, b) { return a.y - b.y; });
-          var last = -1e9, n;
-          for (n = 0; n < arr.length; n++) { var yy = Math.max(arr[n].y, last + 12); arr[n].ly = yy; last = yy; }
-          for (n = arr.length - 1; n >= 0; n--) { if (arr[n].ly > H - 10) arr[n].ly = H - 10 - (arr.length - 1 - n) * 12; }
-          g.textAlign = al;
-          arr.forEach(function (o) {
-            g.strokeStyle = "rgba(255,255,255,.55)"; g.lineWidth = .8; g.beginPath(); g.moveTo(o.x, o.y); g.lineTo(xs + (al === "left" ? -4 : 4), o.ly); g.lineTo(xs, o.ly); g.stroke();
-            g.fillStyle = "#fff"; g.beginPath(); g.arc(o.x, o.y, 1.6, 0, 6.2832); g.fill();
-            g.font = (o.b ? "700 " : "500 ") + "9.5px system-ui, sans-serif"; g.fillText(o.t, xs + (al === "left" ? 2 : -2), o.ly);
-          });
-        };
-        var hx0 = Math.min.apply(null, hull.map(function (q) { return q[0]; })), hx1 = Math.max.apply(null, hull.map(function (q) { return q[0]; }));
-        var mwL = 0, mwR = 0; g.font = "700 9.5px system-ui, sans-serif";
-        L.forEach(function (o) { mwL = Math.max(mwL, g.measureText(o.t).width); }); R.forEach(function (o) { mwR = Math.max(mwR, g.measureText(o.t).width); });
-        place(L, Math.max(6 + mwL + 6, Math.min(hx0 - 14, W * .3)), "right");
-        place(R, Math.min(W - 6 - mwR - 6, Math.max(hx1 + 14, W * .7)), "left");
-      }
-      g.restore(); g.globalAlpha = 1;
-      /* qoʻl skeleti */
-      if (camOn) lastHands.forEach(function (h) { renderBones(h); });
-      /* holat yozuvi */
-      if (camOn && (!ready || fAlpha < .05)) {
-        g.fillStyle = "rgba(255,255,255,.85)"; g.font = "600 13px system-ui, sans-serif"; g.textAlign = "center"; g.textBaseline = "middle";
-        g.fillText(ready ? T("xr_face") : T("xr_load"), W / 2, H * .12);
-      }
     };
     /* boʻlim tugmalari */
     var tabsEl = document.getElementById("hfTabs"), secEls = [].slice.call(document.querySelectorAll("#hfp .hf-sec")), secP = document.getElementById("hfSecP");
@@ -3317,7 +3134,7 @@ body { animation: tint 36s ease-in-out infinite; }
       [].slice.call(tabsEl.querySelectorAll(".hf-tab")).forEach(function (b) { b.classList.toggle("on", b.getAttribute("data-sec") === name); });
       secEls.forEach(function (el) { el.hidden = el.getAttribute("data-for") !== name; });
       secP.setAttribute("data-t", "hf_s_" + name); secP.textContent = T("hf_s_" + name); secP.hidden = name !== "shape";
-      hfEl.classList.toggle("bgcam", name === "fin" || name === "cld" || name === "xry");
+      hfEl.classList.toggle("bgcam", name === "fin" || name === "cld");
       hfEl.classList.toggle("sec-x", name !== "shape");
       if (name === "ndl") ND = null; if (name === "flw") FL = null; if (name === "cld") CL = null; if (name === "fin") finS = [];
       if (camOn) showMsg(name === "shape" ? "hf_show" : "hf_show2"); else showMsg(null);
@@ -3340,6 +3157,139 @@ body { animation: tint 36s ease-in-out infinite; }
     camBtn.addEventListener("click", function () { if (camOn || starting) { stopCam(); showMsg(null); } else startCam(); });
   })();
 
+
+  /* ===== Yangi yil archasi (dekabrda) va yil xulosasi (qishda) ===== */
+  (function () {
+    var box = document.getElementById("ny"), cvn = document.getElementById("nyCv"), rg = document.getElementById("recGrid");
+    if (rg) {
+      var cells = [].slice.call(rg.querySelectorAll("b")), done = false;
+      var runCount = function () {
+        if (done) return; done = true;
+        if (calm) return;
+        var t0 = performance.now();
+        var step = function (now) {
+          var k = Math.min(1, (now - t0) / 1300), e = 1 - Math.pow(1 - k, 3);
+          cells.forEach(function (c) { c.textContent = Math.round((+c.getAttribute("data-n")) * e); });
+          if (k < 1) requestAnimationFrame(step);
+        };
+        cells.forEach(function (c) { c.textContent = "0"; });
+        requestAnimationFrame(step);
+      };
+      if ("IntersectionObserver" in window) {
+        var io2 = new IntersectionObserver(function (en) { if (en[0].isIntersecting) { runCount(); io2.disconnect(); } }, { threshold: .35 });
+        io2.observe(rg);
+      }
+    }
+    if (!cvn) return;
+    var c2 = cvn.getContext("2d"), LW = 300, LH = 340, K = 1, ORN = [], SPK = [], MODE = 0, vis = false, raf2 = 0, t2 = 0, FL = [], i;
+    var PAL = ["#ff4d6d", "#ffd23f", "#4dd2ff", "#7dff8a", "#ff8f3f", "#c77dff", "#ffffff"];
+    var MODES = [PAL.slice(0, 6), ["#ffd23f", "#ffb347", "#fff1b8", "#ff9f43"], ["#aee4ff", "#6ec6ff", "#ffffff", "#9fb4ff"], ["#ffffff"]];
+    for (i = 0; i < 46; i++) FL.push({ x: Math.random() * LW, y: Math.random() * LH, v: .25 + Math.random() * .5, r: .6 + Math.random() * 1.4, p: Math.random() * 6 });
+    var size2 = function () {
+      var d = Math.min(window.devicePixelRatio || 1, 2), w = cvn.clientWidth;
+      if (!w) return; cvn.width = Math.round(w * d); cvn.height = Math.round(w * LH / LW * d); K = cvn.width / LW;
+    };
+    var TIER = [[40, 120, 58], [92, 178, 84], [146, 232, 110], [200, 292, 138]];
+    var inTree = function (x, y) { return y > 44 && y < 292 && Math.abs(x - 150) <= (y - 40) / 252 * 140; };
+    var star = function (x, y, r, rot) {
+      c2.beginPath();
+      for (var j = 0; j < 10; j++) { var a = rot + j * Math.PI / 5 - Math.PI / 2, rr = j % 2 ? r * .45 : r; c2[j ? "lineTo" : "moveTo"](x + Math.cos(a) * rr, y + Math.sin(a) * rr); }
+      c2.closePath();
+    };
+    var bulb = function (x, y, col, a, r) {
+      c2.globalAlpha = a; var g2 = c2.createRadialGradient(x, y, 0, x, y, r * 4);
+      g2.addColorStop(0, col); g2.addColorStop(.3, col); g2.addColorStop(1, "rgba(0,0,0,0)");
+      c2.fillStyle = g2; c2.globalAlpha = a * .55; c2.beginPath(); c2.arc(x, y, r * 4, 0, 6.2832); c2.fill();
+      c2.globalAlpha = a; c2.fillStyle = col; c2.beginPath(); c2.arc(x, y, r, 0, 6.2832); c2.fill(); c2.globalAlpha = 1;
+    };
+    var drawT = function () {
+      if (!cvn.width) size2(); if (!cvn.width) return;
+      c2.setTransform(K, 0, 0, K, 0, 0); c2.clearRect(0, 0, LW, LH);
+      var j, n;
+      /* qor */
+      c2.fillStyle = "#fff";
+      FL.forEach(function (f) { if (!calm) { f.y += f.v; f.x += Math.sin(t2 + f.p) * .2; if (f.y > LH) { f.y = -3; f.x = Math.random() * LW; } } c2.globalAlpha = .5 + .4 * Math.sin(t2 * 2 + f.p); c2.beginPath(); c2.arc(f.x, f.y, f.r, 0, 6.2832); c2.fill(); });
+      c2.globalAlpha = 1;
+      /* zamin */
+      var gg = c2.createRadialGradient(150, 318, 10, 150, 318, 170); gg.addColorStop(0, "#ffffff"); gg.addColorStop(1, "rgba(170,205,255,0)");
+      c2.fillStyle = gg; c2.beginPath(); c2.ellipse(150, 322, 165, 22, 0, 0, 6.2832); c2.fill();
+      /* tana */
+      c2.fillStyle = "#6b3f1f"; c2.fillRect(139, 284, 22, 36); c2.fillStyle = "#8a5430"; c2.fillRect(139, 284, 8, 36);
+      /* qatlamlar */
+      TIER.forEach(function (T2, q) {
+        var ty = T2[0], by = T2[1], hw = T2[2] + 18 + q * 3, sc = 7;
+        var gr = c2.createLinearGradient(0, ty, 0, by); gr.addColorStop(0, "#2f9b4f"); gr.addColorStop(1, "#0f5a31");
+        c2.fillStyle = gr; c2.beginPath(); c2.moveTo(150, ty);
+        c2.lineTo(150 + hw, by - 6);
+        for (n = sc; n >= 0; n--) { var xx = 150 - hw + (2 * hw) * n / sc; c2.quadraticCurveTo(xx + hw / sc, by + 8, xx, by - 6); }
+        c2.closePath(); c2.fill();
+        c2.strokeStyle = "rgba(190,255,200,.28)"; c2.lineWidth = 1; c2.stroke();
+        /* qor oqligi */
+        c2.fillStyle = "rgba(255,255,255,.18)"; c2.beginPath(); c2.moveTo(150, ty); c2.lineTo(150 + hw * .35, ty + (by - ty) * .35); c2.lineTo(150 - hw * .35, ty + (by - ty) * .35); c2.closePath(); c2.fill();
+      });
+      /* girlyanda va chiroqlar */
+      var cols = MODES[MODE];
+      TIER.forEach(function (T2, q) {
+        var ty = T2[0], by = T2[1], hw = T2[2] + 18 + q * 3, y1 = ty + (by - ty) * .42, y2 = ty + (by - ty) * .78, w1 = (y1 - ty) / (by - ty) * hw * .9, w2 = (y2 - ty) / (by - ty) * hw * .9;
+        c2.strokeStyle = "rgba(255,215,120,.75)"; c2.lineWidth = 1.4; c2.beginPath(); c2.moveTo(150 - w1, y1);
+        c2.quadraticCurveTo(150, y2 + 14, 150 + w2, y2 - 4); c2.stroke();
+        for (n = 0; n < 8; n++) {
+          var u = (n + .5) / 8, bx = (1 - u) * (1 - u) * (150 - w1) + 2 * u * (1 - u) * 150 + u * u * (150 + w2), by2 = (1 - u) * (1 - u) * y1 + 2 * u * (1 - u) * (y2 + 14) + u * u * (y2 - 4);
+          var col = cols[(n + q) % cols.length], al = MODE === 3 ? (Math.sin(t2 * 6 + n * 1.7 + q) > 0 ? 1 : .15) : .55 + .45 * Math.sin(t2 * 2.6 + n * 1.3 + q * .9);
+          bulb(bx, by2, col, al, 2.6);
+        }
+      });
+      /* sovgʻalar */
+      var gift = function (x, y, w, h, col, rib) {
+        c2.fillStyle = col; c2.fillRect(x, y, w, h); c2.fillStyle = "rgba(0,0,0,.18)"; c2.fillRect(x + w * .66, y, w * .34, h);
+        c2.fillStyle = rib; c2.fillRect(x + w / 2 - 2.5, y, 5, h); c2.fillRect(x, y + h / 2 - 2.5, w, 5);
+        c2.beginPath(); c2.arc(x + w / 2 - 5, y - 2, 5, 0, 6.2832); c2.arc(x + w / 2 + 5, y - 2, 5, 0, 6.2832); c2.fill();
+      };
+      gift(62, 298, 40, 26, "#d6334a", "#ffe27a"); gift(196, 300, 44, 24, "#2f7bff", "#ffffff"); gift(104, 306, 28, 18, "#f2a31b", "#d6334a"); gift(168, 308, 24, 16, "#7a45d6", "#9cf0b7");
+      /* shar-bezaklar */
+      ORN.forEach(function (o) {
+        var sw = calm ? 0 : Math.sin(t2 * 1.4 + o.p) * 1.6, ox = o.x + sw;
+        c2.strokeStyle = "rgba(255,255,255,.5)"; c2.lineWidth = .8; c2.beginPath(); c2.moveTo(o.x, o.y - 10); c2.lineTo(ox, o.y - 5); c2.stroke();
+        var gb = c2.createRadialGradient(ox - 2, o.y - 2, 1, ox, o.y, 7); gb.addColorStop(0, "#fff"); gb.addColorStop(.25, o.c); gb.addColorStop(1, o.c);
+        c2.fillStyle = gb; c2.beginPath(); c2.arc(ox, o.y, 6.5, 0, 6.2832); c2.fill();
+        c2.fillStyle = "rgba(255,255,255,.85)"; c2.fillRect(ox - 1.5, o.y - 8.5, 3, 2.5);
+      });
+      /* yulduz */
+      var sp = 1 + (calm ? 0 : .08 * Math.sin(t2 * 3)), sg = c2.createRadialGradient(150, 30, 2, 150, 30, 44 * sp);
+      sg.addColorStop(0, "rgba(255,230,120,.8)"); sg.addColorStop(1, "rgba(255,230,120,0)"); c2.fillStyle = sg; c2.beginPath(); c2.arc(150, 30, 44 * sp, 0, 6.2832); c2.fill();
+      c2.fillStyle = "#ffd54a"; c2.strokeStyle = "#fff3b0"; c2.lineWidth = 1.2; star(150, 30, 18 * sp, calm ? 0 : Math.sin(t2) * .12); c2.fill(); c2.stroke();
+      /* uchqunlar */
+      for (j = SPK.length - 1; j >= 0; j--) {
+        var P = SPK[j]; P.x += P.vx; P.y += P.vy; P.vy += .06; P.l -= .018;
+        if (P.l <= 0) { SPK.splice(j, 1); continue; }
+        c2.globalAlpha = P.l; c2.fillStyle = P.c; star(P.x, P.y, 3 + P.l * 3, P.l * 6); c2.fill();
+      }
+      c2.globalAlpha = 1;
+    };
+    var loop2 = function () {
+      raf2 = 0;
+      if (!vis || document.hidden) return;
+      if (!busyN) { t2 += .016; drawT(); }
+      if (!calm || SPK.length) raf2 = requestAnimationFrame(loop2);
+    };
+    var kick2 = function () { if (!raf2 && vis) raf2 = requestAnimationFrame(loop2); };
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { vis = en[0].isIntersecting; if (vis) { size2(); kick2(); } }, { threshold: .05 }).observe(cvn);
+    else { vis = true; kick2(); }
+    window.addEventListener("resize", function () { size2(); if (calm) drawT(); });
+    cvn.addEventListener("click", function (e) {
+      var r = cvn.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * LW, y = (e.clientY - r.top) / r.height * LH;
+      if (Math.hypot(x - 150, y - 30) < 28) {
+        for (var j = 0; j < 46; j++) { var a = Math.random() * 6.2832, v = 1 + Math.random() * 3.2; SPK.push({ x: 150, y: 30, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 1, l: 1, c: PAL[(Math.random() * PAL.length) | 0] }); }
+      } else if (inTree(x, y)) {
+        if (ORN.length >= 30) ORN.shift();
+        ORN.push({ x: x, y: y, c: PAL[(Math.random() * 6) | 0], p: Math.random() * 6 });
+      }
+      kick2(); if (calm) drawT();
+    });
+    document.getElementById("nyLights").addEventListener("click", function () { MODE = (MODE + 1) % MODES.length; kick2(); if (calm) drawT(); });
+    document.getElementById("nyClear").addEventListener("click", function () { ORN.length = 0; kick2(); if (calm) drawT(); });
+    document.addEventListener("visibilitychange", function () { if (!document.hidden) kick2(); });
+  })();
   /* Kirish animatsiyasini olib tashlash */
   setTimeout(function () { var it = document.getElementById("intro"); if (it) it.remove(); }, 2900);
 })();
