@@ -3217,13 +3217,17 @@ body { animation: tint 36s ease-in-out infinite; }
       return mask[(v * MW + u) * 4 + 3];
     };
     var rowW = function (y) { var v = Math.min(MH - 1, Math.max(0, Math.floor((y - TY) / TH * MH))); return HW[v] || [CXT - 10, CXT + 10]; };
-    /* oʻzgarish: shoxlar yumshoq tebranadi (chekkalari koʻproq) */
-    var swayAt = function (y) {
-      var f = (y - TY) / TH; if (calm) return [0, 0];
-      var w = sstep(.04, .5, f) * (1 - sstep(.8, .92, f));
-      return [w * (.010 * Math.sin(t2 * 1.15 + f * 5) + .006 * Math.sin(t2 * 2.1 + f * 11 + 1.3)), w * 1.5 * Math.sin(t2 * .9 + f * 3.2)];
+    /* shoxlar va barglar tebranishi: tanadan uzoqlashgan sari (shox uchlari) koʻproq */
+    var disp = function (x, y) {
+      if (calm) return [0, 0];
+      var f = (y - TY) / TH, u = (x - CXT) / (TW / 2), au = Math.min(1, Math.abs(u));
+      var w = sstep(.03, .45, f) * (1 - sstep(.8, .93, f));
+      var dx = w * (.8 + 2.8 * au) * Math.sin(t2 * 1.5 + f * 7 + u * 2.2) + w * 1.2 * Math.sin(t2 * .8 + f * 3);
+      var dy = w * Math.pow(au, 1.2) * (3.2 * Math.sin(t2 * 1.9 + f * 5 + u * 3.5) + 1.2 * Math.sin(t2 * 3.1 + u * 6 + f * 9));
+      return [dx, dy];
     };
-    var warpX = function (x, y) { var s = swayAt(y); return CXT + (x - CXT) * (1 + s[0]) + s[1]; };
+    var warpX = function (x, y) { return x + disp(x, y)[0]; };
+    var warpY = function (x, y) { return y + disp(x, y)[1]; };
     var tint = function (name, deg) {
       var key = name + deg; if (VAR[key]) return VAR[key];
       var im = IM[name]; if (!im) return null;
@@ -3290,12 +3294,12 @@ body { animation: tint 36s ease-in-out infinite; }
       for (var s = 0; s < SW.length; s++) {
         var y0 = TY + TH * SW[s], wd = rowW(y0), half = (wd[1] - wd[0]) / 2 * .8, sag = 12 + s * 1.5;
         c2.strokeStyle = "rgba(10,40,20,.95)"; c2.lineWidth = 1.6; c2.beginPath();
-        for (var q = 0; q <= 20; q++) { var u = q / 20, x = CXT - half + 2 * half * u, y = y0 + 4 * sag * u * (1 - u) * .5; wx = warpX(x, y); if (q) c2.lineTo(wx, y); else c2.moveTo(wx, y); }
+        for (var q = 0; q <= 20; q++) { var u = q / 20, x = CXT - half + 2 * half * u, y = y0 + 4 * sag * u * (1 - u) * .5; wx = warpX(x, y); var wy = warpY(x, y); if (q) c2.lineTo(wx, wy); else c2.moveTo(wx, wy); }
         c2.stroke();
       }
       for (j = 0; j < LIGHTS.length; j++) {
         L = LIGHTS[j];
-        var col = cols[(L.k + L.s) % cols.length], x = warpX(L.x, L.y), y = L.y + 3;
+        var col = cols[(L.k + L.s) % cols.length], x = warpX(L.x, L.y), y = warpY(L.x, L.y) + 3;
         var lit = 0;
         if (fin && lightsOn) {
           var startAt = .5 + (SW.length - 1 - L.s) * .2 + L.k * .012, ft = (t2 - finT) - startAt;
@@ -3347,11 +3351,14 @@ body { animation: tint 36s ease-in-out infinite; }
       var pop = 1;
       if (fin && ft < 1.1 && !calm) pop = ft < .22 ? 1 - .05 * (ft / .22) : 0.95 + .05 * back(Math.min(1, (ft - .22) / .85)) + .04 * Math.sin(Math.min(1, (ft - .22) / .85) * Math.PI);
       c2.save(); c2.translate(CXT, TY + TH); c2.scale(pop, pop); c2.translate(-CXT, -(TY + TH));
-      /* archa: qatorlar boʻyicha tebranish */
-      var tw = IM.tree.naturalWidth, th = IM.tree.naturalHeight, rh = 4, rows = Math.ceil(th / rh), sc = TH / th;
+      /* archa: qator va ustun boʻyicha toʻr (mesh) tebranishi */
+      var tw = IM.tree.naturalWidth, th = IM.tree.naturalHeight, rh = 6, rows = Math.ceil(th / rh), sc = TH / th, NC = 14, cw = tw / NC;
       for (j = 0; j < rows; j++) {
-        var ys = j * rh, dy = TY + ys * sc, s = swayAt(dy + rh * sc / 2), dw = TW * (1 + s[0]);
-        c2.drawImage(IM.tree, 0, ys, tw, Math.min(rh + 1, th - ys), CXT - dw / 2 + s[1], dy, dw, rh * sc + .7);
+        var ys = j * rh, dy0 = TY + ys * sc, sh = Math.min(rh + 1, th - ys);
+        for (n = 0; n < NC; n++) {
+          var xs = n * cw, dx0 = TX + xs * TW / tw, dd = disp(dx0 + TW / NC / 2, dy0 + rh * sc / 2);
+          c2.drawImage(IM.tree, xs, ys, cw + 1, sh, dx0 + dd[0], dy0 + dd[1], TW / NC + .9, rh * sc + .9);
+        }
       }
       /* chiroq zanjirlari */
       if (!LIGHTS.length) buildLights();
@@ -3359,11 +3366,11 @@ body { animation: tint 36s ease-in-out infinite; }
       /* bezaklar */
       ORN.forEach(function (o) {
         var age = t2 - o.t0, a = Math.min(1, age / .55), sc2 = age < .55 ? back(a) : 1, dropY = age < .55 ? -26 * (1 - ease(a)) : 0;
-        var x = warpX(o.x, o.y), hang = o.sp === "orn1" || o.sp === "strip" || o.sp === "orn3" || o.sp === "cane";
+        var x = warpX(o.x, o.y), oy = warpY(o.x, o.y), hang = o.sp === "orn1" || o.sp === "strip" || o.sp === "orn3" || o.sp === "cane";
         var rot = (calm ? 0 : Math.sin(t2 * 1.3 + o.p) * (hang ? .07 : .04)) + o.r;
         var h = SZ[o.sp];
-        if (hang) { c2.strokeStyle = "rgba(255,230,160,.6)"; c2.lineWidth = .7; c2.beginPath(); c2.moveTo(x, o.y - 12 + dropY); c2.lineTo(x, o.y - 3 + dropY); c2.stroke(); spr(o.sp, x, o.y - 3 + dropY, h, rot, true, sc2, o.sh); }
-        else spr(o.sp, x, o.y + dropY, h, rot, false, sc2, o.sh);
+        if (hang) { c2.strokeStyle = "rgba(255,230,160,.6)"; c2.lineWidth = .7; c2.beginPath(); c2.moveTo(x, oy - 12 + dropY); c2.lineTo(x, oy - 3 + dropY); c2.stroke(); spr(o.sp, x, oy - 3 + dropY, h, rot, true, sc2, o.sh); }
+        else spr(o.sp, x, oy + dropY, h, rot, false, sc2, o.sh);
       });
       c2.restore();
       /* yulduz */
