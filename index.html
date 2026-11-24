@@ -725,6 +725,23 @@ body { animation: tint 36s ease-in-out infinite; }
 .s-winter h2::after { height: 40px; top: 94%; background-size: 120px 40px; }
 .foot { text-align: center; padding: 10px 16px; border-radius: 999px; width: fit-content; margin-inline: auto; }
 .s-winter .foot { color: #eaf7ff; border: 1px solid rgba(195,232,255,.6); background: linear-gradient(135deg, rgba(210,240,255,.22), rgba(90,150,235,.12)); box-shadow: inset 0 1px 0 rgba(255,255,255,.6), 0 0 18px rgba(110,180,255,.35); text-shadow: 0 0 8px rgba(150,205,255,.7); }
+
+/* ===== qish yozuv ranglari v5: aurora sarlavha + iliq matn ===== */
+.s-winter h2, .s-winter h1 span:not(.w1), .s-winter h1 .w1 {
+  background: linear-gradient(100deg, transparent 40%, rgba(255,255,255,.9) 50%, transparent 60%) 0 0 / 260% 100% no-repeat, linear-gradient(90deg, #7CF7D4, #5CC8FF, #B48CFF, #FF8AD8, #FFC857, #7CF7D4) 0 0 / 300% 100%;
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: aurora 9s linear infinite;
+  -webkit-text-stroke: .6px rgba(255,255,255,.45);
+  filter: drop-shadow(0 0 10px rgba(255,140,220,.45)) drop-shadow(0 2px 3px rgba(20,10,60,.6));
+}
+@keyframes aurora { 0% { background-position: 180% 0, 0 0; } 100% { background-position: -80% 0, 300% 0; } }
+.s-winter .sec p, .s-winter .fact-cell dd, .s-winter .info dd, .s-winter .typed-line .cl-d, .s-winter .who b, .s-winter .card h3 {
+  background: linear-gradient(180deg, #fff7e6 10%, #ffd7a3 130%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: .3px rgba(255,225,170,.5); filter: drop-shadow(0 0 6px rgba(255,170,100,.4));
+}
+.s-winter .foot { color: #fff1d6; border-color: rgba(255,215,160,.6); background: linear-gradient(135deg, rgba(255,215,160,.18), rgba(255,130,200,.12)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 18px rgba(255,150,200,.3); text-shadow: 0 0 8px rgba(255,180,120,.6); }
+.ny-cd b { background: linear-gradient(180deg, #fff3d6, #ff9fd6) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent; }
+.ny-cd span, .s-winter .ny-cdt { color: #ffd9b0; }
 </style>
 
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
@@ -800,7 +817,6 @@ body { animation: tint 36s ease-in-out infinite; }
     </div>
     <div class="ny-ctl ny-lp" id="nyFin" hidden>
       <div class="ny-row"><button type="button" class="chip" id="nyRedo" data-t="ny_redo">Qayta bezash</button></div>
-      <div class="ny-row"><label for="nyRot" data-t="l_rot">Aylanish</label><input type="range" id="nyRot" min="10" max="150" value="55"></div>
     </div>
     <div class="ny-ctl ny-lp" id="nyLP">
       <div class="ny-row"><button type="button" class="chip on" id="nyPower" data-t="l_on">Chiroqlar: yoniq</button></div>
@@ -1292,9 +1308,9 @@ body { animation: tint 36s ease-in-out infinite; }
     summer: { sun: ["#FFC857", "#FF9F43"], sky: ["#5FD0FF", "#3AA0FF"], lime: ["#B6F26B", "#7BD84A"], coral: ["#FF8A7A", "#F2607A"] }
   };
   var THEMES = SEASON_THEMES[SEASON];
-  Object.assign(DICT.uz, { ny_h: "Yangi yil archasi", cd_t: "Yangi yilgacha qoldi", cd_d: "kun", cd_h: "soat", cd_m: "daqiqa", cd_s: "soniya", ny_undo: "Bekor qilish", ny_clear: "Tozalash", ny_finish: "Yakunlash ✨", ny_redo: "Qayta bezash", sp_on: "Aylanish: yoniq", sp_off: "Aylanish: oʻchiq", l_rot: "Aylanish", l_on: "Chiroqlar: yoniq", l_off: "Chiroqlar: oʻchiq", l_col: "Rang", l_fx: "Effekt", l_spd: "Tezlik", l_br: "Yorqinlik", c0: "Rang-barang", c1: "Issiq", c2: "Muzdek", c3: "Alanga", c4: "Neon", f0: "Chaqnash", f1: "Yugurish", f2: "Toʻlqin", f3: "Nafas", f4: "Barqaror", f5: "Yulduzcha", ny_hint: "Archani bosing — bezaklar ketma-ket osiladi. Chiroqlarni oldindan sozlab qoʻying, tayyor boʻlsa «Yakunlash» ni bosing.", ny_hint2: "Archa aylanyapti. Yulduzni bossangiz chiroq rangi almashadi." });
-  Object.assign(DICT.en, { ny_h: "New Year tree", cd_t: "Time until New Year", cd_d: "days", cd_h: "hours", cd_m: "min", cd_s: "sec", ny_undo: "Undo", ny_clear: "Clear", ny_finish: "Finish ✨", ny_redo: "Decorate again", sp_on: "Spin: on", sp_off: "Spin: off", l_rot: "Rotation", l_on: "Lights: on", l_off: "Lights: off", l_col: "Color", l_fx: "Effect", l_spd: "Speed", l_br: "Brightness", c0: "Multicolor", c1: "Warm", c2: "Icy", c3: "Flame", c4: "Neon", f0: "Blink", f1: "Chase", f2: "Wave", f3: "Breathe", f4: "Steady", f5: "Twinkle", ny_hint: "Tap the tree — decorations appear one after another. Set up the lights first, then press Finish.", ny_hint2: "The tree is spinning. Tap the star to change the light color." });
-  Object.assign(DICT.ru, { ny_h: "Новогодняя ёлка", cd_t: "До Нового года осталось", cd_d: "дн", cd_h: "ч", cd_m: "мин", cd_s: "сек", ny_undo: "Отменить", ny_clear: "Очистить", ny_finish: "Завершить ✨", ny_redo: "Украсить заново", sp_on: "Вращение: вкл", sp_off: "Вращение: выкл", l_rot: "Вращение", l_on: "Огни: вкл", l_off: "Огни: выкл", l_col: "Цвет", l_fx: "Эффект", l_spd: "Скорость", l_br: "Яркость", c0: "Разноцветные", c1: "Тёплые", c2: "Ледяные", c3: "Пламя", c4: "Неон", f0: "Мигание", f1: "Бег", f2: "Волна", f3: "Дыхание", f4: "Ровный", f5: "Мерцание", ny_hint: "Нажимайте на ёлку — украшения появляются по очереди. Настройте огни заранее, затем «Завершить».", ny_hint2: "Ёлка вращается. Нажмите на звезду — цвет огней сменится." });
+  Object.assign(DICT.uz, { ny_h: "Yangi yil archasi", cd_t: "Yangi yilgacha qoldi", cd_d: "kun", cd_h: "soat", cd_m: "daqiqa", cd_s: "soniya", ny_undo: "Bekor qilish", ny_clear: "Tozalash", ny_finish: "Yakunlash ✨", ny_redo: "Qayta bezash", sp_on: "Aylanish: yoniq", sp_off: "Aylanish: oʻchiq", l_rot: "Aylanish", l_on: "Chiroqlar: yoniq", l_off: "Chiroqlar: oʻchiq", l_col: "Rang", l_fx: "Effekt", l_spd: "Tezlik", l_br: "Yorqinlik", c0: "Rang-barang", c1: "Issiq", c2: "Muzdek", c3: "Alanga", c4: "Neon", f0: "Chaqnash", f1: "Yugurish", f2: "Toʻlqin", f3: "Nafas", f4: "Barqaror", f5: "Yulduzcha", ny_hint: "Archani bosing — bezaklar ketma-ket osiladi. Chiroqlarni oldindan sozlab qoʻying, tayyor boʻlsa «Yakunlash» ni bosing.", ny_hint2: "Yulduzni bossangiz chiroq rangi almashadi." });
+  Object.assign(DICT.en, { ny_h: "New Year tree", cd_t: "Time until New Year", cd_d: "days", cd_h: "hours", cd_m: "min", cd_s: "sec", ny_undo: "Undo", ny_clear: "Clear", ny_finish: "Finish ✨", ny_redo: "Decorate again", sp_on: "Spin: on", sp_off: "Spin: off", l_rot: "Rotation", l_on: "Lights: on", l_off: "Lights: off", l_col: "Color", l_fx: "Effect", l_spd: "Speed", l_br: "Brightness", c0: "Multicolor", c1: "Warm", c2: "Icy", c3: "Flame", c4: "Neon", f0: "Blink", f1: "Chase", f2: "Wave", f3: "Breathe", f4: "Steady", f5: "Twinkle", ny_hint: "Tap the tree — decorations appear one after another. Set up the lights first, then press Finish.", ny_hint2: "Tap the star to change the light color." });
+  Object.assign(DICT.ru, { ny_h: "Новогодняя ёлка", cd_t: "До Нового года осталось", cd_d: "дн", cd_h: "ч", cd_m: "мин", cd_s: "сек", ny_undo: "Отменить", ny_clear: "Очистить", ny_finish: "Завершить ✨", ny_redo: "Украсить заново", sp_on: "Вращение: вкл", sp_off: "Вращение: выкл", l_rot: "Вращение", l_on: "Огни: вкл", l_off: "Огни: выкл", l_col: "Цвет", l_fx: "Эффект", l_spd: "Скорость", l_br: "Яркость", c0: "Разноцветные", c1: "Тёплые", c2: "Ледяные", c3: "Пламя", c4: "Неон", f0: "Мигание", f1: "Бег", f2: "Волна", f3: "Дыхание", f4: "Ровный", f5: "Мерцание", ny_hint: "Нажимайте на ёлку — украшения появляются по очереди. Настройте огни заранее, затем «Завершить».", ny_hint2: "Нажмите на звезду — цвет огней сменится." });
   Object.assign(DICT.uz, {
     hf_t_shape: "Shakllar", hf_t_fin: "Barmoq", hf_t_ndl: "Ignalar", hf_t_flw: "Oqim", hf_t_cld: "Zarralar",
     hf_s_shape: DICT.uz.hf_p,
@@ -3360,7 +3376,7 @@ body { animation: tint 36s ease-in-out infinite; }
       if (!cvn.width) size2(); if (!cvn.width) return;
       c2.setTransform(K, 0, 0, K, 0, 0); c2.clearRect(0, 0, LW, LH);
       var j, n, fin = STATE === "fin", ft = t2 - finT;
-      if (!calm) { if (fin && SPIN) TH_ += .016 * DK * ROT * Math.min(1, ft / 1.2); else if (!fin) TH_ += (Math.round(TH_ / 6.2832) * 6.2832 - TH_) * .08; }
+      if (!calm) { if (fin && SPIN) TH_ = 0; else if (!fin) TH_ += (Math.round(TH_ / 6.2832) * 6.2832 - TH_) * .08; }
       /* tashqi nur (yakunlashdan keyin) */
       if (fin) {
         var glow = Math.min(1, ft / .8) * (.55 + (calm ? 0 : .12 * Math.sin(t2 * 1.6)));
@@ -3537,7 +3553,6 @@ body { animation: tint 36s ease-in-out infinite; }
       setState("fin"); burst(CXT, TY + TH * .5, 60, true); burst(CXT, TY, 40, true); redraw();
     });
     $("nyRedo").addEventListener("click", function () { setState("dec"); redraw(); });
-    $("nyRot").addEventListener("input", function (e) { ROT = +e.target.value / 100; redraw(); });
     $("nyPower").addEventListener("click", function () { lightsOn = !lightsOn; if (lightsOn) finT = t2 - 1; syncUI(); redraw(); });
     [].forEach.call(document.querySelectorAll("#nyLP [data-mode]"), function (b) { b.addEventListener("click", function () { MODE = +b.getAttribute("data-mode"); syncUI(); redraw(); }); });
     [].forEach.call(document.querySelectorAll("#nyLP [data-fx]"), function (b) { b.addEventListener("click", function () { FX = +b.getAttribute("data-fx"); syncUI(); redraw(); }); });
