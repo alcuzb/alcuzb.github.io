@@ -742,6 +742,21 @@ body { animation: tint 36s ease-in-out infinite; }
 .s-winter .foot { color: #fff1d6; border-color: rgba(255,215,160,.6); background: linear-gradient(135deg, rgba(255,215,160,.18), rgba(255,130,200,.12)); box-shadow: inset 0 1px 0 rgba(255,255,255,.5), 0 0 18px rgba(255,150,200,.3); text-shadow: 0 0 8px rgba(255,180,120,.6); }
 .ny-cd b { background: linear-gradient(180deg, #fff3d6, #ff9fd6) !important; -webkit-background-clip: text !important; background-clip: text !important; -webkit-text-fill-color: transparent; }
 .ny-cd span, .s-winter .ny-cdt { color: #ffd9b0; }
+
+/* ===== muz yoriqlari oʻrniga: yaltiroq shisha (v6) ===== */
+.s-winter .card, .s-winter .hf, .s-winter .info, .s-winter .facts, .s-winter .chip, .s-winter .bar, .s-winter .lang, .s-winter .foot {
+  background-color: rgba(255, 200, 230, .07);
+  background-image:
+    radial-gradient(circle at 12% 22%, rgba(255,255,255,.75) 0 1px, transparent 2px),
+    radial-gradient(circle at 78% 64%, rgba(255,230,190,.7) 0 1px, transparent 2px),
+    radial-gradient(circle at 46% 88%, rgba(255,255,255,.55) 0 1px, transparent 2px),
+    radial-gradient(circle at 90% 14%, rgba(255,190,230,.65) 0 1px, transparent 2px),
+    linear-gradient(125deg, rgba(255,214,170,.16), rgba(255,130,200,.09) 45%, rgba(140,190,255,.14));
+  background-size: 90px 90px, 120px 120px, 70px 70px, 110px 110px, 100% 100%;
+  border-color: rgba(255, 215, 235, .42);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.5), inset 0 0 26px rgba(255,160,220,.10), 0 6px 24px rgba(20,5,40,.35), 0 0 16px rgba(255,150,210,.14);
+}
+.s-winter .foot { background-image: linear-gradient(135deg, rgba(255,215,160,.18), rgba(255,130,200,.12)); background-size: 100% 100%; }
 </style>
 
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
@@ -873,7 +888,7 @@ body { animation: tint 36s ease-in-out infinite; }
     </div>
   </section>
 
-  <p class="foot" data-t="foot">Oxirgi yangilanish: 24-noyabr, 2026 · v86</p>
+  <p class="foot" data-t="foot">Oxirgi yangilanish: 24-noyabr, 2026</p>
 </div>
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menyu" hidden>
@@ -1245,7 +1260,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Telegram profili", lbl_ig: "Instagram profili", lbl_steam: "Steam profili", lbl_phone: "Telefon", lbl_mail: "Pochta",
       cta_tg: "Telegramda ochish", cta_ig: "Instagramda ochish", cta_steam: "Steamda ochish",
       h_call: "Qoʻngʻiroq", cta_call: "Qoʻngʻiroq qilish", copy: "Nusxalash", h_mail: "Elektron pochta", cta_mail: "Xat yozish",
-      foot: "Oxirgi yangilanish: 24-noyabr, 2026 · v86",
+      foot: "Oxirgi yangilanish: 24-noyabr, 2026",
       sh_title: "Ulashish", sh_note: "Kamerani yoʻnaltiring, sayt ochiladi", sh_copy: "Havolani nusxalash",
       copied: "Nusxalandi", selected: "Matn belgilandi, nusxalang", noplay: "Ijro etilmadi, yana bosing", noload: "Qoʻshiq yuklanmadi",
       linkcopied: "Havola nusxalandi", install_hint: "Brauzer menyusidan «Bosh ekranga qoʻshish» ni tanlang"
@@ -1265,7 +1280,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Telegram profile", lbl_ig: "Instagram profile", lbl_steam: "Steam profile", lbl_phone: "Phone", lbl_mail: "Email",
       cta_tg: "Open in Telegram", cta_ig: "Open in Instagram", cta_steam: "Open on Steam",
       h_call: "Call", cta_call: "Call me", copy: "Copy", h_mail: "Email", cta_mail: "Write an email",
-      foot: "Last updated: November 24, 2026 · v86",
+      foot: "Last updated: November 24, 2026",
       sh_title: "Share", sh_note: "Point your camera to open the site", sh_copy: "Copy link",
       copied: "Copied", selected: "Text selected, copy it", noplay: "Couldn't play, tap again", noload: "Couldn't load the song",
       linkcopied: "Link copied", install_hint: "Use your browser menu and choose “Add to Home screen”"
@@ -1285,7 +1300,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Профиль Telegram", lbl_ig: "Профиль Instagram", lbl_steam: "Профиль Steam", lbl_phone: "Телефон", lbl_mail: "Почта",
       cta_tg: "Открыть в Telegram", cta_ig: "Открыть в Instagram", cta_steam: "Открыть в Steam",
       h_call: "Звонок", cta_call: "Позвонить", copy: "Копировать", h_mail: "Эл. почта", cta_mail: "Написать письмо",
-      foot: "Обновлено: 24 ноября 2026 · v86",
+      foot: "Обновлено: 24 ноября 2026",
       sh_title: "Поделиться", sh_note: "Наведите камеру, чтобы открыть сайт", sh_copy: "Копировать ссылку",
       copied: "Скопировано", selected: "Текст выделен, скопируйте", noplay: "Не удалось включить, нажмите ещё раз", noload: "Песня не загрузилась",
       linkcopied: "Ссылка скопирована", install_hint: "В меню браузера выберите «Добавить на главный экран»"
