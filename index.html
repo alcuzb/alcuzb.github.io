@@ -705,6 +705,19 @@ body { animation: tint 36s ease-in-out infinite; }
 .s-autumn h1 span::before, .s-autumn h1 span::after, .s-autumn h2::before, .s-autumn h2::after { content: none !important; display: none !important; }
 .hv { position: relative; display: block; width: fit-content; max-width: 100%; }
 .hv > h2 { position: relative; z-index: 1; }
+
+/* ===== muz harflar v3 ===== */
+.s-winter h2 {
+  background: linear-gradient(105deg, transparent 0 38%, rgba(255,255,255,.95) 46%, transparent 54% 100%) 0 0 / 260% 100% no-repeat, repeating-linear-gradient(122deg, transparent 0 11px, rgba(255,255,255,.55) 11px 12px, transparent 12px 23px, rgba(110,175,240,.35) 23px 24px, transparent 24px 37px), linear-gradient(180deg, #ffffff 0%, #d9f0ff 35%, #8cc8ff 75%, #4d9cf0 120%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  animation: iceglint 5s ease-in-out infinite;
+  filter: drop-shadow(0 1px 0 rgba(255,255,255,.55)) drop-shadow(0 0 9px rgba(110,185,255,.55)) drop-shadow(0 3px 2px rgba(20,60,130,.5));
+}
+@keyframes iceglint { 0%, 55% { background-position: 180% 0, 0 0, 0 0; } 100% { background-position: -80% 0, 0 0, 0 0; } }
+.s-winter h2::after {
+  height: 24px; top: 96%; left: 4%; right: 4%; filter: drop-shadow(0 0 3px rgba(150,210,255,.7));
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='26' viewBox='0 0 120 26'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff' stop-opacity='.95'/%3E%3Cstop offset='.55' stop-color='%23bfe6ff' stop-opacity='.8'/%3E%3Cstop offset='1' stop-color='%2377b8ff' stop-opacity='.15'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='url(%23g)'%3E%3Cpath d='M2 0h11l-4.5 21z'/%3E%3Cpath d='M17 0h8l-3.5 10z'/%3E%3Cpath d='M30 0h12l-5 25z'/%3E%3Cpath d='M47 0h7l-3 8z'/%3E%3Cpath d='M58 0h10l-4.5 17z'/%3E%3Cpath d='M74 0h7l-3.2 11z'/%3E%3Cpath d='M86 0h12l-5.5 23z'/%3E%3Cpath d='M103 0h8l-3.6 12z'/%3E%3C/g%3E%3Cg stroke='white' stroke-opacity='.8' stroke-width='.8' fill='none'%3E%3Cpath d='M6 2L8 17'/%3E%3Cpath d='M34 2L36 21'/%3E%3Cpath d='M62 2L63.5 13'/%3E%3Cpath d='M90 2L92 19'/%3E%3C/g%3E%3C/svg%3E") repeat-x left top / 120px 24px;
+}
 </style>
 
 <div class="intro" id="intro" aria-hidden="true"><div class="intro-in"><span class="intro-av"><img src="t4.jpg" alt=""></span><b><i style="--d:0">a</i><i style="--d:1">z</i><i style="--d:2">i</i><i style="--d:3">z</i><i style="--d:4">o</i><i style="--d:5">v</i></b></div></div>
@@ -837,7 +850,7 @@ body { animation: tint 36s ease-in-out infinite; }
     </div>
   </section>
 
-  <p class="foot" data-t="foot">Oxirgi yangilanish: 25-oktabr, 2026</p>
+  <p class="foot" data-t="foot">Oxirgi yangilanish: 23-noyabr, 2026</p>
 </div>
 
 <div class="menu" id="menu" role="dialog" aria-modal="true" aria-label="Menyu" hidden>
@@ -1209,7 +1222,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Telegram profili", lbl_ig: "Instagram profili", lbl_steam: "Steam profili", lbl_phone: "Telefon", lbl_mail: "Pochta",
       cta_tg: "Telegramda ochish", cta_ig: "Instagramda ochish", cta_steam: "Steamda ochish",
       h_call: "Qoʻngʻiroq", cta_call: "Qoʻngʻiroq qilish", copy: "Nusxalash", h_mail: "Elektron pochta", cta_mail: "Xat yozish",
-      foot: "Oxirgi yangilanish: 25-oktabr, 2026",
+      foot: "Oxirgi yangilanish: 23-noyabr, 2026",
       sh_title: "Ulashish", sh_note: "Kamerani yoʻnaltiring, sayt ochiladi", sh_copy: "Havolani nusxalash",
       copied: "Nusxalandi", selected: "Matn belgilandi, nusxalang", noplay: "Ijro etilmadi, yana bosing", noload: "Qoʻshiq yuklanmadi",
       linkcopied: "Havola nusxalandi", install_hint: "Brauzer menyusidan «Bosh ekranga qoʻshish» ni tanlang"
@@ -1229,7 +1242,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Telegram profile", lbl_ig: "Instagram profile", lbl_steam: "Steam profile", lbl_phone: "Phone", lbl_mail: "Email",
       cta_tg: "Open in Telegram", cta_ig: "Open in Instagram", cta_steam: "Open on Steam",
       h_call: "Call", cta_call: "Call me", copy: "Copy", h_mail: "Email", cta_mail: "Write an email",
-      foot: "Last updated: October 25, 2026",
+      foot: "Last updated: November 23, 2026",
       sh_title: "Share", sh_note: "Point your camera to open the site", sh_copy: "Copy link",
       copied: "Copied", selected: "Text selected, copy it", noplay: "Couldn't play, tap again", noload: "Couldn't load the song",
       linkcopied: "Link copied", install_hint: "Use your browser menu and choose “Add to Home screen”"
@@ -1249,7 +1262,7 @@ body { animation: tint 36s ease-in-out infinite; }
       lbl_tg: "Профиль Telegram", lbl_ig: "Профиль Instagram", lbl_steam: "Профиль Steam", lbl_phone: "Телефон", lbl_mail: "Почта",
       cta_tg: "Открыть в Telegram", cta_ig: "Открыть в Instagram", cta_steam: "Открыть в Steam",
       h_call: "Звонок", cta_call: "Позвонить", copy: "Копировать", h_mail: "Эл. почта", cta_mail: "Написать письмо",
-      foot: "Обновлено: 25 октября 2026",
+      foot: "Обновлено: 23 ноября 2026",
       sh_title: "Поделиться", sh_note: "Наведите камеру, чтобы открыть сайт", sh_copy: "Копировать ссылку",
       copied: "Скопировано", selected: "Текст выделен, скопируйте", noplay: "Не удалось включить, нажмите ещё раз", noload: "Песня не загрузилась",
       linkcopied: "Ссылка скопирована", install_hint: "В меню браузера выберите «Добавить на главный экран»"
@@ -3268,6 +3281,7 @@ body { animation: tint 36s ease-in-out infinite; }
       c2.drawImage(im, -w / 2, pivotTop ? 0 : -h / 2, w, h); c2.restore();
     };
     /* chiroq zanjirlari */
+    var OC = null, OX = null, lastT = 0, DK = 1;
     var SW = [.2, .33, .46, .59, .72, .84], BN = 16, LIGHTS = [];
     var buildLights = function () {
       LIGHTS = [];
@@ -3339,7 +3353,7 @@ body { animation: tint 36s ease-in-out infinite; }
       if (!cvn.width) size2(); if (!cvn.width) return;
       c2.setTransform(K, 0, 0, K, 0, 0); c2.clearRect(0, 0, LW, LH);
       var j, n, fin = STATE === "fin", ft = t2 - finT;
-      if (!calm) { if (fin && SPIN) TH_ += .016 * ROT * Math.min(1, ft / 1.2); else if (!fin) TH_ += (Math.round(TH_ / 6.2832) * 6.2832 - TH_) * .08; }
+      if (!calm) { if (fin && SPIN) TH_ += .016 * DK * ROT * Math.min(1, ft / 1.2); else if (!fin) TH_ += (Math.round(TH_ / 6.2832) * 6.2832 - TH_) * .08; }
       /* tashqi nur (yakunlashdan keyin) */
       if (fin) {
         var glow = Math.min(1, ft / .8) * (.55 + (calm ? 0 : .12 * Math.sin(t2 * 1.6)));
@@ -3354,10 +3368,45 @@ body { animation: tint 36s ease-in-out infinite; }
       c2.fillStyle = "#fff";
       FL.forEach(function (f) { if (!calm) { f.y += f.v; f.x += Math.sin(t2 + f.p) * .2; if (f.y > LH) { f.y = -3; f.x = Math.random() * LW; } } c2.globalAlpha = .5 + .4 * Math.sin(t2 * 2 + f.p); c2.beginPath(); c2.arc(f.x, f.y, f.r, 0, 6.2832); c2.fill(); });
       c2.globalAlpha = 1;
-      /* zamin */
-      var gg = c2.createRadialGradient(150, 352, 10, 150, 352, 170); gg.addColorStop(0, "#ffffff"); gg.addColorStop(1, "rgba(170,205,255,0)");
-      c2.fillStyle = gg; c2.beginPath(); c2.ellipse(150, 356, 165, 22, 0, 0, 6.2832); c2.fill();
+      /* muzli maydoncha */
+      var IX = CXT, IY = 346, IRX = 148, IRY = 18, ITH = 9, ig, q;
+      c2.fillStyle = "rgba(120,190,255,.16)"; c2.beginPath(); c2.ellipse(IX, IY + ITH + 3, IRX + 14, IRY + 7, 0, 0, 6.2832); c2.fill();
+      ig = c2.createLinearGradient(0, IY, 0, IY + ITH + IRY); ig.addColorStop(0, "#9fd0f7"); ig.addColorStop(1, "#2f6fb8");
+      c2.fillStyle = ig; c2.beginPath(); c2.ellipse(IX, IY + ITH, IRX, IRY, 0, 0, Math.PI); c2.lineTo(IX - IRX, IY); c2.ellipse(IX, IY, IRX, IRY, 0, Math.PI, 0, true); c2.closePath(); c2.fill();
+      c2.fillStyle = "rgba(255,255,255,.28)"; c2.beginPath(); c2.ellipse(IX, IY + ITH * .45, IRX - 2, IRY - 1, 0, .15, Math.PI - .15); c2.ellipse(IX, IY + ITH * .45, IRX - 2, IRY - 5, 0, Math.PI - .15, .15, true); c2.fill();
+      ig = c2.createRadialGradient(IX - 30, IY - 5, 6, IX, IY, IRX); ig.addColorStop(0, "#ffffff"); ig.addColorStop(.45, "#d7efff"); ig.addColorStop(1, "#7db9ee");
+      c2.fillStyle = ig; c2.beginPath(); c2.ellipse(IX, IY, IRX, IRY, 0, 0, 6.2832); c2.fill();
+      c2.strokeStyle = "rgba(255,255,255,.9)"; c2.lineWidth = 1.4; c2.beginPath(); c2.ellipse(IX, IY, IRX - 1, IRY - .5, 0, Math.PI * 1.02, Math.PI * 1.98); c2.stroke();
+      c2.save(); c2.beginPath(); c2.ellipse(IX, IY, IRX - 2, IRY - 1, 0, 0, 6.2832); c2.clip();
+      c2.strokeStyle = "rgba(70,130,200,.45)"; c2.lineWidth = .8;
+      for (j = 0; j < 9; j++) {
+        var ca = j * .7 + 1.1 + TH_, cr = [IRX * .25, IRX * .5, IRX * .78];
+        c2.beginPath();
+        for (q = 0; q < 3; q++) { var aa2 = ca + Math.sin(j * 3 + q * 2) * .12, px = IX + Math.sin(aa2) * cr[q], py = IY + Math.cos(aa2) * cr[q] * (IRY / IRX); if (q) c2.lineTo(px, py); else c2.moveTo(px, py); }
+        c2.stroke();
+      }
+      c2.fillStyle = "rgba(255,255,255,.55)"; c2.beginPath(); c2.ellipse(IX - 40, IY - 6, 50, 3.2, -.05, 0, 6.2832); c2.fill();
+      c2.restore();
+      if (!calm) for (j = 0; j < 9; j++) {
+        var ga = j * 2.1 + TH_ * .8, gx = IX + Math.sin(ga) * IRX * (.35 + .5 * ((j * 37) % 10) / 10), gy = IY + Math.cos(ga) * IRY * .6, tw3 = Math.max(0, Math.sin(t2 * 2.2 + j * 1.7));
+        if (tw3 > .15) { c2.globalAlpha = tw3; c2.strokeStyle = "#fff"; c2.lineWidth = 1; c2.beginPath(); c2.moveTo(gx - 3.5 * tw3, gy); c2.lineTo(gx + 3.5 * tw3, gy); c2.moveTo(gx, gy - 3.5 * tw3); c2.lineTo(gx, gy + 3.5 * tw3); c2.stroke(); c2.globalAlpha = 1; }
+      }
       if (!ready) { c2.fillStyle = "rgba(255,255,255,.7)"; c2.font = "13px system-ui"; c2.textAlign = "center"; c2.fillText("…", 150, 190); return; }
+      /* sovgʻalar archa atrofida aylanadi */
+      var GF = [[-.75, 40, 26, "#d6334a", "#ffe27a"], [.77, 44, 24, "#2f7bff", "#ffffff"], [-.45, 28, 18, "#f2a31b", "#d6334a"], [.46, 24, 16, "#7a45d6", "#9cf0b7"], [3.6, 34, 22, "#16a085", "#ffe27a"], [2.5, 30, 20, "#e84393", "#ffffff"]];
+      var drawGifts = function (front) {
+        var order = GF.map(function (g, i) { return [Math.cos(g[0] + TH_), i]; }).sort(function (A, B) { return A[0] - B[0]; });
+        order.forEach(function (oo) {
+          var g = GF[oo[1]], z = oo[0]; if ((z >= 0) !== front) return;
+          var a2 = g[0] + TH_, x = CXT + 118 * Math.sin(a2), by = 346 + 9 + 11 * z, k = .82 + .18 * (z + 1) / 2, w = g[1] * k, h = g[2] * k, gx = x - w / 2, gy = by - h;
+          c2.globalAlpha = front ? 1 : .8;
+          c2.fillStyle = "rgba(20,50,110,.28)"; c2.beginPath(); c2.ellipse(x, by, w * .62, 4 * k, 0, 0, 6.2832); c2.fill();
+          c2.fillStyle = g[3]; c2.fillRect(gx, gy, w, h); c2.fillStyle = "rgba(0,0,0," + (front ? .2 : .38) + ")"; c2.fillRect(gx + w * .66, gy, w * .34, h);
+          c2.fillStyle = g[4]; c2.fillRect(gx + w / 2 - 2.5, gy, 5, h); c2.fillRect(gx, gy + h / 2 - 2.5, w, 5);
+          c2.beginPath(); c2.arc(gx + w / 2 - 5, gy - 2, 5, 0, 6.2832); c2.arc(gx + w / 2 + 5, gy - 2, 5, 0, 6.2832); c2.fill();
+          c2.globalAlpha = 1;
+        });
+      };
       /* yakunlash: archa "otilib chiqadi" */
       var pop = 1;
       if (fin && ft < 1.1 && !calm) pop = ft < .22 ? 1 - .05 * (ft / .22) : 0.95 + .05 * back(Math.min(1, (ft - .22) / .85)) + .04 * Math.sin(Math.min(1, (ft - .22) / .85) * Math.PI);
@@ -3376,20 +3425,46 @@ body { animation: tint 36s ease-in-out infinite; }
       };
 
       if (!LIGHTS.length) buildLights();
+      drawGifts(false);
       ORN.forEach(function (o) { drawOrn(o, false); });
       drawLights(false);
       /* archa: qator va ustun boʻyicha toʻr (mesh) tebranishi */
-      var tw = IM.tree.naturalWidth, th = IM.tree.naturalHeight, rh = 6, rows = Math.ceil(th / rh), sc = TH / th, NC = 14, cw = tw / NC, rsq = 1 - .03 * Math.abs(Math.sin(TH_ * 2)), TXr = CXT - TW * rsq / 2;
+      var tw = IM.tree.naturalWidth, th = IM.tree.naturalHeight, rh = 10, rows = Math.ceil(th / rh), sc = TH / th, NC = 14, cw = tw / NC, kS = TW / tw, NR = 20, rm = 16, rowsM = Math.ceil(th / rm), NM = 8, cwM = tw / NM;
       for (j = 0; j < rows; j++) {
-        var ys = j * rh, dy0 = TY + ys * sc, sh = Math.min(rh + 1, th - ys);
+        var ys = j * rh, dy0 = TY + ys * sc, sh = Math.min(rh + 1, th - ys), ym = dy0 + rh * sc / 2;
         for (n = 0; n < NC; n++) {
-          var xs = n * cw, dx0 = TXr + xs * TW * rsq / tw, dd = disp(dx0 + TW * rsq / NC / 2, dy0 + rh * sc / 2);
-          c2.drawImage(IM.tree, xs, ys, cw + 1, sh, dx0 + dd[0], dy0 + dd[1], TW * rsq / NC + .9, rh * sc + .9);
+          var xs = n * cw, dx0 = TX + xs * kS, dd = disp(dx0 + TW / NC / 2, ym);
+          c2.drawImage(IM.tree, xs, ys, cw + 1, sh, dx0 + dd[0], dy0 + dd[1], TW / NC + .9, rh * sc + .9);
         }
+      }
+      if (Math.abs(Math.sin(TH_ / 2)) > .004) {
+        if (!OC) { OC = document.createElement("canvas"); OX = OC.getContext("2d"); }
+        if (OC.width !== cvn.width || OC.height !== cvn.height) { OC.width = cvn.width; OC.height = cvn.height; }
+        OX.setTransform(K, 0, 0, K, 0, 0); OX.globalCompositeOperation = "source-over"; OX.clearRect(0, 0, LW, LH);
+        for (j = 0; j < rows; j++) {
+          var ys2 = j * rh, dy2 = TY + ys2 * sc, sh2 = Math.min(rh + 1, th - ys2), ym2 = dy2 + rh * sc / 2, v2 = (ys2 + rh / 2) / th;
+          var thE = TH_ * (1 - sstep(.72, .84, v2)); if (Math.abs(Math.sin(thE / 2)) < .004) continue;
+          var hw = Math.max(6, Math.min(.47 * TW, (v2 - .02) / .78 * .47 * TW)), ra = CXT - hw, cwd = 2 * hw / NR;
+          for (n = 0; n < NR; n++) {
+            var um = -1 + 2 * (n + .5) / NR, al = Math.asin(um), be = al - thE * (1 - Math.pow(Math.abs(um), 4)), us = Math.sin(be);
+            var ratio = Math.max(.15, Math.min(3, Math.cos(be) / Math.max(.08, Math.cos(al))));
+            var swd = Math.max(1, cwd / kS * ratio), sxc = (CXT + us * hw - TX) / kS, sx0 = Math.max(0, Math.min(tw - 1, sxc - swd / 2));
+            swd = Math.min(swd, tw - sx0);
+            var dx1 = ra + cwd * n, d2 = disp(dx1 + cwd / 2, ym2);
+            OX.drawImage(IM.tree, sx0, ys2, swd, sh2, dx1 + d2[0], dy2 + d2[1], cwd + .9, rh * sc + .9);
+          }
+        }
+        OX.globalCompositeOperation = "destination-in";
+        for (j = 0; j < rowsM; j++) {
+          var ys3 = j * rm, dy3 = TY + ys3 * sc, sh3 = Math.min(rm + 1, th - ys3), ym3 = dy3 + rm * sc / 2;
+          for (n = 0; n < NM; n++) { var xs3 = n * cwM, dx3 = TX + xs3 * kS, d3 = disp(dx3 + TW / NM / 2, ym3); OX.drawImage(IM.tree, xs3, ys3, cwM + 1, sh3, dx3 + d3[0], dy3 + d3[1], TW / NM + .9, rm * sc + .9); }
+        }
+        c2.drawImage(OC, 0, 0, LW, LH);
       }
       drawLights(true);
       /* bezaklar (aylanishda orqa tomondagilar archa orqasida) */
       ORN.forEach(function (o) { drawOrn(o, true); });
+      drawGifts(true);
       c2.restore();
       /* yulduz */
       var sp = 1 + (calm ? 0 : .06 * Math.sin(t2 * 3)) + (fin ? .15 : 0), sy = TY - 6;
@@ -3397,13 +3472,6 @@ body { animation: tint 36s ease-in-out infinite; }
       sg.addColorStop(0, "rgba(255,230,120," + (fin ? .9 : .55) + ")"); sg.addColorStop(1, "rgba(255,230,120,0)");
       c2.globalCompositeOperation = "lighter"; c2.fillStyle = sg; c2.beginPath(); c2.arc(CXT, sy, (fin ? 60 : 36) * sp, 0, 6.2832); c2.fill(); c2.globalCompositeOperation = "source-over";
       c2.save(); c2.translate(CXT, sy); c2.scale(.4 + .6 * Math.abs(Math.cos(TH_)), 1); spr("star", 0, 0, 40 * sp, calm ? 0 : Math.sin(t2) * .1, false, 1, 0); c2.restore();
-      /* sovgʻalar */
-      var gift = function (x, y, w, h, col, rib) {
-        c2.fillStyle = col; c2.fillRect(x, y, w, h); c2.fillStyle = "rgba(0,0,0,.2)"; c2.fillRect(x + w * .66, y, w * .34, h);
-        c2.fillStyle = rib; c2.fillRect(x + w / 2 - 2.5, y, 5, h); c2.fillRect(x, y + h / 2 - 2.5, w, 5);
-        c2.beginPath(); c2.arc(x + w / 2 - 5, y - 2, 5, 0, 6.2832); c2.arc(x + w / 2 + 5, y - 2, 5, 0, 6.2832); c2.fill();
-      };
-      gift(36, 336, 40, 26, "#d6334a", "#ffe27a"); gift(224, 338, 44, 24, "#2f7bff", "#ffffff"); gift(80, 346, 28, 18, "#f2a31b", "#d6334a"); gift(196, 348, 24, 16, "#7a45d6", "#9cf0b7");
       /* oq chaqnash */
       if (fin && ft < .7) { c2.fillStyle = "rgba(255,255,240," + (1 - ft / .7) * .75 + ")"; c2.fillRect(0, 0, LW, LH); }
       /* uchqunlar */
@@ -3418,7 +3486,8 @@ body { animation: tint 36s ease-in-out infinite; }
     var loop2 = function () {
       raf2 = 0;
       if (!vis || document.hidden) return;
-      if (!busyN) { t2 += .016; drawT(); }
+      var nowT = performance.now(), gapT = nowT - lastT; lastT = nowT; DK = gapT > 250 ? 1 : Math.min(3, Math.max(.5, gapT / 16.67));
+      if (!busyN) { t2 += .016 * DK; drawT(); }
       if (!calm || SPK.length) raf2 = requestAnimationFrame(loop2);
     };
     var kick2 = function () { if (!raf2 && vis && ready) raf2 = requestAnimationFrame(loop2); };
@@ -3479,3 +3548,5 @@ body { animation: tint 36s ease-in-out infinite; }
   setTimeout(function () { var it = document.getElementById("intro"); if (it) it.remove(); }, 2900);
 })();
 </script>
+
+</body></html>
