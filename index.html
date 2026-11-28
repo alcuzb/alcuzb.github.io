@@ -3625,4 +3625,117 @@ body { animation: tint 36s ease-in-out infinite; }
 })();
 </script>
 
+<style id="snowplay-css">
+#sp-cv{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:35}
+#sp-bear{position:fixed;left:0;top:0;width:64px;height:70px;z-index:36;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;will-change:transform}
+#sp-bear:active{cursor:grabbing}
+#sp-bear svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));pointer-events:none}
+#sp-hint{position:fixed;left:0;top:0;z-index:36;pointer-events:none;font:600 12px/1.3 system-ui,sans-serif;color:#fff;background:rgba(20,30,60,.78);padding:6px 10px;border-radius:12px;white-space:nowrap;transition:opacity .6s}
+</style>
+<canvas id="sp-cv" aria-hidden="true" hidden></canvas>
+<div id="sp-bear" hidden aria-label="Teddy bear: drag to push snow"><svg viewBox="0 0 64 70"><ellipse cx="32" cy="50" rx="18" ry="17" fill="#B9793F"/><ellipse cx="32" cy="55" rx="10" ry="10" fill="#E3B27A"/><ellipse cx="13" cy="48" rx="6" ry="9" fill="#A5672F"/><ellipse cx="51" cy="48" rx="6" ry="9" fill="#A5672F"/><ellipse cx="22" cy="65" rx="8" ry="5" fill="#A5672F"/><ellipse cx="42" cy="65" rx="8" ry="5" fill="#A5672F"/><circle cx="17" cy="11" r="7" fill="#B9793F"/><circle cx="47" cy="11" r="7" fill="#B9793F"/><circle cx="17" cy="11" r="3.5" fill="#E3B27A"/><circle cx="47" cy="11" r="3.5" fill="#E3B27A"/><circle cx="32" cy="25" r="17" fill="#B9793F"/><ellipse cx="32" cy="31" rx="8" ry="6.5" fill="#E3B27A"/><ellipse cx="32" cy="28.5" rx="3" ry="2.2" fill="#3A2312"/><circle cx="25" cy="22" r="2.3" fill="#2a1a0e"/><circle cx="39" cy="22" r="2.3" fill="#2a1a0e"/><rect x="44" y="40" width="6" height="15" rx="3" fill="#D8342C"/><rect x="17" y="39" width="30" height="6" rx="3" fill="#D8342C"/></svg></div>
+<div id="sp-hint" hidden></div>
+<script>
+(function () {
+  var root = document.documentElement, cv = document.getElementById("sp-cv"), c = cv.getContext("2d"),
+      bear = document.getElementById("sp-bear"), hint = document.getElementById("sp-hint");
+  var CW = 6, TAU = 6.2832, W = 0, H = 0, N = 0, h = null, fl = [], sm = [], vol = 0, bx = 0, dir = 1, lean = 0,
+      drag = false, on = false, raf = 0, last = 0, hinted = true, used = false, MAXH = 55;
+  var T = { uz: "Ayiqchani sudrab, qorni suring ❄", en: "Drag the bear to push the snow ❄", ru: "Двигай мишку — он катит снег ❄" };
+  var winter = function () { return root.classList.contains("s-winter"); };
+  var hAt = function (x) { return h[Math.max(0, Math.min(N - 1, (x / CW) | 0))]; };
+  var size = function () {
+    var dpr = Math.min(window.devicePixelRatio || 1, 2), nW = window.innerWidth, nH = window.innerHeight, nN = Math.ceil(nW / CW), nh = new Float32Array(nN), i;
+    for (i = 0; i < nN; i++) nh[i] = h ? h[Math.min(N - 1, (i * N / nN) | 0)] : 12 + 3 * Math.sin(i * .3) + 2 * Math.sin(i * .9);
+    h = nh; N = nN; W = nW; H = nH; cv.width = W * dpr; cv.height = H * dpr; c.setTransform(dpr, 0, 0, dpr, 0, 0);
+    bx = bx ? Math.min(bx, W - 32) : W - 60;
+    if (!fl.length) for (i = 0; i < 90; i++) fl.push({ x: Math.random() * W, y: Math.random() * H, v: 40 + Math.random() * 50, r: .8 + Math.random() * 1.8, ph: Math.random() * 6 });
+  };
+  var deposit = function (x) {
+    var c0 = (x / CW) | 0, w = [.5, 1, 1.3, 1, .5], k, i;
+    for (k = 0; k < 5; k++) { i = c0 - 2 + k; if (i >= 0 && i < N) h[i] = Math.min(MAXH, h[i] + w[k] * 1.1); }
+  };
+  var place = function (x, r) {
+    var o, k;
+    for (k = 0; k < sm.length; k++) { o = sm[k]; if (Math.abs(o.x - x) < 26 && o.p.length < 3 && r <= o.p[o.p.length - 1] * 1.15) { o.p.push(r); return; } }
+    sm.push({ x: x, p: [r] }); if (sm.length > 10) sm.shift();
+  };
+  var radius = function () { return Math.sqrt(vol / Math.PI) * 1.1; };
+  var drop = function () {
+    var r = radius();
+    if (r >= 9) place(Math.max(r, Math.min(W - r, bx + dir * (28 + r))), r);
+    vol = 0;
+  };
+  var push = function (dx) {
+    var c0 = Math.max(0, ((bx - 26) / CW) | 0), c1 = Math.min(N - 1, ((bx + 26) / CW) | 0), i, t;
+    for (i = c0; i <= c1; i++) { t = Math.min(h[i], Math.abs(dx) * .08); h[i] -= t; vol += t * CW; }
+    if (radius() >= 30) drop();
+  };
+  var ball = function (x, y, r) {
+    var g = c.createRadialGradient(x - r * .35, y - r * .35, r * .1, x, y, r);
+    g.addColorStop(0, "#fff"); g.addColorStop(.6, "#e1ecff"); g.addColorStop(1, "#a7bde6");
+    c.fillStyle = g; c.beginPath(); c.arc(x, y, r, 0, TAU); c.fill();
+  };
+  var man = function (o) {
+    var base = H - hAt(o.x) + 3, k, r, cy, top = 0;
+    for (k = 0; k < o.p.length; k++) { r = o.p[k]; cy = base - r; ball(o.x, cy, r); if (k === 1) { c.fillStyle = "#2b3350"; c.fillRect(o.x - 1.5, cy - r * .3, 3, 3); c.fillRect(o.x - 1.5, cy + r * .25, 3, 3); } base -= r * 1.7; top = cy; }
+    if (o.p.length === 3) {
+      r = o.p[2]; c.fillStyle = "#1d2238"; c.beginPath(); c.arc(o.x - r * .35, top - r * .15, r * .1 + 1, 0, TAU); c.arc(o.x + r * .35, top - r * .15, r * .1 + 1, 0, TAU); c.fill();
+      c.fillStyle = "#F28A1F"; c.beginPath(); c.moveTo(o.x, top + r * .05); c.lineTo(o.x + r * .8, top + r * .22); c.lineTo(o.x, top + r * .35); c.fill();
+      c.fillStyle = "#D8342C"; c.fillRect(o.x - r * .8, top + r * .55, r * 1.6, r * .22);
+      c.fillStyle = "#1d2238"; c.fillRect(o.x - r * .7, top - r * 1.05, r * 1.4, r * .2); c.fillRect(o.x - r * .45, top - r * 1.6, r * .9, r * .6);
+    }
+  };
+  var frame = function (now) {
+    if (!on) return;
+    var dt = Math.min(.05, (now - last) / 1000), i, f, g, x, gy, r;
+    last = now;
+    for (i = 0; i < fl.length; i++) {
+      f = fl[i]; f.y += f.v * dt; f.x += Math.sin(now / 900 + f.ph) * 8 * dt;
+      if (f.x < 0) f.x += W; if (f.x > W) f.x -= W;
+      if (f.y >= H - hAt(f.x)) { deposit(f.x); f.y = -8; f.x = Math.random() * W; }
+    }
+    for (i = 1; i < N - 1; i++) h[i] += (h[i - 1] + h[i + 1] - 2 * h[i]) * .05;
+    c.clearRect(0, 0, W, H);
+    g = c.createLinearGradient(0, H - MAXH, 0, H); g.addColorStop(0, "#ffffff"); g.addColorStop(1, "#b9cdf2");
+    c.fillStyle = g; c.beginPath(); c.moveTo(0, H);
+    for (i = 0; i < N; i++) c.lineTo(i * CW + CW / 2, H - h[i]);
+    c.lineTo(W, H); c.closePath(); c.fill();
+    for (i = 0; i < sm.length; i++) man(sm[i]);
+    r = radius(); if (drag && r >= 3) ball(Math.max(r, Math.min(W - r, bx + dir * (28 + r))), H - hAt(bx + dir * (28 + r)) - r + 3, r);
+    c.fillStyle = "rgba(255,255,255,.85)";
+    for (i = 0; i < fl.length; i++) { f = fl[i]; c.beginPath(); c.arc(f.x, f.y, f.r, 0, TAU); c.fill(); }
+    gy = H - hAt(bx) + 4;
+    lean += ((drag ? dir * 6 : 0) - lean) * .2;
+    bear.style.transform = "translate(" + (bx - 32) + "px," + (gy - 70 - (drag ? Math.abs(Math.sin(bx * .12)) * 3 : 0)) + "px) rotate(" + lean.toFixed(1) + "deg)";
+    if (!hinted) hint.style.transform = "translate(" + Math.max(8, Math.min(W - 230, bx - 150)) + "px," + (gy - 104) + "px)";
+    raf = requestAnimationFrame(frame);
+  };
+  var start = function () {
+    if (on) return; on = true;
+    cv.hidden = bear.hidden = false; size();
+    hint.textContent = T[root.lang] || T.uz; hint.hidden = false; hint.style.opacity = 1; hinted = false;
+    last = performance.now(); raf = requestAnimationFrame(frame);
+  };
+  var stop = function () { on = false; cancelAnimationFrame(raf); cv.hidden = bear.hidden = hint.hidden = true; };
+  bear.addEventListener("pointerdown", function (e) {
+    drag = true; e.preventDefault(); try { bear.setPointerCapture(e.pointerId); } catch (er) {}
+    if (!used) { used = true; hint.style.opacity = 0; setTimeout(function () { hinted = true; hint.hidden = true; }, 600); }
+  });
+  bear.addEventListener("pointermove", function (e) {
+    if (!drag) return;
+    var nx = Math.max(32, Math.min(W - 32, e.clientX)), dx = nx - bx;
+    if (Math.abs(dx) > .3) { dir = dx > 0 ? 1 : -1; push(dx); }
+    bx = nx;
+  });
+  var up = function () { if (drag) { drag = false; drop(); } };
+  bear.addEventListener("pointerup", up); bear.addEventListener("pointercancel", up);
+  window.addEventListener("resize", function () { if (on) size(); });
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) { if (on) { cancelAnimationFrame(raf); } return; }
+    if (winter()) { if (on) { last = performance.now(); raf = requestAnimationFrame(frame); } else start(); } else if (on) stop();
+  });
+  if (winter()) start();
+})();
+</script>
 </body></html>
