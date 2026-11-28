@@ -3401,7 +3401,7 @@ body { animation: tint 36s ease-in-out infinite; }
         var lit = 0;
         if (lightsOn) {
           lit = .32;
-          if (fin) { var startAt = .5 + (SW.length - 1 - L.s) * .2 + L.k * .012, ft = (t2 - finT) - startAt; lit = Math.max(lit, ft <= 0 ? 0 : Math.min(1, ft * 4)); }
+          if (fin) { var startAt = 2.6 + (SW.length - 1 - L.s) * .2 + L.k * .012, ft = (t2 - finT) - startAt; lit = Math.max(lit, ft <= 0 ? 0 : Math.min(1, ft * 4)); }
         }
         var v = lit ? (.1 + .9 * inten(L, t2)) * lit * BRI : 0;
         c2.save(); c2.translate(x, y); c2.scale(depth, depth); c2.rotate(Math.sin(t2 * 1.3 + L.ph) * .04);
@@ -3429,7 +3429,7 @@ body { animation: tint 36s ease-in-out infinite; }
       if (!calm) { if (fin && SPIN) TH_ = 0; else if (!fin) TH_ += (Math.round(TH_ / 6.2832) * 6.2832 - TH_) * .08; }
       /* tashqi nur (yakunlashdan keyin) */
       if (fin) {
-        var glow = Math.min(1, ft / .8) * (.55 + (calm ? 0 : .12 * Math.sin(t2 * 1.6)));
+        var glow = Math.min(1, Math.max(0, ft - 2.6)) * (.55 + (calm ? 0 : .12 * Math.sin(t2 * 1.6)));
         c2.globalCompositeOperation = "lighter";
         var hg = c2.createRadialGradient(CXT, 210, 20, CXT, 210, 210); hg.addColorStop(0, "rgba(255,210,120," + glow * .55 + ")"); hg.addColorStop(1, "rgba(255,160,60,0)");
         c2.fillStyle = hg; c2.fillRect(0, 0, LW, LH);
@@ -3464,6 +3464,24 @@ body { animation: tint 36s ease-in-out infinite; }
         var ga = j * 2.1 + TH_ * .8, gx = IX + Math.sin(ga) * IRX * (.35 + .5 * ((j * 37) % 10) / 10), gy = IY + Math.cos(ga) * IRY * .6, tw3 = Math.max(0, Math.sin(t2 * 2.2 + j * 1.7));
         if (tw3 > .15) { c2.globalAlpha = tw3; c2.strokeStyle = "#fff"; c2.lineWidth = 1; c2.beginPath(); c2.moveTo(gx - 3.5 * tw3, gy); c2.lineTo(gx + 3.5 * tw3, gy); c2.moveTo(gx, gy - 3.5 * tw3); c2.lineTo(gx, gy + 3.5 * tw3); c2.stroke(); c2.globalAlpha = 1; }
       }
+      if (fin) {
+        var rp = calm ? 1 : sstep(0, .9, ft), RR = IRX * .94 * rp, ky = IRY / IRX, ra0 = t2 * .14, rk;
+        if (rp > 0) {
+          c2.save(); c2.globalCompositeOperation = "lighter";
+          ig = c2.createRadialGradient(IX, IY, 4, IX, IY, RR); ig.addColorStop(0, "rgba(255,190,90," + (.22 * rp).toFixed(2) + ")"); ig.addColorStop(1, "rgba(255,190,90,0)");
+          c2.fillStyle = ig; c2.beginPath(); c2.ellipse(IX, IY, RR, RR * ky, 0, 0, 6.2832); c2.fill();
+          c2.strokeStyle = "rgba(255,206,110," + (.85 * rp).toFixed(2) + ")"; c2.lineWidth = 1.5;
+          c2.beginPath(); c2.ellipse(IX, IY, RR, RR * ky, 0, 0, 6.2832); c2.stroke();
+          c2.lineWidth = .9; c2.beginPath(); c2.ellipse(IX, IY, RR * .86, RR * .86 * ky, 0, 0, 6.2832); c2.stroke();
+          c2.beginPath(); c2.ellipse(IX, IY, RR * .5, RR * .5 * ky, 0, 0, 6.2832); c2.stroke();
+          c2.beginPath();
+          for (rk = 0; rk < 48; rk++) { var ta = rk / 48 * 6.2832 + ra0, r1 = RR * (rk % 4 ? .88 : .8), r2 = RR * .97; c2.moveTo(IX + Math.cos(ta) * r1, IY + Math.sin(ta) * r1 * ky); c2.lineTo(IX + Math.cos(ta) * r2, IY + Math.sin(ta) * r2 * ky); }
+          for (rk = 0; rk < 5; rk++) { var pa = rk * 1.2566 - ra0 * 1.3, pb = (rk + 2) * 1.2566 - ra0 * 1.3; c2.moveTo(IX + Math.cos(pa) * RR * .78, IY + Math.sin(pa) * RR * .78 * ky); c2.lineTo(IX + Math.cos(pb) * RR * .78, IY + Math.sin(pb) * RR * .78 * ky); }
+          c2.stroke(); c2.fillStyle = "rgba(255,230,160," + rp.toFixed(2) + ")";
+          for (rk = 0; rk < 12; rk++) { var da = rk / 12 * 6.2832 - ra0 * 1.3; c2.fillRect(IX + Math.cos(da) * RR * .66 - 1, IY + Math.sin(da) * RR * .66 * ky - 1, 2, 2); }
+          c2.restore();
+        }
+      }
       if (!ready) { c2.fillStyle = "rgba(255,255,255,.7)"; c2.font = "13px system-ui"; c2.textAlign = "center"; c2.fillText("…", 150, 190); return; }
       /* sovgʻalar archa atrofida aylanadi */
       var GF = [[-.75, 46, 30, "#d6334a", "#ffe27a"], [.77, 50, 28, "#2f7bff", "#ffffff"], [-.4, 32, 22, "#f2a31b", "#d6334a"], [.42, 28, 20, "#7a45d6", "#9cf0b7"], [2.4, 40, 26, "#16a085", "#ffe27a"], [3.9, 36, 24, "#e84393", "#ffffff"], [3.15, 30, 20, "#ff7a3d", "#ffffff"], [5.5, 30, 22, "#3dd6c6", "#d6334a"]];
@@ -3482,8 +3500,10 @@ body { animation: tint 36s ease-in-out infinite; }
       };
       /* yakunlash: archa "otilib chiqadi" */
       var pop = 1;
-      if (fin && ft < 1.1 && !calm) pop = ft < .22 ? 1 - .05 * (ft / .22) : 0.95 + .05 * back(Math.min(1, (ft - .22) / .85)) + .04 * Math.sin(Math.min(1, (ft - .22) / .85) * Math.PI);
+      var GR = (fin && !calm) ? Math.min(1, ft / 3.6) : 1, gE = GR < 1 ? sstep(0, 1, GR) : 1, revealY = (TY + TH + 14) - (TY + TH + 14 - (TY - 26)) * gE;
+      if (false) pop = ft < .22 ? 1 - .05 * (ft / .22) : 0.95 + .05 * back(Math.min(1, (ft - .22) / .85)) + .04 * Math.sin(Math.min(1, (ft - .22) / .85) * Math.PI);
       c2.save(); c2.translate(CXT, TY + TH); c2.scale(pop, pop); c2.translate(-CXT, -(TY + TH));
+      if (GR < 1) { c2.beginPath(); c2.rect(0, revealY, LW, LH - revealY); c2.clip(); }
       /* aylanishda orqadagi bezak va chiroqlar */
       var drawOrn = function (o, front) {
         var a = o.phi + TH_, xr = o.rad * Math.sin(a), zr = Math.cos(a), isF = zr >= 0;
@@ -3498,7 +3518,7 @@ body { animation: tint 36s ease-in-out infinite; }
       };
 
       if (!LIGHTS.length) buildLights();
-      drawGifts(false);
+      if (GR >= .8) { c2.globalAlpha = sstep(.8, 1, GR); drawGifts(false); c2.globalAlpha = 1; }
       ORN.forEach(function (o) { drawOrn(o, false); });
       drawLights(false);
       /* archa: qator va ustun boʻyicha toʻr (mesh) tebranishi */
@@ -3541,16 +3561,26 @@ body { animation: tint 36s ease-in-out infinite; }
       drawLights(true);
       /* bezaklar (aylanishda orqa tomondagilar archa orqasida) */
       ORN.forEach(function (o) { drawOrn(o, true); });
-      drawGifts(true);
+      if (GR >= .8) { c2.globalAlpha = sstep(.8, 1, GR); drawGifts(true); c2.globalAlpha = 1; }
       c2.restore();
+      if (GR < 1) {
+        var rw = TW * .46 * Math.min(1, Math.max(.12, (revealY - TY + 14) / (TH * .85))) + 8, rk2;
+        c2.save(); c2.globalCompositeOperation = "lighter"; c2.strokeStyle = "rgba(255,225,150,.9)"; c2.lineWidth = 2;
+        c2.beginPath(); c2.ellipse(CXT, revealY, rw, rw * .13, 0, 0, 6.2832); c2.stroke();
+        c2.strokeStyle = "rgba(255,190,90,.45)"; c2.lineWidth = 6; c2.stroke();
+        for (rk2 = 0; rk2 < 28; rk2++) { var qa = rk2 / 28 * 6.2832 + t2 * 2, qv = .5 + .5 * Math.sin(t2 * 9 + rk2 * 2); c2.fillStyle = "rgba(255,240,190," + (qv * .9).toFixed(2) + ")"; c2.fillRect(CXT + Math.cos(qa) * rw, revealY + Math.sin(qa) * rw * .13 - qv * 7, 1.8, 1.8); }
+        c2.restore();
+      }
       /* yulduz */
+      if (!(GR < 1 && revealY > TY + 6)) {
       var sp = 1 + (calm ? 0 : .06 * Math.sin(t2 * 3)) + (fin ? .15 : 0), sy = TY - 6;
       var sg = c2.createRadialGradient(CXT, sy, 2, CXT, sy, (fin ? 60 : 36) * sp);
       sg.addColorStop(0, "rgba(255,230,120," + (fin ? .9 : .55) + ")"); sg.addColorStop(1, "rgba(255,230,120,0)");
       c2.globalCompositeOperation = "lighter"; c2.fillStyle = sg; c2.beginPath(); c2.arc(CXT, sy, (fin ? 60 : 36) * sp, 0, 6.2832); c2.fill(); c2.globalCompositeOperation = "source-over";
       c2.save(); c2.translate(CXT, sy); c2.scale(.4 + .6 * Math.abs(Math.cos(TH_)), 1); spr("star", 0, 0, 40 * sp, calm ? 0 : Math.sin(t2) * .1, false, 1, 0); c2.restore();
+      }
       /* oq chaqnash */
-      if (fin && ft < .7) { c2.fillStyle = "rgba(255,255,240," + (1 - ft / .7) * .75 + ")"; c2.fillRect(0, 0, LW, LH); }
+      if (fin && !calm && ft > 3.5 && ft < 4.2) { c2.fillStyle = "rgba(255,255,240," + (1 - (ft - 3.5) / .7) * .4 + ")"; c2.fillRect(0, 0, LW, LH); }
       /* uchqunlar */
       if (fin && !calm && Math.random() < .35) { var rx = TX + Math.random() * TW, ry = TY + Math.random() * TH; if (maskA(rx, ry) > 100) SPK.push({ x: rx, y: ry, vx: (Math.random() - .5) * .4, vy: -.2 - Math.random() * .5, l: .9, c: "#fff3b0", s: 1.5 + Math.random() * 2 }); }
       for (j = SPK.length - 1; j >= 0; j--) {
@@ -3593,7 +3623,7 @@ body { animation: tint 36s ease-in-out infinite; }
     };
     var setState = function (st) {
       STATE = st; finT = t2;
-      $("nyDecor").hidden = st === "fin"; $("nyFin").hidden = st !== "fin";
+      $("nyDecor").hidden = st === "fin"; $("nyFin").hidden = st !== "fin"; $("nyLP").hidden = st === "fin";
       $("nyHint").setAttribute("data-t", st === "fin" ? "ny_hint2" : "ny_hint"); $("nyHint").textContent = T(st === "fin" ? "ny_hint2" : "ny_hint");
       syncUI();
     };
@@ -3627,19 +3657,33 @@ body { animation: tint 36s ease-in-out infinite; }
 
 <style id="snowplay-css">
 #sp-cv{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:35}
-#sp-bear{position:fixed;left:0;top:0;width:64px;height:70px;z-index:36;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;will-change:transform}
+#sp-bear{position:fixed;left:0;top:0;width:72px;height:77px;z-index:36;touch-action:none;cursor:grab;user-select:none;-webkit-user-select:none;will-change:transform}
 #sp-bear:active{cursor:grabbing}
 #sp-bear svg{width:100%;height:100%;display:block;filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));pointer-events:none}
 #sp-hint{position:fixed;left:0;top:0;z-index:36;pointer-events:none;font:600 12px/1.3 system-ui,sans-serif;color:#fff;background:rgba(20,30,60,.78);padding:6px 10px;border-radius:12px;white-space:nowrap;transition:opacity .6s}
+#sp-bear svg{animation:spBreath 3.2s ease-in-out infinite;transform-origin:50% 100%}
+#sp-bear .lg,#sp-bear .am,#sp-bear .pom,#sp-bear .eyes{transform-box:view-box}
+#sp-bear .l1{transform-origin:28px 68px}#sp-bear .l2{transform-origin:52px 68px}
+#sp-bear .a1{transform-origin:20px 48px}#sp-bear .a2{transform-origin:60px 48px}
+#sp-bear .pom{transform-origin:40px 12px;animation:spPom 2.2s ease-in-out infinite}
+#sp-bear .eyes{transform-origin:40px 28px;animation:spBlink 4.6s infinite}
+#sp-bear.walk .l1,#sp-bear.walk .a2{animation:spA .34s ease-in-out infinite}
+#sp-bear.walk .l2,#sp-bear.walk .a1{animation:spB .34s ease-in-out infinite}
+@keyframes spA{0%,100%{transform:rotate(-16deg)}50%{transform:rotate(16deg)}}
+@keyframes spB{0%,100%{transform:rotate(16deg)}50%{transform:rotate(-16deg)}}
+@keyframes spBreath{0%,100%{transform:scaleY(1)}50%{transform:scaleY(1.025)}}
+@keyframes spPom{0%,100%{transform:rotate(-6deg)}50%{transform:rotate(6deg)}}
+@keyframes spBlink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){#sp-bear svg,#sp-bear .pom,#sp-bear .eyes,#sp-bear.walk *{animation:none!important}}
 </style>
 <canvas id="sp-cv" aria-hidden="true" hidden></canvas>
-<div id="sp-bear" hidden aria-label="Teddy bear: drag to push snow"><svg viewBox="0 0 64 70"><ellipse cx="32" cy="50" rx="18" ry="17" fill="#B9793F"/><ellipse cx="32" cy="55" rx="10" ry="10" fill="#E3B27A"/><ellipse cx="13" cy="48" rx="6" ry="9" fill="#A5672F"/><ellipse cx="51" cy="48" rx="6" ry="9" fill="#A5672F"/><ellipse cx="22" cy="65" rx="8" ry="5" fill="#A5672F"/><ellipse cx="42" cy="65" rx="8" ry="5" fill="#A5672F"/><circle cx="17" cy="11" r="7" fill="#B9793F"/><circle cx="47" cy="11" r="7" fill="#B9793F"/><circle cx="17" cy="11" r="3.5" fill="#E3B27A"/><circle cx="47" cy="11" r="3.5" fill="#E3B27A"/><circle cx="32" cy="25" r="17" fill="#B9793F"/><ellipse cx="32" cy="31" rx="8" ry="6.5" fill="#E3B27A"/><ellipse cx="32" cy="28.5" rx="3" ry="2.2" fill="#3A2312"/><circle cx="25" cy="22" r="2.3" fill="#2a1a0e"/><circle cx="39" cy="22" r="2.3" fill="#2a1a0e"/><rect x="44" y="40" width="6" height="15" rx="3" fill="#D8342C"/><rect x="17" y="39" width="30" height="6" rx="3" fill="#D8342C"/></svg></div>
+<div id="sp-bear" hidden aria-label="Teddy bear: drag to push snow"><svg viewBox="0 0 80 86"><defs><radialGradient id="spF" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="#E2A468"/><stop offset="1" stop-color="#A8672F"/></radialGradient><radialGradient id="spB" cx=".5" cy=".3" r=".8"><stop offset="0" stop-color="#FBE6C4"/><stop offset="1" stop-color="#E3B27A"/></radialGradient><linearGradient id="spH" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#EE5A4E"/><stop offset="1" stop-color="#C92F2A"/></linearGradient></defs><ellipse cx="40" cy="83" rx="26" ry="3" fill="rgba(0,0,0,.25)"/><g class="lg l1"><ellipse cx="28" cy="74" rx="9" ry="7.5" fill="url(#spF)"/><ellipse cx="28" cy="77" rx="5.5" ry="3.5" fill="#8A5226"/></g><g class="lg l2"><ellipse cx="52" cy="74" rx="9" ry="7.5" fill="url(#spF)"/><ellipse cx="52" cy="77" rx="5.5" ry="3.5" fill="#8A5226"/></g><ellipse cx="40" cy="56" rx="22" ry="21" fill="url(#spF)"/><ellipse cx="40" cy="61" rx="12.5" ry="13" fill="url(#spB)"/><g class="am a1"><ellipse cx="17" cy="56" rx="7" ry="11" transform="rotate(14 17 56)" fill="url(#spF)"/><circle cx="14" cy="65" r="6.5" fill="#D8342C"/><rect x="8" y="59" width="13" height="4" rx="2" fill="#fff"/></g><g class="am a2"><ellipse cx="63" cy="56" rx="7" ry="11" transform="rotate(-14 63 56)" fill="url(#spF)"/><circle cx="66" cy="65" r="6.5" fill="#D8342C"/><rect x="59" y="59" width="13" height="4" rx="2" fill="#fff"/></g><circle cx="18" cy="22" r="8" fill="url(#spF)"/><circle cx="62" cy="22" r="8" fill="url(#spF)"/><circle cx="18" cy="22" r="4" fill="#F0B98A"/><circle cx="62" cy="22" r="4" fill="#F0B98A"/><circle cx="40" cy="31" r="20" fill="url(#spF)"/><ellipse cx="40" cy="38" rx="10" ry="8" fill="url(#spB)"/><ellipse cx="40" cy="34" rx="3.6" ry="2.6" fill="#3A2312"/><ellipse cx="39" cy="33" rx="1.1" ry=".7" fill="#fff" opacity=".7"/><path d="M40 36.5v2.5M40 39q-3 3-6 1M40 39q3 3 6 1" stroke="#3A2312" stroke-width="1.4" fill="none" stroke-linecap="round"/><circle cx="28" cy="37" r="3.6" fill="#FF8FA3" opacity=".55"/><circle cx="52" cy="37" r="3.6" fill="#FF8FA3" opacity=".55"/><g class="eyes"><circle cx="31" cy="28" r="3" fill="#20120a"/><circle cx="32" cy="27" r="1.1" fill="#fff"/><circle cx="49" cy="28" r="3" fill="#20120a"/><circle cx="50" cy="27" r="1.1" fill="#fff"/></g><rect x="22" y="46" width="36" height="8" rx="4" fill="#D8342C"/><rect x="30" y="46" width="4" height="8" fill="#fff"/><rect x="42" y="46" width="4" height="8" fill="#fff"/><rect x="52" y="50" width="8" height="19" rx="4" fill="#D8342C"/><rect x="52" y="58" width="8" height="3" fill="#fff"/><path d="M20 24C20 4 60 4 60 24Z" fill="url(#spH)"/><rect x="18" y="20" width="44" height="9" rx="4.5" fill="#fff"/><g fill="#E7EEF9"><circle cx="26" cy="24.5" r="1.4"/><circle cx="36" cy="25" r="1.4"/><circle cx="46" cy="24.5" r="1.4"/><circle cx="55" cy="25" r="1.4"/></g><g class="pom"><circle cx="40" cy="6" r="6.5" fill="#fff"/><circle cx="38" cy="4.5" r="2" fill="#E7EEF9"/></g></svg></div>
 <div id="sp-hint" hidden></div>
 <script>
 (function () {
   var root = document.documentElement, cv = document.getElementById("sp-cv"), c = cv.getContext("2d"),
       bear = document.getElementById("sp-bear"), hint = document.getElementById("sp-hint");
-  var CW = 6, TAU = 6.2832, W = 0, H = 0, N = 0, h = null, fl = [], sm = [], vol = 0, bx = 0, dir = 1, lean = 0,
+  var CW = 6, TAU = 6.2832, W = 0, H = 0, N = 0, h = null, fl = [], sm = [], vol = 0, bx = 0, dir = 1, lean = 0, puffs = [], lastMv = 0,
       drag = false, on = false, raf = 0, last = 0, hinted = true, used = false, MAXH = 55;
   var T = { uz: "Ayiqchani sudrab, qorni suring ❄", en: "Drag the bear to push the snow ❄", ru: "Двигай мишку — он катит снег ❄" };
   var winter = function () { return root.classList.contains("s-winter"); };
@@ -3663,12 +3707,13 @@ body { animation: tint 36s ease-in-out infinite; }
   var radius = function () { return Math.sqrt(vol / Math.PI) * 1.1; };
   var drop = function () {
     var r = radius();
-    if (r >= 9) place(Math.max(r, Math.min(W - r, bx + dir * (28 + r))), r);
+    if (r >= 9) place(Math.max(r, Math.min(W - r, bx + dir * (32 + r))), r);
     vol = 0;
   };
   var push = function (dx) {
-    var c0 = Math.max(0, ((bx - 26) / CW) | 0), c1 = Math.min(N - 1, ((bx + 26) / CW) | 0), i, t;
+    var c0 = Math.max(0, ((bx - 28) / CW) | 0), c1 = Math.min(N - 1, ((bx + 28) / CW) | 0), i, t;
     for (i = c0; i <= c1; i++) { t = Math.min(h[i], Math.abs(dx) * .08); h[i] -= t; vol += t * CW; }
+    for (t = 0; t < 2 && puffs.length < 60; t++) puffs.push({ x: bx - dir * 14 + (Math.random() - .5) * 10, y: H - hAt(bx) + 2, vx: -dir * (20 + Math.random() * 40), vy: -(25 + Math.random() * 45), l: 1, r: 1.5 + Math.random() * 2 });
     if (radius() >= 30) drop();
   };
   var ball = function (x, y, r) {
@@ -3702,13 +3747,15 @@ body { animation: tint 36s ease-in-out infinite; }
     for (i = 0; i < N; i++) c.lineTo(i * CW + CW / 2, H - h[i]);
     c.lineTo(W, H); c.closePath(); c.fill();
     for (i = 0; i < sm.length; i++) man(sm[i]);
-    r = radius(); if (drag && r >= 3) ball(Math.max(r, Math.min(W - r, bx + dir * (28 + r))), H - hAt(bx + dir * (28 + r)) - r + 3, r);
+    r = radius(); if (drag && r >= 3) ball(Math.max(r, Math.min(W - r, bx + dir * (32 + r))), H - hAt(bx + dir * (32 + r)) - r + 3, r);
+    for (i = puffs.length - 1; i >= 0; i--) { f = puffs[i]; f.l -= dt * 1.8; if (f.l <= 0) { puffs.splice(i, 1); continue; } f.x += f.vx * dt; f.y += f.vy * dt; f.vy += 140 * dt; c.fillStyle = "rgba(255,255,255," + (f.l * .9).toFixed(2) + ")"; c.beginPath(); c.arc(f.x, f.y, f.r * (1.4 - f.l * .4), 0, TAU); c.fill(); }
+    if (now - lastMv > 140) bear.classList.remove("walk");
     c.fillStyle = "rgba(255,255,255,.85)";
     for (i = 0; i < fl.length; i++) { f = fl[i]; c.beginPath(); c.arc(f.x, f.y, f.r, 0, TAU); c.fill(); }
     gy = H - hAt(bx) + 4;
     lean += ((drag ? dir * 6 : 0) - lean) * .2;
-    bear.style.transform = "translate(" + (bx - 32) + "px," + (gy - 70 - (drag ? Math.abs(Math.sin(bx * .12)) * 3 : 0)) + "px) rotate(" + lean.toFixed(1) + "deg)";
-    if (!hinted) hint.style.transform = "translate(" + Math.max(8, Math.min(W - 230, bx - 150)) + "px," + (gy - 104) + "px)";
+    bear.style.transform = "translate(" + (bx - 36) + "px," + (gy - 77 - (drag ? Math.abs(Math.sin(bx * .12)) * 3 : 0)) + "px) rotate(" + lean.toFixed(1) + "deg)";
+    if (!hinted) hint.style.transform = "translate(" + Math.max(8, Math.min(W - 230, bx - 150)) + "px," + (gy - 112) + "px)";
     raf = requestAnimationFrame(frame);
   };
   var start = function () {
@@ -3724,8 +3771,8 @@ body { animation: tint 36s ease-in-out infinite; }
   });
   bear.addEventListener("pointermove", function (e) {
     if (!drag) return;
-    var nx = Math.max(32, Math.min(W - 32, e.clientX)), dx = nx - bx;
-    if (Math.abs(dx) > .3) { dir = dx > 0 ? 1 : -1; push(dx); }
+    var nx = Math.max(36, Math.min(W - 36, e.clientX)), dx = nx - bx;
+    if (Math.abs(dx) > .3) { dir = dx > 0 ? 1 : -1; push(dx); bear.classList.add("walk"); lastMv = performance.now(); }
     bx = nx;
   });
   var up = function () { if (drag) { drag = false; drop(); } };
